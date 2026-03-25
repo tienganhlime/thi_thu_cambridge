@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movers Listening - Cambridge A1</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body {font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);}
+  .question-box {background: #f8f9fa; padding: 25px; border-radius: 20px; margin-bottom: 25px; border-left: 5px solid #4CAF50;}
+  .option-btn {padding: 12px 24px; margin: 6px; border: 2px solid #ddd; border-radius: 9999px; background: white; cursor: pointer; transition: all 0.3s; font-size: 20px;}
+  .option-btn:hover {border-color: #4CAF50;}
+  .option-btn.selected {background: #4CAF50; color: white; position: relative;}
+  .option-btn.selected::after {content: "✔"; position: absolute; right: 12px; font-size: 18px;}
+  .section-title {color: #FF6B6B; font-size: 2.1rem; font-weight: bold; margin: 35px 0 15px; padding-bottom: 10px; border-bottom: 3px solid #FF6B6B;}
+  .circle {width: 68px; height: 68px; border: 4px solid #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; cursor: pointer; background: white;}
+  .match-item {background: #f0fdf4; padding: 8px 16px; border-radius: 9999px; margin: 4px 0; font-size: 20px; cursor: pointer;}
+  .color-btn {width: 60px; height: 60px; border-radius: 50%; border: 4px solid transparent; cursor: pointer; transition: all 0.2s;}
+  .color-btn.selected {border-color: #10B981; box-shadow: 0 0 0 6px #10B98133;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="bg-white shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" class="h-11">
+      <div>
+        <h1 class="text-3xl font-bold text-green-700">Movers Listening</h1>
+        <p class="text-orange-600 text-xl -mt-1">Cambridge A1 Movers</p>
+      </div>
+    </div>
+    <div class="text-right">
+      <p class="text-xl">Học sinh: <span id="headerName" class="font-bold"></span></p>
+      <p class="text-3xl font-bold text-red-600 flex items-center gap-2">⏱ <span id="timer">00:00</span></p>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto px-8">
+    <div class="bg-gray-200 h-3 rounded-full overflow-hidden">
+      <div id="progress" class="bg-green-600 h-full w-0 transition-all"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MÀN HÌNH NHẬP MÃ -->
+<div id="codeScreen" class="min-h-screen flex items-center justify-center p-6">
+  <div class="max-w-2xl w-full bg-white rounded-3xl shadow-2xl p-12 text-center">
+    <h1 class="text-5xl font-bold text-green-700 mb-2">Movers Listening</h1>
+    <h2 class="text-3xl font-bold text-orange-600 mb-8">Practice Test (Cambridge A1 Movers)</h2>
+    <input type="text" id="studentCode" class="w-full px-8 py-6 text-3xl border-4 border-green-400 rounded-3xl text-center mb-8" placeholder="Nhập mã học sinh">
+    <button onclick="verifyStudent()" class="w-full bg-green-600 text-white font-bold py-6 rounded-3xl text-3xl">BẮT ĐẦU</button>
+  </div>
+</div>
+
+<!-- MÀN HÌNH LÀM BÀI -->
+<div id="testScreen" class="hidden min-h-screen p-6">
+
+  <!-- NÚT NGHE TOÀN BỘ -->
+  <div class="max-w-7xl mx-auto mb-8 text-center">
+    <button onclick="playFullAudio()" id="fullPlayBtn" class="bg-blue-600 hover:bg-blue-700 text-white text-2xl px-12 py-6 rounded-3xl shadow-2xl flex items-center gap-4 mx-auto">
+      ▶ Nghe toàn bộ bài nghe (chỉ nghe 1 lần – không tua, không dừng)
+    </button>
+    <audio id="fullAudio" src="https://res.cloudinary.com/dzby0c2up/video/upload/v1774443156/Movers_Listening_test_sllkst.mp3"></audio>
+  </div>
+
+  <div class="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl p-10">
+
+    <!-- PART 1 -->
+    <div class="section-title">Part 1 – 5 questions</div>
+    <div class="question-box">
+      <p class="text-xl mb-4">Listen and draw lines. There is one example.</p>
+      <img id="part1Img" src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443408/part1_eajgmo.png" class="mx-auto rounded-3xl shadow-xl mb-8" style="max-width:900px">
+      <div class="flex flex-wrap gap-4 justify-center mb-8" id="nameList">
+        <div onclick="selectName(this)" data-name="Peter" class="name-btn px-8 py-4 border-2 border-gray-400 rounded-3xl text-2xl font-bold cursor-pointer">Peter</div>
+        <div onclick="selectName(this)" data-name="Zoe" class="name-btn px-8 py-4 border-2 border-gray-400 rounded-3xl text-2xl font-bold cursor-pointer">Zoe</div>
+        <div onclick="selectName(this)" data-name="Fred" class="name-btn px-8 py-4 border-2 border-gray-400 rounded-3xl text-2xl font-bold cursor-pointer">Fred</div>
+        <div onclick="selectName(this)" data-name="Lily" class="name-btn px-8 py-4 border-2 border-gray-400 rounded-3xl text-2xl font-bold cursor-pointer">Lily</div>
+        <div onclick="selectName(this)" data-name="Charlie" class="name-btn px-8 py-4 border-2 border-gray-400 rounded-3xl text-2xl font-bold cursor-pointer">Charlie</div>
+        <div onclick="selectName(this)" data-name="Jane" class="name-btn px-8 py-4 border-2 border-gray-400 rounded-3xl text-2xl font-bold cursor-pointer">Jane</div>
+        <div onclick="selectName(this)" data-name="Jack" class="name-btn px-8 py-4 border-2 border-gray-400 rounded-3xl text-2xl font-bold cursor-pointer">Jack</div>
+      </div>
+      <div class="grid grid-cols-5 gap-6 justify-items-center" id="numberList">
+        <div onclick="matchNumber(this)" data-num="1" class="circle">1</div>
+        <div onclick="matchNumber(this)" data-num="2" class="circle">2</div>
+        <div onclick="matchNumber(this)" data-num="3" class="circle">3</div>
+        <div onclick="matchNumber(this)" data-num="4" class="circle">4</div>
+        <div onclick="matchNumber(this)" data-num="5" class="circle">5</div>
+      </div>
+      <div class="mt-8" id="matchResult"></div>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="section-title">Part 2 – 5 questions</div>
+    <div class="question-box">
+      <p class="text-xl mb-4">Listen and write. There is one example.</p>
+      <img src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443406/part2_eg9wtp.png" class="mx-auto rounded-3xl shadow-xl" style="max-width:900px">
+      <div class="grid grid-cols-1 gap-6 mt-8 text-xl">
+        <div>1. Teacher's name: Mrs <input id="q6" class="input-answer" onblur="saveTextAnswer(6,this.value)"></div>
+        <div>2. Day Jim goes swimming: <input id="q7" class="input-answer" onblur="saveTextAnswer(7,this.value)"></div>
+        <div>3. Floor of Jim's apartment: <input id="q8" class="input-answer" onblur="saveTextAnswer(8,this.value)"></div>
+        <div>4. Drink at birthday party: <input id="q9" class="input-answer" onblur="saveTextAnswer(9,this.value)"></div>
+        <div>5. Kitten's name: <input id="q10" class="input-answer" onblur="saveTextAnswer(10,this.value)"></div>
+      </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div class="section-title">Part 3 – 5 questions</div>
+    <div class="question-box">
+      <p class="text-xl mb-4">What work do the people in Mr Brown's family do? Write a letter.</p>
+      <img src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443408/part3_eyrzff.png" class="mx-auto rounded-3xl shadow-xl" style="max-width:900px">
+      <div class="grid grid-cols-2 gap-8 mt-8 text-xl">
+        <div>his uncle → <input id="q11" maxlength="1" class="input-answer w-20 text-center" onblur="saveTextAnswer(11,this.value)"></div>
+        <div>his aunt → <input id="q12" maxlength="1" class="input-answer w-20 text-center" onblur="saveTextAnswer(12,this.value)"></div>
+        <div>his brother → <input id="q13" maxlength="1" class="input-answer w-20 text-center" onblur="saveTextAnswer(13,this.value)"></div>
+        <div>his sister → <input id="q14" maxlength="1" class="input-answer w-20 text-center" onblur="saveTextAnswer(14,this.value)"></div>
+        <div>his cousin → <input id="q15" maxlength="1" class="input-answer w-20 text-center" onblur="saveTextAnswer(15,this.value)"></div>
+        <div>his daughter → <input id="q16" maxlength="1" class="input-answer w-20 text-center" onblur="saveTextAnswer(16,this.value)"></div>
+      </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div class="section-title">Part 4 – 5 questions</div>
+    <div class="question-box">
+      <p class="text-xl mb-6">Listen and tick (✔) the box.</p>
+      <div class="space-y-12">
+        <div>
+          <p class="font-bold text-xl mb-4">1. Where are Daisy's black shoes?</p>
+          <img src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443407/part41_xqfiti.png" class="mx-auto rounded-3xl shadow-xl mb-4" style="max-width:900px">
+          <div class="flex gap-8 justify-center">
+            <button onclick="selectOption(17,'A',this)" class="option-btn text-2xl px-8 py-4">A</button>
+            <button onclick="selectOption(17,'B',this)" class="option-btn text-2xl px-8 py-4">B</button>
+            <button onclick="selectOption(17,'C',this)" class="option-btn text-2xl px-8 py-4">C</button>
+          </div>
+        </div>
+        <div>
+          <p class="font-bold text-xl mb-4">2. What was the weather like in the mountains?</p>
+          <img src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443405/part42_pc4c11.png" class="mx-auto rounded-3xl shadow-xl mb-4" style="max-width:900px">
+          <div class="flex gap-8 justify-center">
+            <button onclick="selectOption(18,'A',this)" class="option-btn text-2xl px-8 py-4">A</button>
+            <button onclick="selectOption(18,'B',this)" class="option-btn text-2xl px-8 py-4">B</button>
+            <button onclick="selectOption(18,'C',this)" class="option-btn text-2xl px-8 py-4">C</button>
+          </div>
+        </div>
+        <div>
+          <p class="font-bold text-xl mb-4">3. What's the matter with Sally?</p>
+          <img src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443406/part43_ioqtkm.png" class="mx-auto rounded-3xl shadow-xl mb-4" style="max-width:900px">
+          <div class="flex gap-8 justify-center">
+            <button onclick="selectOption(19,'A',this)" class="option-btn text-2xl px-8 py-4">A</button>
+            <button onclick="selectOption(19,'B',this)" class="option-btn text-2xl px-8 py-4">B</button>
+            <button onclick="selectOption(19,'C',this)" class="option-btn text-2xl px-8 py-4">C</button>
+          </div>
+        </div>
+        <div>
+          <p class="font-bold text-xl mb-4">4. Why is Vicky tired?</p>
+          <img src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443405/part44_qiow9y.png" class="mx-auto rounded-3xl shadow-xl mb-4" style="max-width:900px">
+          <div class="flex gap-8 justify-center">
+            <button onclick="selectOption(20,'A',this)" class="option-btn text-2xl px-8 py-4">A</button>
+            <button onclick="selectOption(20,'B',this)" class="option-btn text-2xl px-8 py-4">B</button>
+            <button onclick="selectOption(20,'C',this)" class="option-btn text-2xl px-8 py-4">C</button>
+          </div>
+        </div>
+        <div>
+          <p class="font-bold text-xl mb-4">5. Which present does Ben want to buy for his mum?</p>
+          <img src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443405/part45_dacv2c.png" class="mx-auto rounded-3xl shadow-xl mb-4" style="max-width:900px">
+          <div class="flex gap-8 justify-center">
+            <button onclick="selectOption(21,'A',this)" class="option-btn text-2xl px-8 py-4">A</button>
+            <button onclick="selectOption(21,'B',this)" class="option-btn text-2xl px-8 py-4">B</button>
+            <button onclick="selectOption(21,'C',this)" class="option-btn text-2xl px-8 py-4">C</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PART 5 -->
+    <div class="section-title">Part 5 – 5 questions</div>
+    <div class="question-box">
+      <p class="text-xl mb-4">Listen and colour. There is one example.</p>
+      <img id="part5Img" src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443403/part5_syjao7.png" class="mx-auto rounded-3xl shadow-xl mb-8" style="max-width:900px">
+      <div class="flex flex-wrap gap-4 justify-center mb-8" id="colorPalette">
+        <div onclick="setColor(this,'#FF0000')" class="color-btn bg-red-500"></div>
+        <div onclick="setColor(this,'#0000FF')" class="color-btn bg-blue-500"></div>
+        <div onclick="setColor(this,'#00FF00')" class="color-btn bg-green-500"></div>
+        <div onclick="setColor(this,'#FFFF00')" class="color-btn bg-yellow-400"></div>
+        <div onclick="setColor(this,'#FF8800')" class="color-btn bg-orange-500"></div>
+        <div onclick="setColor(this,'#9900FF')" class="color-btn bg-purple-600"></div>
+        <div onclick="setColor(this,'#8B4513')" class="color-btn bg-amber-800"></div>
+        <div onclick="setColor(this,'#FF00FF')" class="color-btn bg-pink-500"></div>
+        <div onclick="setColor(this,'#000000')" class="color-btn bg-black"></div>
+      </div>
+      <div class="grid grid-cols-7 gap-6 justify-items-center mb-8" id="colorNumbers">
+        <div onclick="colorItem(this)" data-num="1" class="circle">1</div>
+        <div onclick="colorItem(this)" data-num="2" class="circle">2</div>
+        <div onclick="colorItem(this)" data-num="3" class="circle">3</div>
+        <div onclick="colorItem(this)" data-num="4" class="circle">4</div>
+        <div onclick="colorItem(this)" data-num="5" class="circle">5</div>
+        <div onclick="colorItem(this)" data-num="6" class="circle">6</div>
+        <div onclick="colorItem(this)" data-num="7" class="circle">7</div>
+      </div>
+      <div class="mt-6" id="colorResult"></div>
+    </div>
+
+    <div class="text-center mt-12">
+      <button onclick="submitTest()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-8 px-32 rounded-3xl text-4xl shadow-2xl">NỘP BÀI</button>
+    </div>
+  </div>
+</div>
+
+<!-- MÀN HÌNH KẾT QUẢ -->
+<div id="resultScreen" class="hidden min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-green-50 to-blue-50">
+  <div class="max-w-4xl w-full bg-white rounded-3xl shadow-2xl p-16 text-center">
+    <h1 class="text-6xl font-bold text-green-700 mb-8">HOÀN THÀNH!</h1>
+    <div class="text-9xl font-bold text-green-600 mb-6" id="finalScore">0%</div>
+    <p class="text-4xl mb-4">Đúng <span id="correctCount">0</span>/25 câu</p>
+    <p class="text-3xl text-gray-700 mb-12">Thời gian: <span id="finalTime">00:00</span></p>
+    <div class="bg-red-50 border-2 border-red-400 rounded-2xl p-8 mb-10">
+      <p class="text-2xl font-bold text-red-800">Câu sai: <span id="wrongList" class="font-mono">Không có</span></p>
+    </div>
+    <div class="bg-blue-50 border-2 border-blue-400 rounded-2xl p-8 text-left">
+      <p class="text-2xl font-bold text-blue-800 mb-4">Lịch sử làm bài:</p>
+      <div id="timelineDisplay" class="text-lg space-y-2 font-mono"></div>
+    </div>
+    <button onclick="location.reload()" class="mt-12 bg-green-600 hover:bg-green-700 text-white font-bold py-6 px-20 rounded-3xl text-3xl shadow-2xl">LÀM LẠI BÀI</button>
+  </div>
+</div>
+
+<script>
+const URL = 'https://script.google.com/macros/s/AKfycbzf5rfx8jIiNaIzC3a1WcaKxaH-EylWITueMSbLBTgZNFsHH17QJXXGNealxIGbXSM9/exec';
+const TEST_NAME = 'Movers Listening Practice Test';
+const TOTAL_QUESTIONS = 25;
+
+let student = null, startTime = null, timer = null;
+let answers = {}, timeline = [], tabSwitches = 0;
+let playedFull = false;
+let selectedName = null;
+let currentColor = '#FF0000';
+let currentColorBtn = null;
+
+function playFullAudio() {
+  if (playedFull) return alert("Bạn chỉ được nghe 1 lần duy nhất!");
+  const audio = document.getElementById('fullAudio');
+  const btn = document.getElementById('fullPlayBtn');
+  audio.play();
+  playedFull = true;
+  btn.style.opacity = "0.4";
+  btn.innerHTML = `✅ ĐÃ NGHE TOÀN BỘ (không tua lại được)`;
+  audio.onseeked = () => { if (audio.currentTime > 2) audio.currentTime = 0; };
+}
+
+// PART 1
+function selectName(el) {
+  document.querySelectorAll('.name-btn').forEach(e => e.style.borderColor = '#9CA3AF');
+  el.style.borderColor = '#4CAF50';
+  selectedName = el.dataset.name;
+}
+function matchNumber(el) {
+  if (!selectedName) return alert("Hãy chọn tên trước!");
+  const num = el.dataset.num;
+  answers[`part1_${selectedName}`] = num;
+  renderMatches();
+  selectedName = null;
+  document.querySelectorAll('.name-btn').forEach(e => e.style.borderColor = '#9CA3AF');
+}
+function renderMatches() {
+  let html = '<div class="flex flex-wrap gap-3 justify-center">';
+  Object.keys(answers).filter(k => k.startsWith('part1_')).forEach(key => {
+    const name = key.replace('part1_','');
+    const num = answers[key];
+    html += `<div onclick="removeMatch('${key}')" class="match-item flex items-center gap-3"><span class="font-bold">${name}</span> <span class="text-3xl">→</span> <span class="text-green-600 font-bold">${num}</span></div>`;
+  });
+  html += '</div>';
+  document.getElementById('matchResult').innerHTML = html;
+}
+function removeMatch(key) {
+  delete answers[key];
+  renderMatches();
+  timeline.push(`Part 1: Bỏ ghép ${key}`);
+}
+
+// PART 5
+function setColor(btn, color) {
+  currentColor = color;
+  if (currentColorBtn) currentColorBtn.classList.remove('selected');
+  btn.classList.add('selected');
+  currentColorBtn = btn;
+}
+function colorItem(el) {
+  const num = el.dataset.num;
+  answers[`part5_${num}`] = currentColor;
+  renderColorResult();
+}
+function renderColorResult() {
+  let html = '<div class="flex flex-wrap gap-3 justify-center">';
+  Object.keys(answers).filter(k => k.startsWith('part5_')).forEach(key => {
+    const num = key.replace('part5_','');
+    const color = answers[key];
+    html += `<div onclick="removeColor('${key}')" class="match-item flex items-center gap-3"><span class="font-bold">Item ${num}</span> <span class="inline-block w-8 h-8 rounded-full" style="background:${color}"></span></div>`;
+  });
+  html += '</div>';
+  document.getElementById('colorResult').innerHTML = html;
+}
+function removeColor(key) {
+  delete answers[key];
+  renderColorResult();
+  timeline.push(`Part 5: Bỏ tô màu ${key}`);
+}
+
+// PART 4
+function selectOption(q, opt, btn) {
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[q] = opt;
+  timeline.push(`Câu ${q}: ${opt}`);
+}
+
+function saveTextAnswer(q, val) {
+  if (val.trim()) answers[q] = val.trim();
+}
+
+function verifyStudent() {
+  const code = document.getElementById('studentCode').value.trim().toUpperCase();
+  if (!code) return alert('Nhập mã học sinh!');
+  fetch(`${URL}?action=verify&code=${code}`)
+    .then(r => r.json())
+    .then(d => {
+      if (!d.exists) return alert('Mã không tồn tại!');
+      student = {code, name: d.studentName || code};
+      document.getElementById('headerName').textContent = student.name;
+      document.getElementById('codeScreen').classList.add('hidden');
+      document.getElementById('testScreen').classList.remove('hidden');
+      startTime = Date.now();
+      timer = setInterval(() => {
+        const s = Math.floor((Date.now() - startTime)/1000);
+        const m = String(Math.floor(s/60)).padStart(2,'0');
+        const sec = String(s%60).padStart(2,'0');
+        document.getElementById('timer').textContent = `${m}:${sec}`;
+        const answered = Object.keys(answers).length;
+        document.getElementById('progress').style.width = `${(answered / TOTAL_QUESTIONS) * 100}%`;
+      }, 500);
+    });
+}
+
+function submitTest() {
+  const answered = Object.keys(answers).length;
+  if (answered < TOTAL_QUESTIONS && !confirm(`Còn ${TOTAL_QUESTIONS - answered} câu chưa làm. Nộp luôn?`)) return;
+  clearInterval(timer);
+  const duration = document.getElementById('timer').textContent;
+  const data = {
+    action: 'submit',
+    testName: TEST_NAME,
+    studentCode: student.code,
+    studentName: student.name,
+    answers: answers,
+    timeUsed: duration,
+    realSubmitTime: new Date().toLocaleString('vi-VN'),
+    timeline: timeline.join(' | '),
+    tabSwitchLog: tabSwitches > 0 ? `Chuyển tab ${tabSwitches} lần` : 'Không chuyển tab',
+    totalQuestions: TOTAL_QUESTIONS
+  };
+  fetch(`${URL}?data=${encodeURIComponent(JSON.stringify(data))}`)
+    .then(r => r.json())
+    .then(res => {
+      document.getElementById('testScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
+      document.getElementById('finalScore').textContent = res.score + '%';
+      document.getElementById('correctCount').textContent = res.correctCount;
+      document.getElementById('finalTime').textContent = duration;
+      document.getElementById('wrongList').textContent = res.wrongQuestions && res.wrongQuestions.length ? res.wrongQuestions.join(', ') : 'Không có';
+      const tl = document.getElementById('timelineDisplay');
+      timeline.forEach(l => { const p = document.createElement('p'); p.textContent = l; tl.appendChild(p); });
+    });
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && !document.getElementById('testScreen').classList.contains('hidden')) {
+    tabSwitches++;
+    timeline.push(`Chuyển tab lúc ${new Date().toLocaleTimeString('vi-VN')}`);
+  }
+});
+</script>
+</body>
+</html>
