@@ -988,18 +988,24 @@ function submitTest() {
     tabSwitchLog: tabSwitches > 0 ? `Chuyển tab ${tabSwitches} lần` : 'Không chuyển tab',
     totalQuestions: TOTAL_QUESTIONS
   };
-  fetch(`${SHEET_URL}?data=${encodeURIComponent(JSON.stringify(data))}`)
+  fetch(`${SHEET_URL}?action=submit&data=${encodeURIComponent(JSON.stringify(data))}`)
     .then(r => r.json())
     .then(res => {
       document.getElementById('appWrapper').style.display = 'none';
       const rs = document.getElementById('resultScreen');
       rs.style.display = 'flex';
-      document.getElementById('finalScore').textContent = res.score + '%';
-      document.getElementById('correctCount').textContent = res.correctCount;
+      // res.score có thể là "72%" hoặc "N/A" — loại bỏ dấu % nếu cần
+      const scoreText = res.score != null ? String(res.score) : 'N/A';
+      document.getElementById('finalScore').textContent = scoreText.includes('%') ? scoreText : scoreText + '%';
+      document.getElementById('correctCount').textContent = res.correct != null ? res.correct : '?';
       document.getElementById('finalTime').textContent = duration;
-      document.getElementById('wrongList').textContent = res.wrongQuestions?.length ? res.wrongQuestions.join(', ') : 'Không có';
+      document.getElementById('wrongList').textContent = 'Xem chi tiết trong Google Sheet';
       const tl = document.getElementById('timelineDisplay');
       timeline.forEach(l => { const p = document.createElement('p'); p.textContent = l; tl.appendChild(p); });
+    })
+    .catch(err => {
+      alert('Lỗi khi nộp bài: ' + err.message);
+      console.error(err);
     });
 }
 
