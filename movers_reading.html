@@ -1,87 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A1 Movers – Reading & Writing</title>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+<title>A1 Movers – Reading & Writing – LIME</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); font-size: 1rem; }
+  body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); font-size: 1.1rem; }
 
-  .question-box { background: #f8f9fa; padding: 18px 20px; border-radius: 20px; margin-bottom: 16px; border-left: 4px solid #4CAF50; }
-  .option-btn   { padding: 10px 22px; margin: 6px; border: 2px solid #ddd; border-radius: 20px; background: white;
-                  cursor: pointer; transition: all 0.3s; font-size: 17px; font-family: 'Quicksand', sans-serif; }
-  .option-btn:hover    { border-color: #4CAF50; background: #f0fff0; }
-  .option-btn.selected { border-color: #4CAF50; background: #4CAF50; color: white; font-weight: bold; }
+  .question-box { background: #f8f9fa; padding: 20px 22px; border-radius: 20px; margin-bottom: 16px; border-left: 4px solid #16a34a; }
+  .option-btn   { padding: 12px 26px; margin: 6px; border: 2px solid #ddd; border-radius: 20px; background: white;
+                  cursor: pointer; transition: all 0.3s; font-size: 20px; font-weight: 600; font-family: 'Quicksand', sans-serif; }
+  .option-btn:hover    { border-color: #16a34a; background: #f0fdf4; }
+  .option-btn.selected { border-color: #16a34a; background: #16a34a; color: white; font-weight: bold; }
 
-  .input-answer { padding: 8px 14px; border: 2px solid #ddd; border-radius: 14px;
-                  font-size: 16px; font-family: 'Quicksand', sans-serif; }
-  .input-answer:focus { border-color: #4CAF50; outline: none; background: #f0fff0; }
-  .input-answer-lg { width: 100%; border-radius: 14px; border: 2px solid #ddd; padding: 9px 14px;
-                     font-size: 16px; font-family: 'Quicksand', sans-serif; }
-  .input-answer-lg:focus { border-color: #4CAF50; outline: none; background: #f0fff0; }
+  .input-answer { padding: 10px 16px; border: 2px solid #ddd; border-radius: 14px;
+                  font-size: 20px; font-weight: 700; font-family: 'Quicksand', sans-serif; }
+  .input-answer:focus { border-color: #16a34a; outline: none; background: #f0fdf4; }
+  .input-answer-lg { width: 100%; border-radius: 14px; border: 2px solid #ddd; padding: 10px 16px;
+                     font-size: 20px; font-weight: 700; font-family: 'Quicksand', sans-serif; }
+  .input-answer-lg:focus { border-color: #16a34a; outline: none; background: #f0fdf4; }
 
-  .section-title { color: #FF6B6B; font-size: 1.1rem; font-weight: bold; margin: 24px 0 12px;
-                   padding-bottom: 8px; border-bottom: 3px solid #FF6B6B; }
-  .part-header   { background: linear-gradient(135deg, #1B5E20, #2E7D32); color: white; border-radius: 14px;
-                   padding: 10px 20px; margin: 28px 0 16px; font-size: 1.3rem; font-weight: bold; }
-  .example-box   { background: #FFF9C4; border-left: 5px solid #F9A825; border-radius: 12px;
-                   padding: 12px 16px; margin-bottom: 14px; font-size: 1rem; }
-  .word-chip     { background: white; border: 2px solid #1976D2; border-radius: 10px;
-                   padding: 4px 12px; font-weight: bold; font-size: 0.9rem; color: #1976D2;
-                   display: inline-block; margin: 3px; }
-  .word-box      { background: #E3F2FD; border: 2px solid #1976D2; border-radius: 12px;
-                   padding: 12px 16px; margin-bottom: 12px; }
-  .inline-blank  { display: inline-block; border-bottom: 2px solid #555; min-width: 120px;
-                   padding: 1px 6px; margin: 0 4px; font-family: 'Quicksand', sans-serif; font-size: 0.95rem; }
-  .inline-select { border: 2px solid #4CAF50; border-radius: 10px; padding: 3px 10px;
-                   font-size: 0.95rem; font-family: 'Quicksand', sans-serif; background: white; cursor: pointer; }
-
-  /* Image placeholder */
-  .img-placeholder { background: #F5F5F5; border: 3px dashed #BDBDBD; border-radius: 14px;
-                     display: flex; flex-direction: column; align-items: center; justify-content: center;
-                     color: #9E9E9E; font-size: 1rem; text-align: center; padding: 16px;
-                     min-height: 220px; position: relative; overflow: hidden; transition: background 0.2s; }
-  .img-placeholder:hover { background: #EEEEEE; }
-  .img-placeholder img   { width: 100%; height: auto; object-fit: contain; border-radius: 10px; display: none; }
-  .img-placeholder .ph-label { pointer-events: none; }
-  .img-placeholder input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .section-title { color: #dc2626; font-size: 1.25rem; font-weight: 800; margin: 24px 0 12px;
+                   padding-bottom: 8px; border-bottom: 3px solid #dc2626; }
+  .part-header   { background: linear-gradient(135deg, #15803d, #16a34a); color: white; border-radius: 14px;
+                   padding: 12px 22px; margin: 28px 0 16px; font-size: 1.5rem; font-weight: 800; }
+  .example-box   { background: #f0fdf4; border-left: 5px solid #16a34a; border-radius: 0 12px 12px 0;
+                   padding: 14px 18px; margin-bottom: 14px; font-size: 1.1rem; font-weight: 700; }
+  .word-chip     { background: white; border: 2px solid #16a34a; border-radius: 10px;
+                   padding: 6px 14px; font-weight: 800; font-size: 1rem; color: #15803d;
+                   display: inline-block; margin: 4px; }
+  .word-box      { background: #f0fdf4; border: 2px solid #16a34a; border-radius: 12px;
+                   padding: 14px 18px; margin-bottom: 12px; }
+  .inline-blank  { display: inline-block; border-bottom: 3px solid #16a34a; min-width: 130px;
+                   padding: 2px 8px; margin: 0 4px; font-family: 'Quicksand', sans-serif;
+                   font-size: 20px; font-weight: 700; background: transparent; outline: none; color: #14532d; text-align: center; }
+  .inline-blank:focus { border-bottom-color: #dc2626; }
+  .inline-select { border: 2px solid #16a34a; border-radius: 10px; padding: 5px 12px;
+                   font-size: 20px; font-weight: 700; font-family: 'Quicksand', sans-serif; background: white; cursor: pointer; color: #14532d; }
 
   /* Split screen */
   .split-wrap { display: flex; gap: 18px; align-items: flex-start; }
-  .split-left { flex: 0 0 44%; min-width: 0; }
+  .split-left { flex: 0 0 50%; min-width: 0; }
   .split-right { flex: 1 1 0; min-width: 0; }
   @media (max-width: 768px) {
     .split-wrap  { flex-direction: column; }
     .split-left  { flex: none; width: 100%; }
   }
 
-  /* Story scroll panel */
-  .story-panel { background: #EDE7F6; border-left: 5px solid #7B1FA2; border-radius: 14px;
-                 padding: 16px 18px; font-size: 1rem; line-height: 1.85;
-                 overflow-y: auto; max-height: 580px; }
-  .story-panel p { margin-bottom: 10px; }
+  /* Story panel */
+  .story-panel { background: #f0fdf4; border-left: 5px solid #16a34a; border-radius: 14px;
+                 padding: 18px 20px; font-size: 22px; font-weight: 700; line-height: 2.0;
+                 overflow-y: auto; max-height: 580px; color: #1f2937; }
+  .story-panel p { margin-bottom: 12px; }
 
   /* Kangaroo reading box */
-  .kangaroo-box { background: #E8F5E9; border: 2px solid #388E3C; border-radius: 14px;
-                  padding: 18px 22px; line-height: 2.1; font-size: 1.05rem; }
+  .kangaroo-box { background: #f0fdf4; border: 2px solid #16a34a; border-radius: 14px;
+                  padding: 20px 24px; line-height: 2.4; font-size: 22px; font-weight: 700; color: #1f2937; }
 </style>
 </head>
 <body>
 
 <!-- ══════════════════ LOGIN ══════════════════ -->
 <div id="codeScreen" class="min-h-screen flex items-center justify-center p-6">
-  <div class="max-w-xl w-full bg-white rounded-2xl shadow-2xl p-12 text-center">
-    <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" class="w-28 mx-auto mb-6">
-    <h1 class="text-4xl font-bold text-green-700 mb-2">CAMBRIDGE A1 MOVERS</h1>
-    <h2 class="text-2xl font-bold text-orange-600 mb-8">Reading and Writing</h2>
+  <div style="max-width:560px; width:100%; background:white; border-radius:28px; box-shadow:0 24px 72px rgba(0,0,0,0.18); padding:52px 48px; text-align:center;">
+    <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:64px; margin:0 auto 16px; display:block;" alt="logo">
+    <div style="font-size:28px; font-weight:800; color:#16a34a; margin-bottom:4px;">Trung tâm tiếng Anh LIME</div>
+    <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:6px;">📞 Hotline: <a href="tel:0976222792" style="color:#f97316; text-decoration:none; font-weight:800;">0976 222 792</a></div>
+    <div style="border-top:2px solid #e5e7eb; margin:24px 0;"></div>
+    <h1 style="font-size:30px; font-weight:800; color:#16a34a; margin-bottom:6px;">Cambridge A1 Movers</h1>
+    <p style="color:#f97316; font-size:22px; font-weight:700; margin-bottom:36px;">Reading and Writing</p>
     <input type="text" id="studentCode"
-           class="w-full px-6 py-5 text-3xl border-4 border-green-400 rounded-xl uppercase text-center mb-6"
-           placeholder="Enter student code">
+           style="width:100%; padding:20px 24px; font-size:26px; border:3px solid #86efac; border-radius:18px; text-align:center; outline:none; font-family:'Quicksand',sans-serif; text-transform:uppercase;"
+           placeholder="Nhập mã học sinh"
+           onkeydown="if(event.key==='Enter') verifyStudent()">
     <button onclick="verifyStudent()"
-            class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-xl text-2xl shadow-xl">
-      START
+            style="width:100%; margin-top:18px; background:#16a34a; color:white; font-weight:800; padding:22px; border-radius:18px; font-size:24px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif; letter-spacing:0.05em;">
+      BẮT ĐẦU 🚀
     </button>
   </div>
 </div>
@@ -93,40 +89,39 @@
     <!-- Sticky header -->
     <div class="bg-white rounded-2xl shadow-xl p-4 sticky top-0 z-10 mb-5">
       <div class="flex justify-between items-center">
-        <div>
-          <h1 class="text-xl font-bold text-green-700">A1 Movers – Reading & Writing</h1>
-          <p class="text-base">Student: <span id="headerName" class="font-bold text-blue-700"></span></p>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:36px;" alt="logo">
+          <div>
+            <h1 style="font-size:20px; font-weight:800; color:#16a34a;">A1 Movers – Reading &amp; Writing</h1>
+            <p style="font-size:17px;">Học sinh: <span id="headerName" style="font-weight:800; color:#1d4ed8;"></span></p>
+          </div>
         </div>
         <div class="text-right">
-          <p class="text-2xl font-bold text-red-600">⏱ <span id="timer">00:00</span></p>
-          <p class="text-xs text-gray-500">Answered: <span id="answeredCount">0</span> / 35</p>
+          <p style="font-size:24px; font-weight:800; color:#dc2626;">⏱ <span id="timer">00:00</span></p>
+          <p style="font-size:16px; color:#6b7280;">Đã làm: <span id="answeredCount">0</span> / 35</p>
         </div>
       </div>
       <div class="mt-2 bg-gray-300 rounded-full h-3">
-        <div id="progress" class="bg-green-600 h-full rounded-full transition-all" style="width:0%"></div>
+        <div id="progress" style="background:#16a34a;" class="h-full rounded-full transition-all" style="width:0%"></div>
       </div>
     </div>
 
     <div class="bg-white rounded-2xl shadow-xl p-6">
 
-      <!-- ══════════════════════════════════
-           PART 1 – Split: Image LEFT | Questions RIGHT
-      ═══════════════════════════════════ -->
+      <!-- ══ PART 1 ══ -->
       <div class="part-header">📖 Part 1 – 5 questions</div>
       <div class="section-title">Look and read. Choose the correct words and write them on the lines.</div>
-
       <div class="example-box">
         <strong>Example:</strong> Animals like pandas, penguins and lions sometimes live here. → <strong><u>a zoo</u></strong>
       </div>
 
       <div class="split-wrap">
-        <!-- LEFT: image + word list -->
         <div class="split-left">
-          <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:1px solid #e0e0e0;">
+          <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:2px solid #bbf7d0;">
             <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774493670/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-03-26_095345_fh2xpw.png" alt="Part 1 image" style="width:100%;height:auto;display:block;border-radius:12px;">
           </div>
           <div class="word-box mt-3">
-            <div class="font-bold text-gray-700 text-sm mb-1">📦 Word list:</div>
+            <div style="font-weight:800; color:#374151; font-size:18px; margin-bottom:8px;">📦 Danh sách từ:</div>
             <span class="word-chip">shoulders</span>
             <span class="word-chip">beards</span>
             <span class="word-chip">a station</span>
@@ -137,50 +132,43 @@
             <span class="word-chip">a zoo</span>
           </div>
         </div>
-        <!-- RIGHT: questions -->
         <div class="split-right">
           <div class="question-box">
-            <p class="font-bold mb-2">1. You need these to eat and you have to clean them every day.</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:10px;">1. You need these to eat and you have to clean them every day.</p>
             <input type="text" class="input-answer w-full" id="q_p1_1" placeholder="Your answer..." onblur="saveText('p1_1',this.value)">
           </div>
           <div class="question-box">
-            <p class="font-bold mb-2">2. You can buy lots of different kinds of food here.</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:10px;">2. You can buy lots of different kinds of food here.</p>
             <input type="text" class="input-answer w-full" id="q_p1_2" placeholder="Your answer..." onblur="saveText('p1_2',this.value)">
           </div>
           <div class="question-box">
-            <p class="font-bold mb-2">3. People go to this place to catch a train.</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:10px;">3. People go to this place to catch a train.</p>
             <input type="text" class="input-answer w-full" id="q_p1_3" placeholder="Your answer..." onblur="saveText('p1_3',this.value)">
           </div>
           <div class="question-box">
-            <p class="font-bold mb-2">4. You have two of these and they are at the top of your arms.</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:10px;">4. You have two of these and they are at the top of your arms.</p>
             <input type="text" class="input-answer w-full" id="q_p1_4" placeholder="Your answer..." onblur="saveText('p1_4',this.value)">
           </div>
           <div class="question-box">
-            <p class="font-bold mb-2">5. Some men grow these on their faces.</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:10px;">5. Some men grow these on their faces.</p>
             <input type="text" class="input-answer w-full" id="q_p1_5" placeholder="Your answer..." onblur="saveText('p1_5',this.value)">
           </div>
         </div>
       </div>
 
 
-      <!-- ══════════════════════════════════
-           PART 2 – 6 questions (conversation, no image)
-      ═══════════════════════════════════ -->
+      <!-- ══ PART 2 ══ -->
       <div class="part-header">💬 Part 2 – 6 questions</div>
       <div class="section-title">Read the text and choose the best answer.</div>
-
-      <!-- Part 2 image -->
-      <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:1px solid #e0e0e0;margin-bottom:14px;">
+      <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:2px solid #bbf7d0;margin-bottom:16px;">
         <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774494273/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-03-26_100031_pwknhq.png" style="width:100%;height:auto;display:block;border-radius:12px;">
       </div>
-
       <div class="example-box">
-        <strong>Example:</strong> Charlie: "Do you like your new house, Clare?" &nbsp;|&nbsp;
-        Clare: → <strong>B. Yes, it's great!</strong>
+        <strong>Example:</strong> Charlie: "Do you like your new house, Clare?" &nbsp;|&nbsp; Clare: → <strong>B. Yes, it's great!</strong>
       </div>
 
       <div class="question-box">
-        <p class="font-bold mb-3">1. Charlie: "Where do you live now?"<br>Clare:</p>
+        <p style="font-size:22px; font-weight:700; margin-bottom:12px;">1. Charlie: "Where do you live now?"<br>Clare:</p>
         <div class="flex flex-wrap">
           <button class="option-btn" onclick="selectAnswer('p2_1','A')">A. Near the park.</button>
           <button class="option-btn" onclick="selectAnswer('p2_1','B')">B. No, I don't.</button>
@@ -188,7 +176,7 @@
         </div>
       </div>
       <div class="question-box">
-        <p class="font-bold mb-3">2. Charlie: "Can you walk to school from your new house?"<br>Clare:</p>
+        <p style="font-size:22px; font-weight:700; margin-bottom:12px;">2. Charlie: "Can you walk to school from your new house?"<br>Clare:</p>
         <div class="flex flex-wrap">
           <button class="option-btn" onclick="selectAnswer('p2_2','A')">A. No, Mum's car is old.</button>
           <button class="option-btn" onclick="selectAnswer('p2_2','B')">B. No, it's not my bike.</button>
@@ -196,7 +184,7 @@
         </div>
       </div>
       <div class="question-box">
-        <p class="font-bold mb-3">3. Charlie: "When did you move to your new house?"<br>Clare:</p>
+        <p style="font-size:22px; font-weight:700; margin-bottom:12px;">3. Charlie: "When did you move to your new house?"<br>Clare:</p>
         <div class="flex flex-wrap">
           <button class="option-btn" onclick="selectAnswer('p2_3','A')">A. At the weekend.</button>
           <button class="option-btn" onclick="selectAnswer('p2_3','B')">B. It's my birthday.</button>
@@ -204,7 +192,7 @@
         </div>
       </div>
       <div class="question-box">
-        <p class="font-bold mb-3">4. Charlie: "What's your new bedroom like?"<br>Clare:</p>
+        <p style="font-size:22px; font-weight:700; margin-bottom:12px;">4. Charlie: "What's your new bedroom like?"<br>Clare:</p>
         <div class="flex flex-wrap">
           <button class="option-btn" onclick="selectAnswer('p2_4','A')">A. There's a bedroom there.</button>
           <button class="option-btn" onclick="selectAnswer('p2_4','B')">B. Next to the bathroom.</button>
@@ -212,7 +200,7 @@
         </div>
       </div>
       <div class="question-box">
-        <p class="font-bold mb-3">5. Charlie: "Have you got a computer in your room?"<br>Clare:</p>
+        <p style="font-size:22px; font-weight:700; margin-bottom:12px;">5. Charlie: "Have you got a computer in your room?"<br>Clare:</p>
         <div class="flex flex-wrap">
           <button class="option-btn" onclick="selectAnswer('p2_5','A')">A. No, you've got both of them.</button>
           <button class="option-btn" onclick="selectAnswer('p2_5','B')">B. Yes, it's on my desk.</button>
@@ -220,7 +208,7 @@
         </div>
       </div>
       <div class="question-box">
-        <p class="font-bold mb-3">6. Clare: "Would you like to come and see my new house?"<br>Charlie:</p>
+        <p style="font-size:22px; font-weight:700; margin-bottom:12px;">6. Clare: "Would you like to come and see my new house?"<br>Charlie:</p>
         <div class="flex flex-wrap">
           <button class="option-btn" onclick="selectAnswer('p2_6','A')">A. I'd love to.</button>
           <button class="option-btn" onclick="selectAnswer('p2_6','B')">B. That's not mine.</button>
@@ -229,34 +217,14 @@
       </div>
 
 
-      <!-- ══════════════════════════════════
-           PART 3 – Split: Image LEFT | Story+Questions RIGHT
-      ═══════════════════════════════════ -->
+      <!-- ══ PART 3 ══ -->
       <div class="part-header">📝 Part 3 – 6 questions</div>
       <div class="section-title">Read the story. Choose a word from the box. Write the correct word next to numbers 1–5. Then choose the best name for the story.</div>
 
       <div class="split-wrap">
-        <!-- LEFT: image + word box -->
+        <!-- LEFT: story với blanks -->
         <div class="split-left">
-          <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:1px solid #e0e0e0;">
-            <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774494273/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-03-26_100041_wkj0ej.png" alt="Part 3 image" style="width:100%;height:auto;display:block;border-radius:12px;">
-          </div>
-          <div class="word-box mt-3">
-            <div class="font-bold text-gray-700 text-sm mb-1">📦 Word box:</div>
-            <span class="word-chip">cook</span>
-            <span class="word-chip">asleep</span>
-            <span class="word-chip">chocolate</span>
-            <span class="word-chip">present</span>
-            <span class="word-chip">climb</span>
-            <span class="word-chip">laughed</span>
-            <span class="word-chip">built</span>
-            <span class="word-chip">bottle</span>
-            <span class="word-chip">school</span>
-          </div>
-        </div>
-        <!-- RIGHT: story + blanks + Q6 -->
-        <div class="split-right">
-          <div style="background:#EDE7F6;border-left:5px solid #7B1FA2;border-radius:14px;padding:14px 16px;font-size:0.95rem;line-height:2;margin-bottom:14px;">
+          <div style="background:#f0fdf4;border-left:5px solid #16a34a;border-radius:14px;padding:18px 20px;font-size:22px;font-weight:700;line-height:2.2;margin-bottom:16px;color:#1f2937;">
             <p>Daisy and her Dad went into the town centre after <u>school</u> yesterday.</p>
             <p>They both wanted to buy a birthday <strong>(1)</strong>
               <input type="text" class="inline-blank" id="q_p3_1" placeholder="..." onblur="saveText('p3_1',this.value)">
@@ -284,8 +252,26 @@
               . 'No, they're for you! Happy Birthday!' they said.
             </p>
           </div>
+        </div>
+        <!-- RIGHT: ảnh + word box + câu hỏi -->
+        <div class="split-right">
+          <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:2px solid #bbf7d0;margin-bottom:12px;">
+            <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774494273/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-03-26_100041_wkj0ej.png" alt="Part 3 image" style="width:100%;height:auto;display:block;border-radius:12px;">
+          </div>
+          <div class="word-box mb-3">
+            <div style="font-weight:800; color:#374151; font-size:18px; margin-bottom:8px;">📦 Word box:</div>
+            <span class="word-chip">cook</span>
+            <span class="word-chip">asleep</span>
+            <span class="word-chip">chocolate</span>
+            <span class="word-chip">present</span>
+            <span class="word-chip">climb</span>
+            <span class="word-chip">laughed</span>
+            <span class="word-chip">built</span>
+            <span class="word-chip">bottle</span>
+            <span class="word-chip">school</span>
+          </div>
           <div class="question-box">
-            <p class="font-bold mb-2">(6) Now choose the best name for the story:</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:12px;">(6) Now choose the best name for the story:</p>
             <div class="flex flex-wrap">
               <button class="option-btn" onclick="selectAnswer('p3_6','A')">A. Dad's birthday</button>
               <button class="option-btn" onclick="selectAnswer('p3_6','B')">B. Mr Brown buys a cake</button>
@@ -296,24 +282,20 @@
       </div>
 
 
-      <!-- ══════════════════════════════════
-           PART 4 – 5 questions (text + dropdowns)
-      ═══════════════════════════════════ -->
+      <!-- ══ PART 4 ══ -->
       <div class="part-header">🦘 Part 4 – 5 questions</div>
       <div class="section-title">Read the text. Choose the right words and write them on the lines.</div>
-
-      <!-- Part 4 image -->
-      <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:1px solid #e0e0e0;margin-bottom:14px;">
+      <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:2px solid #bbf7d0;margin-bottom:16px;">
         <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774494273/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-03-26_100052_wh7sw7.png" alt="Part 4 image" style="width:100%;height:auto;display:block;border-radius:12px;">
       </div>
 
       <div class="kangaroo-box">
-        <p class="font-bold text-green-800 text-lg mb-3">Kangaroos</p>
+        <p style="font-size:24px; font-weight:800; color:#15803d; margin-bottom:12px;">Kangaroos</p>
         <p>There are different kinds <u>of</u> kangaroo.</p>
         <p>There are red ones and brown ones. The red kangaroo is the biggest one and it is often taller
           <strong>(1)</strong>
           <select class="inline-select" id="q_p4_1" onchange="saveText('p4_1',this.value)">
-            <option value="">-- select --</option>
+            <option value="">-- chọn --</option>
             <option value="up">up</option>
             <option value="for">for</option>
             <option value="than">than</option>
@@ -323,7 +305,7 @@
         <p>There are some kangaroos
           <strong>(2)</strong>
           <select class="inline-select" id="q_p4_2" onchange="saveText('p4_2',this.value)">
-            <option value="">-- select --</option>
+            <option value="">-- chọn --</option>
             <option value="that">that</option>
             <option value="what">what</option>
             <option value="where">where</option>
@@ -333,7 +315,7 @@
         <p>Kangaroos have big ears, long faces and very strong tails. They have two long legs and two very short legs. They
           <strong>(3)</strong>
           <select class="inline-select" id="q_p4_3" onchange="saveText('p4_3',this.value)">
-            <option value="">-- select --</option>
+            <option value="">-- chọn --</option>
             <option value="down">down</option>
             <option value="sometimes">sometimes</option>
             <option value="outside">outside</option>
@@ -343,7 +325,7 @@
         <p>They are good
           <strong>(4)</strong>
           <select class="inline-select" id="q_p4_4" onchange="saveText('p4_4',this.value)">
-            <option value="">-- select --</option>
+            <option value="">-- chọn --</option>
             <option value="at">at</option>
             <option value="off">off</option>
             <option value="by">by</option>
@@ -353,7 +335,7 @@
         <p>Kangaroos
           <strong>(5)</strong>
           <select class="inline-select" id="q_p4_5" onchange="saveText('p4_5',this.value)">
-            <option value="">-- select --</option>
+            <option value="">-- chọn --</option>
             <option value="does">does</option>
             <option value="did">did</option>
             <option value="do">do</option>
@@ -363,21 +345,17 @@
       </div>
 
 
-      <!-- ══════════════════════════════════
-           PART 5 – Split: Story LEFT | Questions RIGHT
-      ═══════════════════════════════════ -->
+      <!-- ══ PART 5 ══ -->
       <div class="part-header">🐱 Part 5 – 7 questions</div>
       <div class="section-title">Look at the pictures and read the story. Write some words to complete the sentences. You can use 1, 2 or 3 words.</div>
 
       <div class="split-wrap">
-        <!-- LEFT: story -->
         <div class="split-left">
-          <!-- Part 5 image -->
-          <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:1px solid #e0e0e0;margin-bottom:10px;">
+          <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:2px solid #bbf7d0;margin-bottom:12px;">
             <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774494273/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-03-26_100100_axklhu.png" alt="Part 5 image" style="width:100%;height:auto;display:block;border-radius:12px;">
           </div>
           <div class="story-panel">
-            <p class="font-bold text-purple-800 text-base mb-2">The new family on the farm</p>
+            <p style="font-size:22px; font-weight:800; color:#15803d; margin-bottom:10px;">The new family on the farm</p>
             <p>Julia and Peter always go to their grandparents' house at the weekend. Grandma and Grandpa have a farm and the children like to play there. Julia likes to help Grandma with the animals and Peter likes to ride on the tractor with Grandpa.</p>
             <p>Last Saturday, when Grandma and Grandpa went into the house to make lunch, the children started to play a game. Julia hid in a place in the garden and Peter had to find her.</p>
             <p>Julia went to hide under the old tractor. There were some boxes near the tractor. Something moved in one of them. She called to her brother. 'Peter, look! What's in that box?'</p>
@@ -390,60 +368,52 @@
             Julia and Peter help their grandparents on <u>the farm</u> a lot.
           </div>
         </div>
-        <!-- RIGHT: questions -->
         <div class="split-right">
           <div class="question-box">
-            <p class="font-bold mb-1">1. When their grandparents went inside to
-              <input type="text" class="input-answer mt-1 w-full" id="q_p5_1" placeholder="..." onblur="saveText('p5_1',this.value)">,
-              the children played outside.
-            </p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">1. When their grandparents went inside to</p>
+            <input type="text" class="input-answer w-full" id="q_p5_1" placeholder="..." onblur="saveText('p5_1',this.value)">
+            <p style="font-size:22px; font-weight:700; margin-top:8px;">, the children played outside.</p>
           </div>
           <div class="question-box">
-            <p class="font-bold mb-1">2.
-              <input type="text" class="input-answer mt-1 w-full" id="q_p5_2" placeholder="..." onblur="saveText('p5_2',this.value)">
-              had to look for his sister in the garden.
-            </p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">2.</p>
+            <input type="text" class="input-answer w-full" id="q_p5_2" placeholder="..." onblur="saveText('p5_2',this.value)">
+            <p style="font-size:22px; font-weight:700; margin-top:8px;">had to look for his sister in the garden.</p>
           </div>
           <div class="question-box">
-            <p class="font-bold mb-1">3. Julia hid from Peter under
-              <input type="text" class="input-answer mt-1 w-full" id="q_p5_3" placeholder="..." onblur="saveText('p5_3',this.value)">,
-              near some boxes.
-            </p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">3. Julia hid from Peter under</p>
+            <input type="text" class="input-answer w-full" id="q_p5_3" placeholder="..." onblur="saveText('p5_3',this.value)">
+            <p style="font-size:22px; font-weight:700; margin-top:8px;">, near some boxes.</p>
           </div>
           <div class="question-box">
-            <p class="font-bold mb-1">4. When the children looked inside one of the boxes, they were surprised to see a</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">4. When the children looked inside one of the boxes, they were surprised to see a</p>
             <input type="text" class="input-answer-lg" id="q_p5_4" placeholder="..." onblur="saveText('p5_4',this.value)">
-            <p class="font-bold mt-1">with her three babies.</p>
+            <p style="font-size:22px; font-weight:700; margin-top:8px;">with her three babies.</p>
           </div>
           <div class="question-box">
-            <p class="font-bold mb-1">5. Peter held one of the
-              <input type="text" class="input-answer mt-1 w-full" id="q_p5_5" placeholder="..." onblur="saveText('p5_5',this.value)">
-              in his hands.
-            </p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">5. Peter held one of the</p>
+            <input type="text" class="input-answer w-full" id="q_p5_5" placeholder="..." onblur="saveText('p5_5',this.value)">
+            <p style="font-size:22px; font-weight:700; margin-top:8px;">in his hands.</p>
           </div>
           <div class="question-box">
-            <p class="font-bold mb-1">6. The children showed the animals in the box to</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">6. The children showed the animals in the box to</p>
             <input type="text" class="input-answer-lg" id="q_p5_6" placeholder="..." onblur="saveText('p5_6',this.value)">
           </div>
           <div class="question-box">
-            <p class="font-bold mb-1">7. The animals were hungry so Grandpa went to get some</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">7. The animals were hungry so Grandpa went to get some</p>
             <input type="text" class="input-answer-lg" id="q_p5_7" placeholder="..." onblur="saveText('p5_7',this.value)">
-            <p class="font-bold mt-1">for them.</p>
+            <p style="font-size:22px; font-weight:700; margin-top:8px;">for them.</p>
           </div>
         </div>
       </div>
 
 
-      <!-- ══════════════════════════════════
-           PART 6 – Split: Image LEFT | Questions RIGHT
-      ═══════════════════════════════════ -->
+      <!-- ══ PART 6 ══ -->
       <div class="part-header">🛍️ Part 6 – 6 questions</div>
       <div class="section-title">Look and read and write.</div>
 
       <div class="split-wrap">
-        <!-- LEFT: image -->
         <div class="split-left">
-          <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:1px solid #e0e0e0;">
+          <div style="border-radius:12px;overflow:hidden;background:#fafafa;border:2px solid #bbf7d0;">
             <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774494282/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-03-26_100428_dbhuts.png" alt="Part 6 image" style="width:100%;height:auto;display:block;border-radius:12px;">
           </div>
           <div class="example-box mt-3">
@@ -452,33 +422,32 @@
             Where are all these people? → <u>in a shopping centre</u>
           </div>
         </div>
-        <!-- RIGHT: questions -->
         <div class="split-right">
-          <p class="font-bold text-green-800 mb-2">Complete the sentences.</p>
+          <p style="font-size:22px; font-weight:800; color:#15803d; margin-bottom:12px;">Complete the sentences.</p>
           <div class="question-box">
-            <p class="font-bold mb-1">1. On the shortest girl's T-shirt there is a</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">1. On the shortest girl's T-shirt there is a</p>
             <input type="text" class="input-answer-lg" id="q_p6_1" placeholder="..." onblur="saveText('p6_1',this.value)">
           </div>
           <div class="question-box">
-            <p class="font-bold mb-1">2. The girl who is in the blue coat is looking in the</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">2. The girl who is in the blue coat is looking in the</p>
             <input type="text" class="input-answer-lg" id="q_p6_2" placeholder="..." onblur="saveText('p6_2',this.value)">
           </div>
-          <p class="font-bold text-green-800 mb-2 mt-2">Answer the questions.</p>
+          <p style="font-size:22px; font-weight:800; color:#15803d; margin-bottom:12px; margin-top:8px;">Answer the questions.</p>
           <div class="question-box">
-            <p class="font-bold mb-2">3. What is the boy who is sitting on the floor doing?</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">3. What is the boy who is sitting on the floor doing?</p>
             <input type="text" class="input-answer-lg" id="q_p6_3" placeholder="He is ..." onblur="saveText('p6_3',this.value)">
           </div>
           <div class="question-box">
-            <p class="font-bold mb-2">4. What is the man with the motorbike helmet wearing?</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">4. What is the man with the motorbike helmet wearing?</p>
             <input type="text" class="input-answer-lg" id="q_p6_4" placeholder="He is wearing ..." onblur="saveText('p6_4',this.value)">
           </div>
-          <p class="font-bold text-green-800 mb-2 mt-2">Now write two sentences about the picture.</p>
+          <p style="font-size:22px; font-weight:800; color:#15803d; margin-bottom:12px; margin-top:8px;">Now write two sentences about the picture.</p>
           <div class="question-box">
-            <p class="font-bold mb-2">5.</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">5.</p>
             <input type="text" class="input-answer-lg" id="q_p6_5" placeholder="Write your sentence here..." onblur="saveText('p6_5',this.value)">
           </div>
           <div class="question-box">
-            <p class="font-bold mb-2">6.</p>
+            <p style="font-size:22px; font-weight:700; margin-bottom:8px;">6.</p>
             <input type="text" class="input-answer-lg" id="q_p6_6" placeholder="Write your sentence here..." onblur="saveText('p6_6',this.value)">
           </div>
         </div>
@@ -487,8 +456,8 @@
       <!-- SUBMIT -->
       <div class="text-center mt-12">
         <button onclick="submitTest()"
-                class="bg-green-600 hover:bg-green-700 text-white font-bold py-6 px-24 rounded-xl text-3xl shadow-2xl">
-          SUBMIT 🎉
+                style="background:#16a34a; color:white; font-weight:800; padding:20px 80px; border-radius:18px; font-size:28px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif; box-shadow:0 8px 24px rgba(22,163,74,0.4);">
+          NỘP BÀI 🎉
         </button>
       </div>
 
@@ -498,27 +467,28 @@
 
 
 <!-- ══════════════════ RESULT ══════════════════ -->
-<div id="resultScreen" class="hidden min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-green-50 to-blue-50">
+<div id="resultScreen" class="hidden min-h-screen flex items-center justify-center p-6" style="background:linear-gradient(135deg,#f0fdf4,#eff6ff);">
   <div class="max-w-3xl w-full bg-white rounded-3xl shadow-2xl p-12 text-center">
-    <h1 class="text-5xl font-bold text-green-700 mb-5">FINISHED! 🎊</h1>
-    <div class="text-6xl font-bold text-green-600 mb-3" id="finalScore">--</div>
-    <p class="text-xl mb-2">Correct: <span id="correctCount">--</span> / <span id="totalKeyed">--</span></p>
-    <p class="text-lg text-gray-600 mb-5">Time: <span id="finalTime" class="font-bold text-blue-700">00:00</span></p>
-    <div class="bg-red-50 border-2 border-red-200 rounded-xl p-4 mb-4 text-left">
-      <p class="font-bold text-red-800 mb-1">❌ Wrong / unanswered:</p>
-      <p id="wrongList" class="font-mono text-sm">None</p>
+    <div style="font-size:64px; margin-bottom:12px;">🎉</div>
+    <h1 style="font-size:3rem; font-weight:800; color:#16a34a; margin-bottom:12px;">HOÀN THÀNH!</h1>
+    <div style="font-size:4rem; font-weight:800; color:#16a34a; margin-bottom:12px;" id="finalScore">--</div>
+    <p style="font-size:22px; margin-bottom:8px;">Đúng: <span id="correctCount">--</span> / <span id="totalKeyed">--</span></p>
+    <p style="font-size:20px; color:#6b7280; margin-bottom:20px;">Thời gian: <span id="finalTime" style="font-weight:800; color:#1d4ed8;">00:00</span></p>
+    <div style="background:#fef2f2; border:2px solid #fca5a5; border-radius:16px; padding:16px 20px; margin-bottom:14px; text-align:left;">
+      <p style="font-weight:700; color:#991b1b; font-size:18px; margin-bottom:4px;">❌ Câu sai / chưa làm:</p>
+      <p id="wrongList" style="font-family:monospace; font-size:15px;">Không có</p>
     </div>
-    <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 text-left mb-4">
-      <p class="font-bold text-blue-800 mb-2">📋 Answer summary:</p>
-      <div id="answerDetail" class="text-sm space-y-1 font-mono"></div>
+    <div style="background:#eff6ff; border:2px solid #93c5fd; border-radius:16px; padding:16px 20px; text-align:left; margin-bottom:14px;">
+      <p style="font-weight:700; color:#1e40af; font-size:18px; margin-bottom:8px;">📋 Chi tiết đáp án:</p>
+      <div id="answerDetail" style="font-size:15px; font-family:monospace; line-height:1.8;"></div>
     </div>
-    <div class="bg-orange-50 border-2 border-orange-200 rounded-xl p-4 text-left mb-5">
-      <p class="font-bold text-orange-800 mb-1">📊 Activity log:</p>
-      <div id="timelineDisplay" class="text-xs space-y-1 font-mono"></div>
+    <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:16px; padding:16px 20px; text-align:left; margin-bottom:24px;">
+      <p style="font-weight:700; color:#15803d; font-size:18px; margin-bottom:8px;">📊 Lịch sử làm bài:</p>
+      <div id="timelineDisplay" style="font-size:14px; font-family:monospace; line-height:1.8;"></div>
     </div>
     <button onclick="location.reload()"
-            class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-14 rounded-xl text-xl shadow-xl">
-      TRY AGAIN 🔄
+            style="background:#16a34a; color:white; font-weight:800; padding:16px 56px; border-radius:18px; font-size:22px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif;">
+      LÀM LẠI 🔄
     </button>
   </div>
 </div>
@@ -527,7 +497,7 @@
 <!-- ══════════════════ JAVASCRIPT ══════════════════ -->
 <script>
 const URL_GAS = 'https://script.google.com/macros/s/AKfycbzXKfYr35pRssLAYvJUPIa6472V3TW4OM-4DPLkAiZTuC4DiufReCFKZikGSZtPlYGp/exec';
-const TEST_NAME = 'Cambridge Movers Reading - De 17';
+const TEST_NAME = 'Cambridge Movers Reading';
 const TOTAL_QUESTIONS = 35;
 
 let student = null, startTime = null, timerInterval = null;
@@ -540,28 +510,13 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-/* Load image from Cloudinary URL */
-function loadUrl(url, imgId, phId) {
-  if (!url || url.trim() === '') return;
-  const img = document.getElementById(imgId);
-  const phl = document.getElementById('phl_' + phId.replace('ph_',''));
-  const ph  = document.getElementById(phId);
-  img.src = url.trim();
-  img.style.display = 'block';
-  if (phl) phl.style.display = 'none';
-  ph.style.minHeight = 'unset';
-  ph.style.border = '2px solid #4CAF50';
-  ph.style.background = 'white';
-}
-
-/* Verify */
 function verifyStudent() {
   const code = document.getElementById('studentCode').value.trim().toUpperCase();
-  if (!code) return alert('Please enter your student code!');
+  if (!code) return alert('Vui lòng nhập mã học sinh!');
   fetch(`${URL_GAS}?action=verify&code=${code}`)
     .then(r => r.json())
     .then(d => {
-      if (!d.exists) return alert('Student code not found. Please check and try again.');
+      if (!d.exists) return alert('Không tìm thấy mã học sinh. Vui lòng kiểm tra lại.');
       student = { code, name: d.studentName || code };
       document.getElementById('headerName').textContent = student.name;
       document.getElementById('codeScreen').classList.add('hidden');
@@ -575,7 +530,7 @@ function verifyStudent() {
         updateProgress();
       }, 500);
     })
-    .catch(err => alert('Connection error: ' + err.message));
+    .catch(err => alert('Lỗi kết nối: ' + err.message));
 }
 
 function updateProgress() {
@@ -584,7 +539,6 @@ function updateProgress() {
   document.getElementById('progress').style.width = `${(n / TOTAL_QUESTIONS) * 100}%`;
 }
 
-/* A/B/C */
 function selectAnswer(key, option) {
   const time = new Date().toLocaleTimeString();
   document.querySelectorAll(`button[onclick*="selectAnswer('${key}'"]`).forEach(b => b.classList.remove('selected'));
@@ -596,7 +550,6 @@ function selectAnswer(key, option) {
   updateProgress();
 }
 
-/* Text / select */
 function saveText(key, value) {
   const v = value.trim();
   if (v === (answers[key] || '')) return;
@@ -607,10 +560,9 @@ function saveText(key, value) {
   updateProgress();
 }
 
-/* Submit */
 function submitTest() {
   const answered = Object.keys(answers).filter(k => answers[k]).length;
-  if (answered < TOTAL_QUESTIONS && !confirm(`${TOTAL_QUESTIONS - answered} question(s) still unanswered. Submit anyway?`)) return;
+  if (answered < TOTAL_QUESTIONS && !confirm(`Còn ${TOTAL_QUESTIONS - answered} câu chưa làm. Nộp luôn?`)) return;
   clearInterval(timerInterval);
   const duration = document.getElementById('timer').textContent;
   const data = {
@@ -652,16 +604,16 @@ function showResult(duration, res) {
   const detail = document.getElementById('answerDetail');
   for (const key of Object.keys(labelMap)) {
     const p = document.createElement('p');
-    p.textContent = `${labelMap[key]}: ${answers[key] || '(not answered)'}`;
-    if (!answers[key]) p.style.color = '#e53935';
+    p.textContent = `${labelMap[key]}: ${answers[key] || '(chưa làm)'}`;
+    if (!answers[key]) p.style.color = '#dc2626';
     detail.appendChild(p);
   }
   const tl = document.getElementById('timelineDisplay');
   timeline.forEach(l => { const p = document.createElement('p'); p.textContent = l; tl.appendChild(p); });
   if (tabSwitches > 0) {
     const w = document.createElement('p');
-    w.style.cssText = 'color:#e53935;font-weight:bold';
-    w.textContent = `⚠️ Tab switched ${tabSwitches} time(s)!`;
+    w.style.cssText = 'color:#dc2626;font-weight:bold';
+    w.textContent = `⚠️ Chuyển tab ${tabSwitches} lần!`;
     tl.appendChild(w);
   }
 }
