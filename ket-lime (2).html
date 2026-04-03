@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KET Listening – Cambridge A2 Key #17</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; overflow: hidden; font-family: 'Quicksand', sans-serif; }
+
+  /* ===== HEADER ===== */
+  #mainHeader {
+    height: 68px;
+    background: white;
+    border-bottom: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 100;
+    flex-shrink: 0;
+  }
+
+  /* ===== PART TABS ===== */
+  #partTabs {
+    height: 56px;
+    background: #f3f4f6;
+    border-bottom: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .part-tab {
+    padding: 7px 18px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    border: 2px solid #d1d5db;
+    background: white;
+    color: #6b7280;
+    transition: all 0.2s;
+  }
+  .part-tab.active { background: #16a34a; color: white; border-color: #16a34a; }
+
+  /* ===== SPLIT PANE ===== */
+  #splitPane {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  .left-panel {
+    width: 55%;
+    border-right: 3px solid #e5e7eb;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .right-panel {
+    width: 45%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #divider {
+    width: 6px;
+    background: #d1d5db;
+    cursor: col-resize;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    position: relative;
+    z-index: 10;
+  }
+  #divider:hover, #divider.dragging { background: #16a34a; }
+  #divider::after {
+    content: '⋮';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 16px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .panel-header {
+    padding: 12px 18px;
+    background: #16a34a;
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .left-panel .panel-header { font-size: 22px; padding: 14px 22px; }
+  .panel-body { flex: 1; padding: 16px; overflow-y: auto; }
+
+  /* ===== PART VIEWS ===== */
+  .part-view { display: none; height: 100%; }
+  .part-view.active { display: flex; height: 100%; }
+  .img-fit { width: 100%; height: 100%; object-fit: contain; padding: 12px; }
+
+  /* ===== QUESTION STYLES ===== */
+  .section-label {
+    color: #dc2626;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+  .instruction {
+    background: #f0fdf4;
+    border-left: 4px solid #16a34a;
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    font-size: 23px;
+    color: #374151;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+
+  /* Opt buttons A/B/C */
+  .opt-btn {
+    padding: 14px 36px;
+    border: 2px solid #d1d5db;
+    border-radius: 9999px;
+    font-size: 24px; font-weight: 700;
+    cursor: pointer; background: white;
+    transition: all 0.2s;
+  }
+  .opt-btn:hover { border-color: #16a34a; }
+  .opt-btn.selected { background: #16a34a; color: white; border-color: #16a34a; }
+
+  /* Text inputs */
+  .ans-input {
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 23px;
+    font-family: 'Quicksand', sans-serif;
+    width: 220px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .ans-input:focus { border-color: #16a34a; }
+
+  /* Matching for Part 5 */
+  .match-letter-btn {
+    padding: 12px 26px;
+    border: 2px solid #d1d5db;
+    border-radius: 9999px;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+    background: white;
+    transition: all 0.2s;
+    color: #374151;
+  }
+  .match-letter-btn.selected { border-color: #16a34a; background: #f0fdf4; color: #16a34a; }
+  .match-letter-btn.used { border-color: #16a34a; background: #f0fdf4; color: #16a34a; }
+
+  /* Full-width parts */
+  #mainContent.full-width #splitPane { display: block; }
+  #mainContent.full-width .left-panel,
+  #mainContent.full-width #divider { display: none; }
+  #mainContent.full-width .right-panel { width: 100%; overflow-y: auto; }
+  #mainContent.full-width .right-panel .panel-body { overflow-y: visible; }
+  #mainContent.full-width .part-view { height: auto; min-height: 100%; }
+  #mainContent.full-width #splitPane { overflow-y: auto; height: 100%; }
+
+  /* ===== FOOTER ===== */
+  #footerBar {
+    height: 64px;
+    background: #f9fafb;
+    border-top: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    flex-shrink: 0;
+  }
+
+  /* ===== SCREENS ===== */
+  #appWrapper { height: 100vh; display: flex; flex-direction: column; }
+  #mainContent { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  #codeScreen {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+  }
+  #resultScreen {
+    height: 100vh;
+    overflow-y: auto;
+    background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  /* Audio bar */
+  #audioBar {
+    background: #1e3a5f;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+  #playBtn {
+    background: #16a34a;
+    color: white;
+    border: none;
+    padding: 8px 22px;
+    border-radius: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.2s;
+  }
+  #playBtn:disabled { background: #6b7280; cursor: not-allowed; opacity: 0.7; }
+
+  /* Scrollbar */
+  .panel-body::-webkit-scrollbar { width: 6px; }
+  .panel-body::-webkit-scrollbar-track { background: #f1f5f9; }
+  .panel-body::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  .panel-body::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+  @media (max-width: 768px) {
+    #splitPane { flex-direction: column; }
+    .left-panel, .right-panel { width: 100% !important; }
+    .left-panel { height: 50vh; border-right: none; border-bottom: 3px solid #e5e7eb; }
+    .right-panel { height: 50vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CODE ENTRY SCREEN -->
+<div id="codeScreen">
+  <div style="max-width:560px; width:100%; background:white; border-radius:28px; box-shadow:0 24px 72px rgba(0,0,0,0.18); padding:52px 48px; text-align:center;">
+
+    <!-- Logo + Tên trung tâm -->
+    <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:64px; margin:0 auto 16px; display:block;" alt="logo">
+    <div style="font-size:28px; font-weight:800; color:#16a34a; margin-bottom:4px; letter-spacing:0.01em;">Trung tâm tiếng Anh LIME</div>
+    <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:6px;">📞 Hotline: <a href="tel:0976222792" style="color:#f97316; text-decoration:none; font-weight:800;">0976 222 792</a></div>
+
+    <!-- Divider -->
+    <div style="border-top:2px solid #e5e7eb; margin:24px 0;"></div>
+
+    <!-- Tên bài thi -->
+    <h1 style="font-size:32px; font-weight:800; color:#16a34a; margin-bottom:6px;">KET Listening</h1>
+    <p style="color:#f97316; font-size:22px; font-weight:700; margin-bottom:36px;">Cambridge A2 Key for Schools – No. 17</p>
+
+    <!-- Input mã học sinh -->
+    <input type="text" id="studentCode"
+      style="width:100%; padding:20px 24px; font-size:26px; border:3px solid #86efac; border-radius:18px; text-align:center; outline:none; font-family:'Quicksand',sans-serif;"
+      placeholder="Nhập mã học sinh"
+      onkeydown="if(event.key==='Enter') verifyStudent()">
+    <button onclick="verifyStudent()"
+      style="width:100%; margin-top:18px; background:#16a34a; color:white; font-weight:800; padding:22px; border-radius:18px; font-size:24px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif; letter-spacing:0.05em;">
+      BẮT ĐẦU 🚀
+    </button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="appWrapper" style="display:none;">
+
+  <!-- HEADER -->
+  <div id="mainHeader">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:40px;" alt="logo">
+      <div>
+        <div style="font-weight:800; color:#16a34a; font-size:20px;">KET Listening – No. 17</div>
+        <div style="font-size:15px; color:#f97316; font-weight:700; margin-top:-2px;">Cambridge A2 Key for Schools</div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:24px;">
+      <div style="font-size:18px; color:#6b7280;">Học sinh: <strong id="headerName" style="color:#1f2937;"></strong></div>
+      <div style="font-size:22px; font-weight:800; color:#dc2626;">⏱ <span id="timer">00:00</span></div>
+      <div style="width:120px; background:#e5e7eb; height:8px; border-radius:4px; overflow:hidden;">
+        <div id="progress" style="height:100%; background:#16a34a; width:0; transition:width 0.5s;"></div>
+      </div>
+      <div style="font-size:17px; color:#6b7280;" id="progressLabel">0/25</div>
+    </div>
+  </div>
+
+  <!-- AUDIO BAR -->
+  <div id="audioBar">
+    <audio id="fullAudio" src="https://res.cloudinary.com/demamww3r/video/upload/q_auto/f_auto/v1775113934/mix_26m23s_audio-joiner.com_wgtpz9.mp3"></audio>
+    <button id="playBtn" onclick="playFullAudio()">▶ Nghe bài</button>
+    <span id="audioStatus">Bài nghe chỉ được nghe 1 lần – không tua, không dừng</span>
+    <div id="audioProgress" style="flex:1; background:rgba(255,255,255,0.2); height:4px; border-radius:2px; overflow:hidden;">
+      <div id="audioBar2" style="height:100%; background:#60a5fa; width:0; transition:width 0.5s;"></div>
+    </div>
+  </div>
+
+  <!-- PART TABS -->
+  <div id="partTabs">
+    <span style="font-size:17px; font-weight:700; color:#6b7280; margin-right:4px;">Phần:</span>
+    <div class="part-tab active" onclick="showPart(1)" id="tab1">Part 1 (Q1–5)</div>
+    <div class="part-tab" onclick="showPart(2)" id="tab2">Part 2 (Q6–10)</div>
+    <div class="part-tab" onclick="showPart(3)" id="tab3">Part 3 (Q11–15)</div>
+    <div class="part-tab" onclick="showPart(4)" id="tab4">Part 4 (Q16–20)</div>
+    <div class="part-tab" onclick="showPart(5)" id="tab5">Part 5 (Q21–25)</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="mainContent">
+    <div id="splitPane">
+
+      <!-- LEFT PANEL -->
+      <div class="left-panel" id="leftPanel">
+
+        <!-- PART 1 LEFT: empty - full-width -->
+        <div class="part-view active" id="left1" style="flex-direction:column;"></div>
+
+        <!-- PART 2 LEFT (full-width part) -->
+        <div class="part-view" id="left2" style="flex-direction:column;"></div>
+
+        <!-- PART 3 LEFT: empty - full-width -->
+        <div class="part-view" id="left3" style="flex-direction:column;"></div>
+
+        <!-- PART 4 LEFT (full-width part) -->
+        <div class="part-view" id="left4" style="flex-direction:column;"></div>
+
+        <!-- PART 5 LEFT: Presents list big and clear -->
+        <div class="part-view" id="left5" style="flex-direction:column;">
+          <div class="panel-header">Part 5 – Presents List</div>
+          <div class="panel-body" style="background:#fafafa;">
+            <div style="font-size:20px; font-weight:700; color:#374151; margin-bottom:14px;">
+              🎁 You will hear <strong>Zara</strong> talking about her birthday presents.<br>
+              <span style="font-weight:400; font-size:18px; color:#6b7280;">What present did she get from each person?</span>
+            </div>
+            <div style="background:#f0fdf4; border:1.5px solid #bbf7d0; border-radius:10px; padding:10px 14px; font-size:19px; color:#15803d; font-weight:700; margin-bottom:18px;">
+              Example: dad → <strong>G</strong> (tablet)
+            </div>
+            <!-- Presents list - big and clear -->
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div style="background:white; border:2px solid #bbf7d0; border-radius:12px; padding:14px 18px; display:flex; align-items:center; gap:16px;">
+                <span style="font-size:26px; font-weight:800; color:#16a34a; min-width:30px;">A</span>
+                <span style="font-size:18px; font-weight:600; color:#374151;">backpack</span>
+              </div>
+              <div style="background:white; border:2px solid #bbf7d0; border-radius:12px; padding:14px 18px; display:flex; align-items:center; gap:16px;">
+                <span style="font-size:26px; font-weight:800; color:#16a34a; min-width:30px;">B</span>
+                <span style="font-size:18px; font-weight:600; color:#374151;">basketball</span>
+              </div>
+              <div style="background:white; border:2px solid #bbf7d0; border-radius:12px; padding:14px 18px; display:flex; align-items:center; gap:16px;">
+                <span style="font-size:26px; font-weight:800; color:#16a34a; min-width:30px;">C</span>
+                <span style="font-size:18px; font-weight:600; color:#374151;">book</span>
+              </div>
+              <div style="background:white; border:2px solid #bbf7d0; border-radius:12px; padding:14px 18px; display:flex; align-items:center; gap:16px;">
+                <span style="font-size:26px; font-weight:800; color:#16a34a; min-width:30px;">D</span>
+                <span style="font-size:18px; font-weight:600; color:#374151;">bracelet</span>
+              </div>
+              <div style="background:white; border:2px solid #bbf7d0; border-radius:12px; padding:14px 18px; display:flex; align-items:center; gap:16px;">
+                <span style="font-size:26px; font-weight:800; color:#16a34a; min-width:30px;">E</span>
+                <span style="font-size:18px; font-weight:600; color:#374151;">poster</span>
+              </div>
+              <div style="background:white; border:2px solid #bbf7d0; border-radius:12px; padding:14px 18px; display:flex; align-items:center; gap:16px;">
+                <span style="font-size:26px; font-weight:800; color:#16a34a; min-width:30px;">F</span>
+                <span style="font-size:18px; font-weight:600; color:#374151;">scarf</span>
+              </div>
+              <div style="background:#f3f4f6; border:2px solid #d1d5db; border-radius:12px; padding:14px 18px; display:flex; align-items:center; gap:16px;">
+                <span style="font-size:26px; font-weight:800; color:#9ca3af; min-width:30px;">G</span>
+                <span style="font-size:18px; font-weight:600; color:#9ca3af;">tablet (example)</span>
+              </div>
+              <div style="background:white; border:2px solid #bbf7d0; border-radius:12px; padding:14px 18px; display:flex; align-items:center; gap:16px;">
+                <span style="font-size:26px; font-weight:800; color:#16a34a; min-width:30px;">H</span>
+                <span style="font-size:18px; font-weight:600; color:#374151;">tent</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end left panel -->
+
+      <!-- DIVIDER -->
+      <div id="divider"></div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel" id="rightPanel">
+
+        <!-- ===== PART 1 RIGHT: Choose A/B/C with images ===== -->
+        <div class="part-view active" id="right1" style="flex-direction:column;">
+          <div class="panel-header" style="font-size:22px; padding:14px 22px;">Part 1 – Choose the correct answer (Q1–5)</div>
+          <div class="panel-body" style="max-width:860px; margin:0 auto; width:100%;">
+            <div class="section-label">Part 1 – Questions 1–5</div>
+            <div class="instruction">🎧 Listen and look at the pictures. Choose the correct answer: A, B or C.</div>
+
+            <div style="display:flex; flex-direction:column; gap:24px;">
+
+              <!-- Q1 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">1. Who is the boy's sister?</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;">
+                  <div style="text-align:center;">
+                    <img id="img_1_A" src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115025/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_142937_j87blc.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">A</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <img id="img_1_B" src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115026/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_142946_piftar.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">B</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <img id="img_1_C" src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115027/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_142951_fraonf.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">C</div>
+                  </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOption(1,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A</button>
+                  <button onclick="selectOption(1,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B</button>
+                  <button onclick="selectOption(1,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C</button>
+                </div>
+              </div>
+
+              <!-- Q2 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">2. Why didn't the girl go to the school dance?</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;">
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115280/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143338_jztpdg.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">A</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115281/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143344_iy7hth.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">B</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115282/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143350_sucmy2.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">C</div>
+                  </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOption(2,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A</button>
+                  <button onclick="selectOption(2,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B</button>
+                  <button onclick="selectOption(2,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C</button>
+                </div>
+              </div>
+
+              <!-- Q3 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">3. Where's the girl going first?</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;">
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115283/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143359_yuhumd.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">A</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115283/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143405_ril00s.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">B</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115284/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143411_efsqwm.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">C</div>
+                  </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOption(3,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A</button>
+                  <button onclick="selectOption(3,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B</button>
+                  <button onclick="selectOption(3,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C</button>
+                </div>
+              </div>
+              <!-- Q4 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">4. Which programme will the two friends watch together?</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;">
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115388/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143520_quwkha.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">A</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115388/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143523_qmjcna.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">B</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115389/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143531_g3bexd.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">C</div>
+                  </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOption(4,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A</button>
+                  <button onclick="selectOption(4,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B</button>
+                  <button onclick="selectOption(4,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C</button>
+                </div>
+              </div>
+
+              <!-- Q5 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">5. Where will the girl go tomorrow?</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;">
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115390/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143540_eozqxk.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">A</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115391/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143544_msb9o6.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">B</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775115392/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_143548_nhvjpe.png" style="width:100%; border-radius:8px;">
+                    <div style="font-weight:800; margin-top:6px; color:#374151; font-size:20px;">C</div>
+                  </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOption(5,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A</button>
+                  <button onclick="selectOption(5,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B</button>
+                  <button onclick="selectOption(5,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PART 2 RIGHT: Write word/number/date/time (full-width) ===== -->
+        <div class="part-view" id="right2" style="flex-direction:column;">
+          <div class="panel-header" style="font-size:22px; padding:14px 22px;">Part 2 – Listen and write (Q6–10)</div>
+          <div class="panel-body" style="max-width:860px; margin:0 auto; width:100%;">
+            <div class="section-label">Part 2 – Questions 6–10</div>
+            <div class="instruction">📝 Listen to Sophia leaving a message. Write <strong>one word, number, date or time</strong> in each space.</div>
+
+            <!-- Holiday with Sophia table card -->
+            <div style="background:white; border:2.5px solid #bfdbfe; border-radius:16px; padding:28px 32px; max-width:700px; margin:0 auto;">
+              <div style="text-align:center; font-size:28px; font-weight:800; color:#1e3a5f; margin-bottom:24px; letter-spacing:-0.5px;">Holiday with Sophia</div>
+
+              <!-- Row: fixed example -->
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid #e5e7eb; gap:16px;">
+                <div style="font-size:20px; color:#374151; font-weight:600; min-width:220px;">Time to arrive at Sophia's house:</div>
+                <div style="font-size:20px; font-weight:800; color:#16a34a;">1.45 p.m.</div>
+              </div>
+
+              <!-- Q6 -->
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid #e5e7eb; gap:16px; flex-wrap:wrap;">
+                <div style="font-size:20px; color:#374151; font-weight:600; min-width:220px;">
+                  <span style="background:#2563eb; color:white; border-radius:50%; width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; margin-right:8px;">6</span>
+                  Name of hotel:
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:20px; color:#374151; font-weight:600;">The</span>
+                  <input id="q6" class="ans-input" placeholder="hotel name..." onblur="saveTextAnswer(6,this.value)" style="width:180px;">
+                </div>
+              </div>
+
+              <!-- Q7 -->
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid #e5e7eb; gap:16px; flex-wrap:wrap;">
+                <div style="font-size:20px; color:#374151; font-weight:600; min-width:220px;">
+                  <span style="background:#2563eb; color:white; border-radius:50%; width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; margin-right:8px;">7</span>
+                  Not available at hotel:
+                </div>
+                <input id="q7" class="ans-input" placeholder="e.g. pool, wifi..." onblur="saveTextAnswer(7,this.value)" style="width:200px;">
+              </div>
+
+              <!-- Q8 -->
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid #e5e7eb; gap:16px; flex-wrap:wrap;">
+                <div style="font-size:20px; color:#374151; font-weight:600; min-width:220px;">
+                  <span style="background:#2563eb; color:white; border-radius:50%; width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; margin-right:8px;">8</span>
+                  For journey, bring:
+                </div>
+                <input id="q8" class="ans-input" placeholder="e.g. book, snacks..." onblur="saveTextAnswer(8,this.value)" style="width:200px;">
+              </div>
+
+              <!-- Q9 -->
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid #e5e7eb; gap:16px; flex-wrap:wrap;">
+                <div style="font-size:20px; color:#374151; font-weight:600; min-width:220px;">
+                  <span style="background:#2563eb; color:white; border-radius:50%; width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; margin-right:8px;">9</span>
+                  Weather will be:
+                </div>
+                <input id="q9" class="ans-input" placeholder="e.g. sunny, cold..." onblur="saveTextAnswer(9,this.value)" style="width:200px;">
+              </div>
+
+              <!-- Q10 -->
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:16px; flex-wrap:wrap;">
+                <div style="font-size:20px; color:#374151; font-weight:600; min-width:220px;">
+                  <span style="background:#2563eb; color:white; border-radius:50%; width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; margin-right:8px;">10</span>
+                  Sophia's sister's phone number:
+                </div>
+                <input id="q10" class="ans-input" placeholder="number..." onblur="saveTextAnswer(10,this.value)" style="width:200px;">
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PART 3 RIGHT: Multiple choice – museum ===== -->
+        <div class="part-view" id="right3" style="flex-direction:column;">
+          <div class="panel-header" style="font-size:22px; padding:14px 22px;">Part 3 – Choose the correct answer (Q11–15)</div>
+          <div class="panel-body" style="max-width:860px; margin:0 auto; width:100%;">
+            <div class="section-label">Part 3 – Questions 11–15</div>
+            <div class="instruction">🏛️ Listen to Maria and Alex talking about a science museum. Choose A, B or C for each question.</div>
+            <div style="display:flex; flex-direction:column; gap:20px;">
+
+              <!-- Q11 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">11. Maria went to the museum</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOptionText(11,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A &nbsp; on Sunday.</button>
+                  <button onclick="selectOptionText(11,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B &nbsp; on Monday.</button>
+                  <button onclick="selectOptionText(11,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C &nbsp; on Tuesday.</button>
+                </div>
+              </div>
+
+              <!-- Q12 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">12. Alex usually goes to the museum with his</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOptionText(12,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A &nbsp; class.</button>
+                  <button onclick="selectOptionText(12,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B &nbsp; friends.</button>
+                  <button onclick="selectOptionText(12,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C &nbsp; family.</button>
+                </div>
+              </div>
+
+              <!-- Q13 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">13. Alex usually travels to the museum</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOptionText(13,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A &nbsp; by bike.</button>
+                  <button onclick="selectOptionText(13,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B &nbsp; by bus.</button>
+                  <button onclick="selectOptionText(13,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C &nbsp; on foot.</button>
+                </div>
+              </div>
+
+              <!-- Q14 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">14. What did Maria prefer at the museum?</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOptionText(14,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A &nbsp; talking to the guide</button>
+                  <button onclick="selectOptionText(14,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B &nbsp; watching a video</button>
+                  <button onclick="selectOptionText(14,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C &nbsp; making a model</button>
+                </div>
+              </div>
+
+              <!-- Q15 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">15. In the café, Maria had</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOptionText(15,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A &nbsp; a cake.</button>
+                  <button onclick="selectOptionText(15,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B &nbsp; an ice cream.</button>
+                  <button onclick="selectOptionText(15,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C &nbsp; a drink.</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PART 4 RIGHT: Short monologues (full-width) ===== -->
+        <div class="part-view" id="right4" style="flex-direction:column;">
+          <div class="panel-header" style="font-size:22px; padding:14px 22px;">Part 4 – Choose the correct answer (Q16–20)</div>
+          <div class="panel-body" style="max-width:860px; margin:0 auto; width:100%;">
+            <div class="section-label">Part 4 – Questions 16–20</div>
+            <div class="instruction">🎙️ Listen to 5 short conversations. Choose A, B or C for each question.</div>
+
+            <div style="display:flex; flex-direction:column; gap:20px;">
+
+              <!-- Q16 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:8px;">You will hear a teacher talking to his students.</div>
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">16. What does he tell them?</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOptionText(16,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A &nbsp; They've got less work to do.</button>
+                  <button onclick="selectOptionText(16,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B &nbsp; They should do more exercise.</button>
+                  <button onclick="selectOptionText(16,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C &nbsp; They've got more time to study.</button>
+                </div>
+              </div>
+
+              <!-- Q17 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:8px;">You will hear a girl, Emily, talking to her mum in the kitchen.</div>
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">17. What's Emily's mum doing?</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOptionText(17,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A &nbsp; making a shopping list</button>
+                  <button onclick="selectOptionText(17,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B &nbsp; explaining how to cook a dish</button>
+                  <button onclick="selectOptionText(17,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C &nbsp; deciding what they're going to eat</button>
+                </div>
+              </div>
+
+              <!-- Q18 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:8px;">You will hear a girl talking to her friend Dan.</div>
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">18. What job does Dan's mum do?</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOptionText(18,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A &nbsp; She's a guide.</button>
+                  <button onclick="selectOptionText(18,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B &nbsp; She's a receptionist.</button>
+                  <button onclick="selectOptionText(18,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C &nbsp; She's a shop assistant.</button>
+                </div>
+              </div>
+
+              <!-- Q19 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:8px;">You will hear a mother and daughter talking together.</div>
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">19. What will they do today?</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOptionText(19,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A &nbsp; visit the hospital</button>
+                  <button onclick="selectOptionText(19,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B &nbsp; go to the train station</button>
+                  <button onclick="selectOptionText(19,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C &nbsp; buy some stamps</button>
+                </div>
+              </div>
+
+              <!-- Q20 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:14px; padding:18px 22px;">
+                <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:8px;">You will hear two friends talking about something they did together at the weekend.</div>
+                <div style="font-size:24px; font-weight:700; color:#374151; margin-bottom:14px;">20. What did they do together?</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <button onclick="selectOptionText(20,'A',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">A &nbsp; visit the countryside</button>
+                  <button onclick="selectOptionText(20,'B',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">B &nbsp; do a sport</button>
+                  <button onclick="selectOptionText(20,'C',this)" class="opt-btn" style="text-align:left; padding:12px 22px; font-size:22px; border-radius:10px; width:100%;">C &nbsp; have a meal</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PART 5 RIGHT: Matching – Zara's presents ===== -->
+        <div class="part-view" id="right5" style="flex-direction:column;">
+          <div class="panel-header">Part 5 – Questions 21–25 &nbsp;|&nbsp; <span style="font-weight:400; font-size:13px;">🎁 Match each person with their present (A–H)</span></div>
+          <div class="panel-body">
+
+            <!-- Questions full width -->
+            <div style="display:flex; flex-direction:column; gap:14px;">
+
+              <!-- Q21 mum -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 16px;">
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:10px;">21. mum</div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;" id="btns21">
+                  <button onclick="selectMatch(21,'A',this)" class="match-letter-btn">A</button>
+                  <button onclick="selectMatch(21,'B',this)" class="match-letter-btn">B</button>
+                  <button onclick="selectMatch(21,'C',this)" class="match-letter-btn">C</button>
+                  <button onclick="selectMatch(21,'D',this)" class="match-letter-btn">D</button>
+                  <button onclick="selectMatch(21,'E',this)" class="match-letter-btn">E</button>
+                  <button onclick="selectMatch(21,'F',this)" class="match-letter-btn">F</button>
+                  <button onclick="selectMatch(21,'H',this)" class="match-letter-btn">H</button>
+                </div>
+              </div>
+
+              <!-- Q22 brother -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 16px;">
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:10px;">22. brother</div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;" id="btns22">
+                  <button onclick="selectMatch(22,'A',this)" class="match-letter-btn">A</button>
+                  <button onclick="selectMatch(22,'B',this)" class="match-letter-btn">B</button>
+                  <button onclick="selectMatch(22,'C',this)" class="match-letter-btn">C</button>
+                  <button onclick="selectMatch(22,'D',this)" class="match-letter-btn">D</button>
+                  <button onclick="selectMatch(22,'E',this)" class="match-letter-btn">E</button>
+                  <button onclick="selectMatch(22,'F',this)" class="match-letter-btn">F</button>
+                  <button onclick="selectMatch(22,'H',this)" class="match-letter-btn">H</button>
+                </div>
+              </div>
+
+              <!-- Q23 grandma -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 16px;">
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:10px;">23. grandma</div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;" id="btns23">
+                  <button onclick="selectMatch(23,'A',this)" class="match-letter-btn">A</button>
+                  <button onclick="selectMatch(23,'B',this)" class="match-letter-btn">B</button>
+                  <button onclick="selectMatch(23,'C',this)" class="match-letter-btn">C</button>
+                  <button onclick="selectMatch(23,'D',this)" class="match-letter-btn">D</button>
+                  <button onclick="selectMatch(23,'E',this)" class="match-letter-btn">E</button>
+                  <button onclick="selectMatch(23,'F',this)" class="match-letter-btn">F</button>
+                  <button onclick="selectMatch(23,'H',this)" class="match-letter-btn">H</button>
+                </div>
+              </div>
+
+              <!-- Q24 sister -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 16px;">
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:10px;">24. sister</div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;" id="btns24">
+                  <button onclick="selectMatch(24,'A',this)" class="match-letter-btn">A</button>
+                  <button onclick="selectMatch(24,'B',this)" class="match-letter-btn">B</button>
+                  <button onclick="selectMatch(24,'C',this)" class="match-letter-btn">C</button>
+                  <button onclick="selectMatch(24,'D',this)" class="match-letter-btn">D</button>
+                  <button onclick="selectMatch(24,'E',this)" class="match-letter-btn">E</button>
+                  <button onclick="selectMatch(24,'F',this)" class="match-letter-btn">F</button>
+                  <button onclick="selectMatch(24,'H',this)" class="match-letter-btn">H</button>
+                </div>
+              </div>
+
+              <!-- Q25 uncle -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 16px;">
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:10px;">25. uncle</div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;" id="btns25">
+                  <button onclick="selectMatch(25,'A',this)" class="match-letter-btn">A</button>
+                  <button onclick="selectMatch(25,'B',this)" class="match-letter-btn">B</button>
+                  <button onclick="selectMatch(25,'C',this)" class="match-letter-btn">C</button>
+                  <button onclick="selectMatch(25,'D',this)" class="match-letter-btn">D</button>
+                  <button onclick="selectMatch(25,'E',this)" class="match-letter-btn">E</button>
+                  <button onclick="selectMatch(25,'F',this)" class="match-letter-btn">F</button>
+                  <button onclick="selectMatch(25,'H',this)" class="match-letter-btn">H</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end right panel -->
+    </div><!-- end splitPane -->
+  </div><!-- end mainContent -->
+
+  <!-- FOOTER -->
+  <div id="footerBar">
+    <div style="display:flex; gap:8px; align-items:center;">
+      <button onclick="prevPart()" style="padding:10px 22px; border:2px solid #d1d5db; border-radius:20px; font-size:18px; font-weight:700; cursor:pointer; background:white;">← Phần trước</button>
+      <button onclick="nextPart()" style="padding:10px 22px; border:2px solid #d1d5db; border-radius:20px; font-size:18px; font-weight:700; cursor:pointer; background:white;">Phần tiếp →</button>
+    </div>
+    <div style="font-size:16px; color:#9ca3af;" id="dividerHint">Kéo thanh giữa để điều chỉnh cỡ</div>
+    <button onclick="submitTest()" style="padding:12px 32px; background:#dc2626; color:white; font-weight:800; font-size:20px; border-radius:20px; border:none; cursor:pointer;">NỘP BÀI</button>
+  </div>
+
+</div><!-- end appWrapper -->
+
+<!-- RESULT SCREEN -->
+<div id="resultScreen">
+  <div style="max-width:640px; width:100%; background:white; border-radius:24px; box-shadow:0 20px 60px rgba(0,0,0,0.12); padding:48px 40px; text-align:center;">
+    <div style="font-size:64px; margin-bottom:8px;">🎉</div>
+    <h1 style="font-size:34px; font-weight:800; color:#16a34a; margin-bottom:8px;">HOÀN THÀNH!</h1>
+    <div style="font-size:80px; font-weight:800; color:#16a34a; line-height:1;" id="finalScore">0%</div>
+    <p style="font-size:22px; margin:16px 0; color:#374151;">Đúng: <strong id="correctCount">0</strong>/25 câu</p>
+    <p style="font-size:18px; color:#6b7280; margin-bottom:24px;">Thời gian: <strong id="finalTime">00:00</strong></p>
+    <div style="background:#fef2f2; border:2px solid #fca5a5; border-radius:16px; padding:16px 20px; margin-bottom:16px; text-align:left;">
+      <p style="font-weight:700; color:#991b1b; font-size:18px;">Câu sai: <span id="wrongList" style="font-family:monospace;">Không có</span></p>
+    </div>
+    <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:16px; padding:16px 20px; text-align:left; margin-bottom:24px; max-height:200px; overflow-y:auto;">
+      <p style="font-weight:700; color:#15803d; font-size:17px; margin-bottom:8px;">Lịch sử làm bài:</p>
+      <div id="timelineDisplay" style="font-size:15px; font-family:monospace; color:#374151;"></div>
+    </div>
+    <button onclick="location.reload()" style="background:#16a34a; color:white; font-weight:800; padding:16px 40px; border-radius:16px; font-size:20px; border:none; cursor:pointer;">LÀM LẠI 🔄</button>
+  </div>
+</div>
+
+<script>
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzf5rfx8jIiNaIzC3a1WcaKxaH-EylWITueMSbLBTgZNFsHH17QJXXGNealxIGbXSM9/exec';
+const TEST_NAME = 'KET Listening #17';
+const TOTAL_QUESTIONS = 25;
+
+let student = null, startTime = null, timerInterval = null;
+let answers = {}, timeline = [], tabSwitches = 0;
+let playedFull = false;
+let currentPart = 1;
+
+// Parts 1, 2, 3, 4 are full-width; Part 5 keeps split (left=presents, right=questions)
+const FULL_WIDTH_PARTS = [1, 2, 3, 4];
+
+// ===== PART NAVIGATION =====
+function showPart(n) {
+  currentPart = n;
+  const mainContent = document.getElementById('mainContent');
+  const hint = document.getElementById('dividerHint');
+  if (FULL_WIDTH_PARTS.includes(n)) {
+    mainContent.classList.add('full-width');
+    hint.textContent = 'Cuộn để xem toàn bộ câu hỏi';
+  } else {
+    mainContent.classList.remove('full-width');
+    hint.textContent = 'Kéo thanh giữa để điều chỉnh cỡ';
+  }
+  for (let i = 1; i <= 5; i++) {
+    const l = document.getElementById(`left${i}`);
+    const r = document.getElementById(`right${i}`);
+    if (l) l.classList.toggle('active', i === n);
+    if (r) r.classList.toggle('active', i === n);
+    document.getElementById(`tab${i}`).classList.toggle('active', i === n);
+  }
+}
+function prevPart() { if (currentPart > 1) showPart(currentPart - 1); }
+function nextPart() { if (currentPart < 5) showPart(currentPart + 1); }
+
+// ===== DIVIDER DRAG =====
+(function() {
+  const divider = document.getElementById('divider');
+  const left = document.getElementById('leftPanel');
+  const right = document.getElementById('rightPanel');
+  let dragging = false;
+  divider.addEventListener('mousedown', (e) => { dragging = true; divider.classList.add('dragging'); e.preventDefault(); });
+  document.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    const pane = document.getElementById('splitPane');
+    const rect = pane.getBoundingClientRect();
+    let pct = ((e.clientX - rect.left) / rect.width) * 100;
+    pct = Math.max(25, Math.min(75, pct));
+    left.style.width = pct + '%';
+    right.style.width = (100 - pct) + '%';
+  });
+  document.addEventListener('mouseup', () => { dragging = false; divider.classList.remove('dragging'); });
+  divider.addEventListener('touchstart', (e) => { dragging = true; e.preventDefault(); }, {passive:false});
+  document.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    const pane = document.getElementById('splitPane');
+    const rect = pane.getBoundingClientRect();
+    let pct = ((e.touches[0].clientX - rect.left) / rect.width) * 100;
+    pct = Math.max(25, Math.min(75, pct));
+    left.style.width = pct + '%';
+    right.style.width = (100 - pct) + '%';
+  }, {passive:false});
+  document.addEventListener('touchend', () => { dragging = false; });
+})();
+
+// ===== AUDIO =====
+function playFullAudio() {
+  if (playedFull) return alert("Bạn chỉ được nghe 1 lần duy nhất!");
+  const audio = document.getElementById('fullAudio');
+  const btn = document.getElementById('playBtn');
+  if (!audio.src || audio.src === window.location.href) {
+    alert('No audio file yet. Please contact your teacher.');
+    return;
+  }
+  audio.play();
+  playedFull = true;
+  btn.textContent = '▶ Đang nghe...';
+  btn.disabled = true;
+  document.getElementById('audioStatus').textContent = '🔴 Đang phát – không tua lại được';
+  audio.onseeked = () => { if (audio.currentTime > 2) audio.currentTime = 0; };
+  audio.ontimeupdate = () => {
+    const pct = (audio.currentTime / audio.duration) * 100;
+    document.getElementById('audioBar2').style.width = pct + '%';
+  };
+  audio.onended = () => {
+    btn.textContent = '✅ Đã nghe xong';
+    document.getElementById('audioStatus').textContent = 'Bài nghe đã kết thúc';
+  };
+}
+
+// ===== PART 1 & 3 & 4: Choose A/B/C (icon buttons) =====
+function selectOption(q, opt, btn) {
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[q] = opt;
+  timeline.push(`Q${q}: ${opt}`);
+  updateProgress();
+}
+
+// ===== PART 3 & 4: Choose A/B/C (text buttons) =====
+function selectOptionText(q, opt, btn) {
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[q] = opt;
+  timeline.push(`Q${q}: ${opt}`);
+  updateProgress();
+}
+
+// ===== PART 2: Text inputs =====
+function saveTextAnswer(q, val) {
+  if (val.trim()) {
+    answers[q] = val.trim();
+    timeline.push(`Q${q}: ${val.trim()}`);
+  } else {
+    delete answers[q];
+  }
+  updateProgress();
+}
+
+// ===== PART 5: Matching =====
+function selectMatch(q, letter, btn) {
+  const container = document.getElementById(`btns${q}`);
+  container.querySelectorAll('.match-letter-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[`p5_${q}`] = letter;
+  timeline.push(`Q${q}: ${letter}`);
+  updateProgress();
+  renderMatchSummary();
+}
+function renderMatchSummary() {
+  const names = {21:'mum', 22:'brother', 23:'grandma', 24:'sister', 25:'uncle'};
+  let html = '';
+  [21,22,23,24,25].forEach(q => {
+    if (answers[`p5_${q}`]) {
+      html += `<div><strong>${names[q]}</strong> → <span style="color:#16a34a;font-weight:800;">${answers[`p5_${q}`]}</span></div>`;
+    }
+  });
+  document.getElementById('matchSummary').innerHTML = html || '<em>None yet</em>';
+}
+
+// ===== PROGRESS =====
+function updateProgress() {
+  // Q1-20: direct key; Q6-10: direct key; P5: p5_21..p5_25
+  const mc = [1,2,3,4,5,11,12,13,14,15,16,17,18,19,20].filter(i => answers[i]).length;
+  const txt = [6,7,8,9,10].filter(i => answers[i]).length;
+  const p5 = [21,22,23,24,25].filter(i => answers[`p5_${i}`]).length;
+  const answered = mc + txt + p5;
+  const pct = (answered / TOTAL_QUESTIONS) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${answered}/${TOTAL_QUESTIONS}`;
+}
+
+// ===== VERIFY =====
+function verifyStudent() {
+  const code = document.getElementById('studentCode').value.trim().toUpperCase();
+  if (!code) return alert('Enter student code!');
+  fetch(`${SHEET_URL}?action=verify&code=${code}`)
+    .then(r => r.json())
+    .then(d => {
+      if (!d.exists) return alert('Student code not found. Please try again.');
+      student = {code, name: d.studentName || code};
+      document.getElementById('headerName').textContent = student.name;
+      document.getElementById('codeScreen').style.display = 'none';
+      document.getElementById('appWrapper').style.display = 'flex';
+      showPart(1);
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        const s = Math.floor((Date.now() - startTime)/1000);
+        const m = String(Math.floor(s/60)).padStart(2,'0');
+        const sec = String(s%60).padStart(2,'0');
+        document.getElementById('timer').textContent = `${m}:${sec}`;
+      }, 500);
+    })
+    .catch(() => alert('Connection error!'));
+}
+
+// ===== SUBMIT =====
+function submitTest() {
+  const mc = [1,2,3,4,5,11,12,13,14,15,16,17,18,19,20].filter(i => answers[i]).length;
+  const txt = [6,7,8,9,10].filter(i => answers[i]).length;
+  const p5 = [21,22,23,24,25].filter(i => answers[`p5_${i}`]).length;
+  const answered = mc + txt + p5;
+  if (answered < TOTAL_QUESTIONS && !confirm(`Còn câu chưa làm. Nộp luôn?`)) return;
+  clearInterval(timerInterval);
+  const duration = document.getElementById('timer').textContent;
+
+  // Flatten p5 answers into answers object
+  const allAnswers = {...answers};
+  [21,22,23,24,25].forEach(q => {
+    if (answers[`p5_${q}`]) allAnswers[q] = answers[`p5_${q}`];
+  });
+
+  const data = {
+    action: 'submit',
+    testName: TEST_NAME,
+    studentCode: student.code,
+    studentName: student.name,
+    answers: allAnswers,
+    timeUsed: duration,
+    realSubmitTime: new Date().toLocaleString(),
+    timeline: timeline.join(' | '),
+    tabSwitchLog: tabSwitches > 0 ? `Tab switch detected` : 'No tab switches',
+    totalQuestions: TOTAL_QUESTIONS
+  };
+  fetch(`${SHEET_URL}?data=${encodeURIComponent(JSON.stringify(data))}`)
+    .then(r => r.json())
+    .then(res => {
+      document.getElementById('appWrapper').style.display = 'none';
+      const rs = document.getElementById('resultScreen');
+      rs.style.display = 'flex';
+      document.getElementById('finalScore').textContent = (res.score || 0) + '%';
+      document.getElementById('correctCount').textContent = res.correctCount || 0;
+      document.getElementById('finalTime').textContent = duration;
+      document.getElementById('wrongList').textContent = res.wrongQuestions?.length ? res.wrongQuestions.join(', ') : 'None';
+      const tl = document.getElementById('timelineDisplay');
+      timeline.forEach(l => { const p = document.createElement('p'); p.textContent = l; tl.appendChild(p); });
+    })
+    .catch(() => {
+      document.getElementById('appWrapper').style.display = 'none';
+      const rs = document.getElementById('resultScreen');
+      rs.style.display = 'flex';
+      document.getElementById('finalScore').textContent = '—';
+      document.getElementById('correctCount').textContent = '—';
+      document.getElementById('finalTime').textContent = duration;
+      document.getElementById('wrongList').textContent = 'Connection error – please contact your teacher';
+      const tl = document.getElementById('timelineDisplay');
+      timeline.forEach(l => { const p = document.createElement('p'); p.textContent = l; tl.appendChild(p); });
+    });
+}
+
+// ===== TAB SWITCH =====
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && document.getElementById('appWrapper').style.display !== 'none') {
+    tabSwitches++;
+    timeline.push(`Tab switched at ${new Date().toLocaleTimeString()}`);
+  }
+});
+</script>
+
+</body>
+</html>
