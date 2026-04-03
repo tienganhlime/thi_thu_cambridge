@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre A1 Starters – Reading & Writing</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); font-size: 1.1rem; }
+
+  .question-box { background: #f8f9fa; padding: 20px 22px; border-radius: 20px; margin-bottom: 16px; border-left: 4px solid #16a34a; }
+  .option-btn   { padding: 12px 26px; margin: 6px; border: 2px solid #ddd; border-radius: 20px; background: white;
+                  cursor: pointer; transition: all 0.3s; font-size: 20px; font-family: 'Quicksand', sans-serif; }
+  .option-btn:hover    { border-color: #16a34a; background: #f0fdf4; }
+  .option-btn.selected { border-color: #16a34a; background: #16a34a; color: white; font-weight: bold; }
+
+  .tick-btn { padding: 12px 32px; margin: 6px; border: 2px solid #ddd; border-radius: 20px; background: white;
+              cursor: pointer; transition: all 0.3s; font-size: 26px; font-family: 'Quicksand', sans-serif; font-weight: 700; }
+  .tick-btn:hover { border-color: #16a34a; background: #f0fdf4; }
+  .tick-btn.tick  { border-color: #16a34a; background: #16a34a; color: white; font-weight: bold; }
+  .tick-btn.cross { border-color: #e53935; background: #e53935; color: white; font-weight: bold; }
+
+  .yn-btn { padding: 12px 32px; margin: 6px; border: 2px solid #ddd; border-radius: 20px; background: white;
+            cursor: pointer; transition: all 0.3s; font-size: 22px; font-family: 'Quicksand', sans-serif; font-weight: 700; }
+  .yn-btn:hover    { border-color: #16a34a; background: #f0fdf4; }
+  .yn-btn.selected { border-color: #16a34a; background: #16a34a; color: white; font-weight: bold; }
+
+  .input-answer { padding: 10px 16px; border: 2px solid #ddd; border-radius: 14px;
+                  font-size: 20px; font-family: 'Quicksand', sans-serif; }
+  .input-answer:focus { border-color: #16a34a; outline: none; background: #f0fdf4; }
+  .input-answer-lg { width: 100%; border-radius: 14px; border: 2px solid #ddd; padding: 10px 16px;
+                     font-size: 20px; font-family: 'Quicksand', sans-serif; }
+  .input-answer-lg:focus { border-color: #16a34a; outline: none; background: #f0fdf4; }
+
+  .section-title { color: #15803d; font-size: 1.25rem; font-weight: bold; margin: 24px 0 12px;
+                   padding-bottom: 8px; border-bottom: 3px solid #16a34a; }
+  .part-header   { background: linear-gradient(135deg, #15803d, #16a34a); color: white; border-radius: 14px;
+                   padding: 12px 22px; margin: 28px 0 16px; font-size: 1.5rem; font-weight: bold; }
+  .example-box   { background: #f0fdf4; border-left: 5px solid #16a34a; border-radius: 12px;
+                   padding: 14px 18px; margin-bottom: 14px; font-size: 1.1rem; }
+  .word-chip     { background: white; border: 2px solid #16a34a; border-radius: 10px;
+                   padding: 5px 14px; font-weight: bold; font-size: 1rem; color: #15803d;
+                   display: inline-block; margin: 3px; }
+  .word-box      { background: #f0fdf4; border: 2px solid #16a34a; border-radius: 12px;
+                   padding: 14px 18px; margin-bottom: 12px; }
+  .inline-blank  { display: inline-block; border-bottom: 2px solid #555; min-width: 120px;
+                   padding: 2px 8px; margin: 0 4px; font-family: 'Quicksand', sans-serif; font-size: 1.05rem; }
+
+  /* Split screen */
+  .split-wrap { display: flex; gap: 18px; align-items: flex-start; }
+  .split-left { flex: 0 0 44%; min-width: 0; }
+  .split-right { flex: 1 1 0; min-width: 0; }
+  @media (max-width: 768px) {
+    .split-wrap  { flex-direction: column; }
+    .split-left  { flex: none; width: 100%; }
+  }
+
+  /* Scene image */
+  .scene-img { border-radius: 12px; overflow: hidden; background: #fafafa;
+               border: 2px solid #e0e0e0; margin-bottom: 12px; }
+  .scene-img img { width: 100%; height: auto; display: block; }
+
+  /* Letter box */
+  .letter-box { display: inline-flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-left: 8px; }
+  .letter-tile { width: 38px; height: 38px; border: 2px solid #16a34a; border-radius: 6px;
+                 display: inline-flex; align-items: center; justify-content: center;
+                 font-weight: bold; font-size: 1.15rem; color: #15803d; background: #f0fdf4; }
+
+  /* Passage box */
+  .passage-box { background: #f0fdf4; border: 2px solid #16a34a; border-radius: 14px;
+                 padding: 20px 24px; line-height: 2.3; font-size: 1.15rem; }
+
+  /* Image grid for word box */
+  .word-img-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .word-img-item { text-align: center; }
+  .word-img-item img { width: 70px; height: 70px; object-fit: contain; margin: 0 auto; display: block; }
+  .word-img-item span { font-weight: bold; font-size: 1rem; color: #15803d; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ LOGIN ══════════════════ -->
+<div id="codeScreen" class="min-h-screen flex items-center justify-center p-6">
+  <div style="max-width:560px; width:100%; background:white; border-radius:28px; box-shadow:0 24px 72px rgba(0,0,0,0.18); padding:52px 48px; text-align:center;">
+
+    <!-- Logo + Tên trung tâm -->
+    <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:64px; margin:0 auto 16px; display:block;" alt="logo">
+    <div style="font-size:28px; font-weight:800; color:#16a34a; margin-bottom:4px; letter-spacing:0.01em;">Trung tâm tiếng Anh LIME</div>
+    <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:6px;">📞 Hotline: <a href="tel:0976222792" style="color:#f97316; text-decoration:none; font-weight:800;">0976 222 792</a></div>
+
+    <!-- Divider -->
+    <div style="border-top:2px solid #e5e7eb; margin:24px 0;"></div>
+
+    <!-- Tên bài thi -->
+    <h1 style="font-size:30px; font-weight:800; color:#16a34a; margin-bottom:6px;">Cambridge Pre A1 Starters</h1>
+    <p style="color:#f97316; font-size:22px; font-weight:700; margin-bottom:36px;">Reading &amp; Writing</p>
+
+    <!-- Input mã học sinh -->
+    <input type="text" id="studentCode"
+           style="width:100%; padding:20px 24px; font-size:26px; border:3px solid #86efac; border-radius:18px; text-align:center; outline:none; font-family:'Quicksand',sans-serif; text-transform:uppercase;"
+           placeholder="Nhập mã học sinh"
+           onkeydown="if(event.key==='Enter') verifyStudent()">
+    <button onclick="verifyStudent()"
+            style="width:100%; margin-top:18px; background:#16a34a; color:white; font-weight:800; padding:22px; border-radius:18px; font-size:24px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif; letter-spacing:0.05em;">
+      BẮT ĐẦU 🚀
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════ TEST SCREEN ══════════════════ -->
+<div id="testScreen" class="hidden min-h-screen p-4">
+  <div class="max-w-6xl mx-auto">
+
+    <!-- Sticky header -->
+    <div class="bg-white rounded-2xl shadow-xl p-4 sticky top-0 z-10 mb-5">
+      <div class="flex justify-between items-center">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:36px;" alt="logo">
+          <div>
+            <h1 style="font-size:18px; font-weight:800; color:#16a34a;">Pre A1 Starters – Reading &amp; Writing</h1>
+            <p style="font-size:16px;">Học sinh: <span id="headerName" style="font-weight:800; color:#1d4ed8;"></span></p>
+          </div>
+        </div>
+        <div class="text-right">
+          <p style="font-size:24px; font-weight:800; color:#dc2626;">⏱ <span id="timer">00:00</span></p>
+          <p style="font-size:15px; color:#6b7280;">Đã làm: <span id="answeredCount">0</span> / 25</p>
+        </div>
+      </div>
+      <div class="mt-2 bg-gray-300 rounded-full h-3">
+        <div id="progress" style="background:#16a34a;" class="h-full rounded-full transition-all" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-6">
+
+      <!-- ══════════════════════════════════
+           PART 1 – 5 questions: Look and read. Tick or Cross.
+      ═══════════════════════════════════ -->
+      <div class="part-header">🌟 Part 1 – 5 questions</div>
+      <div class="section-title">Look and read. Put a tick (✓) or a cross (✗) in the box.</div>
+
+   <div class="example-box">
+  <strong>Examples:</strong>
+  <div style="display:flex;align-items:center;gap:20px;margin-top:10px;">
+    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775093693/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_083424_arbgb5.png" 
+         style="width:180px;border-radius:10px;">
+    <div>
+      <p>This is a burger. → <strong>✓</strong></p>
+      <p style="margin-top:8px;">This is an orange. → <strong>✗</strong></p>
+    </div>
+  </div>
+</div>
+
+     <!-- Q1 -->
+<div class="split-wrap">
+  <div class="split-left">
+    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775093985/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_083858_hijx0k.png"
+         style="width:200px;border-radius:12px;">
+  </div>
+  <div class="split-right">
+    <div class="question-box">
+      <p style="font-size:22px; font-weight:700; margin-bottom:12px;">1. This is a cow.</p>
+      <button class="tick-btn" onclick="selectTickCross('p1_1','tick',event)">✓</button>
+      <button class="tick-btn" onclick="selectTickCross('p1_1','cross',event)">✗</button>
+    </div>
+  </div>
+</div>
+
+      <!-- Q2 -->
+      <div class="split-wrap">
+        <div class="split-left">
+          <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775093986/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_083906_vusamj.png"style="width:200px;border-radius:12px;">
+        </div>
+        <div class="split-right">
+          <div class="question-box">
+            <p style="font-size:22px; font-weight:700; margin-bottom:12px;">2. This is a doll.</p>
+            <button class="tick-btn" onclick="selectTickCross('p1_2','tick',event)">✓</button>
+            <button class="tick-btn" onclick="selectTickCross('p1_2','cross',event)">✗</button>
+          </div>
+        </div>
+      </div>
+
+     <!-- Q3 -->
+<div class="split-wrap">
+  <div class="split-left">
+    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775093986/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_083911_hopg66.png" style="width:200px;border-radius:12px;">
+  </div>
+  <div class="split-right">
+    <div class="question-box">
+      <p style="font-size:22px; font-weight:700; margin-bottom:12px;">3. These are socks.</p>
+      <button class="tick-btn" onclick="selectTickCross('p1_3','tick',event)">✓</button>
+      <button class="tick-btn" onclick="selectTickCross('p1_3','cross',event)">✗</button>
+    </div>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="split-wrap">
+  <div class="split-left">
+    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775093986/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_083920_bpsekc.png" style="width:200px;border-radius:12px;">
+  </div>
+  <div class="split-right">
+    <div class="question-box">
+      <p style="font-size:22px; font-weight:700; margin-bottom:12px;">4. This is a fish.</p>
+      <button class="tick-btn" onclick="selectTickCross('p1_4','tick',event)">✓</button>
+      <button class="tick-btn" onclick="selectTickCross('p1_4','cross',event)">✗</button>
+    </div>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="split-wrap">
+  <div class="split-left">
+    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775093987/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_083924_u3splq.png" style="width:200px;border-radius:12px;">
+  </div>
+  <div class="split-right">
+    <div class="question-box">
+      <p style="font-size:22px; font-weight:700; margin-bottom:12px;">5. These are watermelons.</p>
+      <button class="tick-btn" onclick="selectTickCross('p1_5','tick',event)">✓</button>
+      <button class="tick-btn" onclick="selectTickCross('p1_5','cross',event)">✗</button>
+    </div>
+  </div>
+</div>
+
+
+      <!-- ══════════════════════════════════
+           PART 2 – 5 questions: Look at scene. Write yes or no.
+      ═══════════════════════════════════ -->
+      <div class="part-header">🏠 Part 2 – 5 questions</div>
+      <div class="section-title">Look and read. Write <strong>yes</strong> or <strong>no</strong>.</div>
+
+      <!-- Tranh to full width -->
+      <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775092802/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_081947_la0odu.png" style="width:100%; border-radius:16px; margin-bottom:16px; border:2px solid #d1fae5;">
+
+      <div class="example-box">
+        <strong>Examples:</strong><br>
+        There are four children in the room. → <u>yes</u><br>
+        There is a dog under the table. → <u>no</u>
+      </div>
+
+      <!-- Câu hỏi dạng lưới 2 cột -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+        <div class="question-box">
+          <p style="font-size:22px; font-weight:700; margin-bottom:12px;">1. There is a mouse in the room.</p>
+          <button class="yn-btn" onclick="selectYN('p2_1','yes',event)">yes</button>
+          <button class="yn-btn" onclick="selectYN('p2_1','no',event)">no</button>
+        </div>
+        <div class="question-box">
+          <p style="font-size:22px; font-weight:700; margin-bottom:12px;">2. A boy is playing with a train.</p>
+          <button class="yn-btn" onclick="selectYN('p2_2','yes',event)">yes</button>
+          <button class="yn-btn" onclick="selectYN('p2_2','no',event)">no</button>
+        </div>
+        <div class="question-box">
+          <p style="font-size:22px; font-weight:700; margin-bottom:12px;">3. There are blue flowers on the bookcase.</p>
+          <button class="yn-btn" onclick="selectYN('p2_3','yes',event)">yes</button>
+          <button class="yn-btn" onclick="selectYN('p2_3','no',event)">no</button>
+        </div>
+        <div class="question-box">
+          <p style="font-size:22px; font-weight:700; margin-bottom:12px;">4. A baby is holding a ball.</p>
+          <button class="yn-btn" onclick="selectYN('p2_4','yes',event)">yes</button>
+          <button class="yn-btn" onclick="selectYN('p2_4','no',event)">no</button>
+        </div>
+        <div class="question-box" style="grid-column: 1 / -1;">
+          <p style="font-size:22px; font-weight:700; margin-bottom:12px;">5. The children are watching television.</p>
+          <button class="yn-btn" onclick="selectYN('p2_5','yes',event)">yes</button>
+          <button class="yn-btn" onclick="selectYN('p2_5','no',event)">no</button>
+        </div>
+      </div>
+
+
+      <!-- ══════════════════════════════════
+           PART 3 – 5 questions: Look at picture. Unscramble letters. Write the word.
+      ═══════════════════════════════════ -->
+      <div class="part-header">✏️ Part 3 – 5 questions</div>
+      <div class="section-title">Look at the pictures. Look at the letters. Write the words.</div>
+
+    <div class="example-box">
+  <strong>Example:</strong>
+  <div style="display:flex;align-items:center;gap:16px;margin-top:8px;">
+    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775098095/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_094737_m6lzvx.png" style="width:80px;border-radius:8px;">
+    <span>→ <strong>b o o k</strong> &nbsp;|&nbsp; Letters: <span class="word-chip">o</span><span class="word-chip">k</span><span class="word-chip">b</span><span class="word-chip">o</span></span>
+  </div>
+</div>
+
+      <!-- Q1: desk -->
+<div class="split-wrap" style="margin-bottom:16px;">
+  <div class="split-left">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775098095/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_094753_d55oqd.png" style="width:100px;border-radius:8px;">
+      <div>
+        <p style="font-size:18px; font-weight:700; color:#4b5563; margin-bottom:6px;">Question 1</p>
+        <div class="letter-box">
+          <span class="letter-tile">s</span>
+          <span class="letter-tile">e</span>
+          <span class="letter-tile">d</span>
+          <span class="letter-tile">k</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="split-right">
+    <div class="question-box">
+      <p style="font-size:22px; font-weight:700; margin-bottom:10px;">1. Unscramble: s e d k</p>
+      <input type="text" class="input-answer w-full" id="q_p3_1" placeholder="Write the word..." onblur="saveText('p3_1',this.value)">
+    </div>
+  </div>
+</div>
+
+    <!-- Q2: board -->
+<div class="split-wrap" style="margin-bottom:16px;">
+  <div class="split-left">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775099606/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_101251_hrojja.png" style="width:100px;border-radius:8px;">
+      <div>
+        <p style="font-size:18px; font-weight:700; color:#4b5563; margin-bottom:6px;">Question 2</p>
+        <div class="letter-box">
+          <span class="letter-tile">o</span>
+          <span class="letter-tile">d</span>
+          <span class="letter-tile">a</span>
+          <span class="letter-tile">r</span>
+          <span class="letter-tile">b</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="split-right">
+    <div class="question-box">
+      <p style="font-size:22px; font-weight:700; margin-bottom:10px;">2. Unscramble: o d a r b</p>
+      <input type="text" class="input-answer w-full" id="q_p3_2" placeholder="Write the word..." onblur="saveText('p3_2',this.value)">
+    </div>
+  </div>
+</div>
+
+<!-- Q3: chair -->
+<div class="split-wrap" style="margin-bottom:16px;">
+  <div class="split-left">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775099606/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_101258_vguhwj.png" style="width:100px;border-radius:8px;">
+      <div>
+        <p style="font-size:18px; font-weight:700; color:#4b5563; margin-bottom:6px;">Question 3</p>
+        <div class="letter-box">
+          <span class="letter-tile">i</span>
+          <span class="letter-tile">h</span>
+          <span class="letter-tile">c</span>
+          <span class="letter-tile">a</span>
+          <span class="letter-tile">r</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="split-right">
+    <div class="question-box">
+      <p style="font-size:22px; font-weight:700; margin-bottom:10px;">3. Unscramble: i h c a r</p>
+      <input type="text" class="input-answer w-full" id="q_p3_3" placeholder="Write the word..." onblur="saveText('p3_3',this.value)">
+    </div>
+  </div>
+</div>
+
+<!-- Q4: pencil -->
+<div class="split-wrap" style="margin-bottom:16px;">
+  <div class="split-left">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775099607/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_101303_csn2un.png" style="width:100px;border-radius:8px;">
+      <div>
+        <p style="font-size:18px; font-weight:700; color:#4b5563; margin-bottom:6px;">Question 4</p>
+        <div class="letter-box">
+          <span class="letter-tile">i</span>
+          <span class="letter-tile">c</span>
+          <span class="letter-tile">p</span>
+          <span class="letter-tile">n</span>
+          <span class="letter-tile">e</span>
+          <span class="letter-tile">l</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="split-right">
+    <div class="question-box">
+      <p style="font-size:22px; font-weight:700; margin-bottom:10px;">4. Unscramble: i c p n e l</p>
+      <input type="text" class="input-answer w-full" id="q_p3_4" placeholder="Write the word..." onblur="saveText('p3_4',this.value)">
+    </div>
+  </div>
+</div>
+
+<!-- Q5: eraser -->
+<div class="split-wrap" style="margin-bottom:16px;">
+  <div class="split-left">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775099607/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_101308_drkrfi.png" style="width:100px;border-radius:8px;">
+      <div>
+        <p style="font-size:18px; font-weight:700; color:#4b5563; margin-bottom:6px;">Question 5</p>
+        <div class="letter-box">
+          <span class="letter-tile">e</span>
+          <span class="letter-tile">r</span>
+          <span class="letter-tile">e</span>
+          <span class="letter-tile">s</span>
+          <span class="letter-tile">a</span>
+          <span class="letter-tile">r</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="split-right">
+    <div class="question-box">
+      <p style="font-size:22px; font-weight:700; margin-bottom:10px;">5. Unscramble: e r e s a r</p>
+      <input type="text" class="input-answer w-full" id="q_p3_5" placeholder="Write the word..." onblur="saveText('p3_5',this.value)">
+    </div>
+  </div>
+</div>
+
+
+      <!-- ══════════════════════════════════
+           PART 4 – 5 questions: Read. Choose a word. Write it.
+      ═══════════════════════════════════ -->
+      <div class="part-header">🐒 Part 4 – 5 questions</div>
+<div class="section-title">Read this. Choose a word from the box. Write the correct word next to numbers 1–5.</div>
+<div class="split-wrap">
+  <!-- LEFT: word picture box -->
+  <div class="split-left">
+    <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775092868/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_082053_wxhqe7.png" style="width:100%;border-radius:12px;">
+  </div>
+  <!-- RIGHT: passage -->
+  <div class="split-right">
+    <div class="passage-box">
+      <p style="font-size:24px; font-weight:800; color:#15803d; margin-bottom:12px;">Monkeys</p>
+      <p>Monkeys live in the <u>trees</u> with their family and friends.</p>
+      <p>Monkeys are fun. They can run and jump with their long
+        <strong>(1)</strong>
+        <input type="text" class="inline-blank" id="q_p4_1" placeholder="..." onblur="saveText('p4_1',this.value)">
+        .
+      </p>
+      <p>They eat fruit but
+        <strong>(2)</strong>
+        <input type="text" class="inline-blank" id="q_p4_2" placeholder="..." onblur="saveText('p4_2',this.value)">
+        are their favourite food.
+      </p>
+      <p>Lots of monkeys are small but they have long
+        <strong>(3)</strong>
+        <input type="text" class="inline-blank" id="q_p4_3" placeholder="..." onblur="saveText('p4_3',this.value)">
+        .
+      </p>
+      <p>They are brown or orange and have big
+        <strong>(4)</strong>
+        <input type="text" class="inline-blank" id="q_p4_4" placeholder="..." onblur="saveText('p4_4',this.value)">
+        .
+      </p>
+      <p>They have ten fingers and ten
+        <strong>(5)</strong>
+        <input type="text" class="inline-blank" id="q_p4_5" placeholder="..." onblur="saveText('p4_5',this.value)">
+        , like people. Monkeys are very funny!
+      </p>
+    </div>
+  </div>
+</div>
+
+
+      <!-- ══════════════════════════════════
+           PART 5 – 5 questions: Look at picture. Write one-word answers.
+      ═══════════════════════════════════ -->
+      <div class="part-header">🛍️ Part 5 – 5 questions</div>
+<div class="section-title">Look at the pictures and read the questions. Write one-word answers.</div>
+
+<!-- Tranh 1 -->
+<img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775092903/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_082130_jhvsxo.png" style="width:100%;border-radius:16px;margin-bottom:16px;border:2px solid #d1fae5;">
+
+<!-- 2 câu ví dụ -->
+<div class="example-box">
+  <strong>Examples:</strong><br>
+  Where are the people? → in the <u>street</u><br>
+  How many shops are there? → <u>three</u>
+</div>
+
+<!-- Câu 1 -->
+<div class="question-box">
+  <p style="font-size:22px; font-weight:700; margin-bottom:10px;">1. What is the woman holding?</p>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <span style="font-size:20px; font-weight:700; color:#6b7280;">a</span>
+    <input type="text" class="input-answer" style="flex:1;" id="q_p5_1" placeholder="..." onblur="saveText('p5_1',this.value)">
+  </div>
+</div>
+
+<!-- Tranh 2 -->
+<img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775092932/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_082150_iibgvi.png" style="width:100%;border-radius:16px;margin-bottom:16px;margin-top:8px;border:2px solid #d1fae5;">
+
+<!-- Câu 2, 3 -->
+<div class="question-box">
+  <p style="font-size:22px; font-weight:700; margin-bottom:10px;">2. Where are the jeans?</p>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <span style="font-size:20px; font-weight:700; color:#6b7280;">on the</span>
+    <input type="text" class="input-answer" style="flex:1;" id="q_p5_2" placeholder="..." onblur="saveText('p5_2',this.value)">
+  </div>
+</div>
+<div class="question-box">
+  <p style="font-size:22px; font-weight:700; margin-bottom:10px;">3. What is the girl in the blue dress looking at?</p>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <span style="font-size:20px; font-weight:700; color:#6b7280;">at a</span>
+    <input type="text" class="input-answer" style="flex:1;" id="q_p5_3" placeholder="..." onblur="saveText('p5_3',this.value)">
+  </div>
+</div>
+
+<!-- Tranh 3 -->
+<img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775092932/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_082204_uvjz0p.png" style="width:100%;border-radius:16px;margin-bottom:16px;margin-top:8px;border:2px solid #d1fae5;">
+
+<!-- Câu 4, 5 -->
+<div class="question-box">
+  <p style="font-size:22px; font-weight:700; margin-bottom:10px;">4. Where are the people now?</p>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <span style="font-size:20px; font-weight:700; color:#6b7280;">in front of a</span>
+    <input type="text" class="input-answer" style="flex:1;" id="q_p5_4" placeholder="..." onblur="saveText('p5_4',this.value)">
+  </div>
+</div>
+<div class="question-box">
+  <p style="font-size:22px; font-weight:700; margin-bottom:10px;">5. What are they holding?</p>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <span style="font-size:20px; font-weight:700; color:#6b7280;">some big</span>
+    <input type="text" class="input-answer" style="flex:1;" id="q_p5_5" placeholder="..." onblur="saveText('p5_5',this.value)">
+  </div>
+</div>
+
+      <!-- SUBMIT -->
+      <div class="text-center mt-12">
+        <button onclick="submitTest()"
+                style="background:#16a34a; color:white; font-weight:800; padding:20px 80px; border-radius:18px; font-size:28px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif; box-shadow:0 8px 24px rgba(22,163,74,0.4);">
+          NỘP BÀI 🎉
+        </button>
+      </div>
+
+    </div><!-- end white card -->
+  </div>
+</div>
+
+
+<!-- ══════════════════ RESULT ══════════════════ -->
+<div id="resultScreen" class="hidden min-h-screen flex items-center justify-center p-6" style="background:linear-gradient(135deg,#f0fdf4,#eff6ff);">
+  <div class="max-w-3xl w-full bg-white rounded-3xl shadow-2xl p-12 text-center">
+    <h1 style="font-size:3rem; font-weight:800; color:#16a34a; margin-bottom:16px;">HOÀN THÀNH! 🎊</h1>
+    <div style="font-size:4rem; font-weight:800; color:#16a34a; margin-bottom:12px;" id="finalScore">--</div>
+    <p style="font-size:22px; margin-bottom:8px;">Đúng: <span id="correctCount">--</span> / <span id="totalKeyed">--</span></p>
+    <p style="font-size:20px; color:#6b7280; margin-bottom:20px;">Thời gian: <span id="finalTime" style="font-weight:800; color:#1d4ed8;">00:00</span></p>
+    <div style="background:#fef2f2; border:2px solid #fca5a5; border-radius:16px; padding:16px 20px; margin-bottom:16px; text-align:left;">
+      <p style="font-weight:700; color:#991b1b; font-size:18px; margin-bottom:4px;">❌ Câu sai / chưa làm:</p>
+      <p id="wrongList" style="font-family:monospace; font-size:16px;">Không có</p>
+    </div>
+    <div style="background:#eff6ff; border:2px solid #93c5fd; border-radius:16px; padding:16px 20px; text-align:left; margin-bottom:16px;">
+      <p style="font-weight:700; color:#1e40af; font-size:18px; margin-bottom:8px;">📋 Chi tiết đáp án:</p>
+      <div id="answerDetail" style="font-size:15px; font-family:monospace; line-height:1.8;"></div>
+    </div>
+    <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:16px; padding:16px 20px; text-align:left; margin-bottom:20px;">
+      <p style="font-weight:700; color:#15803d; font-size:18px; margin-bottom:8px;">📊 Lịch sử làm bài:</p>
+      <div id="timelineDisplay" style="font-size:14px; font-family:monospace; line-height:1.8;"></div>
+    </div>
+    <button onclick="location.reload()"
+            style="background:#16a34a; color:white; font-weight:800; padding:16px 56px; border-radius:18px; font-size:22px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif;">
+      LÀM LẠI 🔄
+    </button>
+  </div>
+</div>
+
+
+<!-- ══════════════════ JAVASCRIPT ══════════════════ -->
+<script>
+const URL_GAS = 'https://script.google.com/macros/s/AKfycbzXKfYr35pRssLAYvJUPIa6472V3TW4OM-4DPLkAiZTuC4DiufReCFKZikGSZtPlYGp/exec';
+const TEST_NAME = 'Cambridge Starters Reading Writing - De 17';
+const TOTAL_QUESTIONS = 25;
+
+let student = null, startTime = null, timerInterval = null;
+let answers = {}, timeline = [], tabSwitches = 0;
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && !document.getElementById('testScreen').classList.contains('hidden')) {
+    tabSwitches++;
+    timeline.push(`Tab switched at ${new Date().toLocaleTimeString()}`);
+  }
+});
+
+/* ── Verify student ── */
+function verifyStudent() {
+  const code = document.getElementById('studentCode').value.trim().toUpperCase();
+  if (!code) return alert('Please enter your student code!');
+  fetch(`${URL_GAS}?action=verify&code=${code}`)
+    .then(r => r.json())
+    .then(d => {
+      if (!d.exists) return alert('Student code not found. Please check and try again.');
+      student = { code, name: d.studentName || code };
+      document.getElementById('headerName').textContent = student.name;
+      document.getElementById('codeScreen').classList.add('hidden');
+      document.getElementById('testScreen').classList.remove('hidden');
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        const s  = Math.floor((Date.now() - startTime) / 1000);
+        const m  = String(Math.floor(s / 60)).padStart(2,'0');
+        const sc = String(s % 60).padStart(2,'0');
+        document.getElementById('timer').textContent = `${m}:${sc}`;
+        updateProgress();
+      }, 500);
+    })
+    .catch(err => alert('Connection error: ' + err.message));
+}
+
+function updateProgress() {
+  const n = Object.keys(answers).filter(k => answers[k]).length;
+  document.getElementById('answeredCount').textContent = n;
+  document.getElementById('progress').style.width = `${(n / TOTAL_QUESTIONS) * 100}%`;
+}
+
+/* ── Tick / Cross (Part 1) ── */
+function selectTickCross(key, value, ev) {
+  const time = new Date().toLocaleTimeString();
+  // find all buttons in the same question-box
+  const btn = ev.target;
+  const box = btn.closest('.question-box');
+  box.querySelectorAll('.tick-btn').forEach(b => { b.classList.remove('tick','cross'); });
+  if (value === 'tick') btn.classList.add('tick');
+  else                  btn.classList.add('cross');
+  const old = answers[key];
+  if (!old) timeline.push(`${key}: ${value} (${time})`);
+  else if (old !== value) timeline.push(`→ Changed ${key} to ${value} (${time})`);
+  answers[key] = value;
+  updateProgress();
+}
+
+/* ── Yes / No (Part 2) ── */
+function selectYN(key, value, ev) {
+  const time = new Date().toLocaleTimeString();
+  const btn = ev.target;
+  const box = btn.closest('.question-box');
+  box.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const old = answers[key];
+  if (!old) timeline.push(`${key}: ${value} (${time})`);
+  else if (old !== value) timeline.push(`→ Changed ${key} to ${value} (${time})`);
+  answers[key] = value;
+  updateProgress();
+}
+
+/* ── Text input ── */
+function saveText(key, value) {
+  const v = value.trim();
+  if (v === (answers[key] || '')) return;
+  const time = new Date().toLocaleTimeString();
+  if (!answers[key] && v) timeline.push(`${key}: "${v}" (${time})`);
+  else if (answers[key] && v) timeline.push(`→ Changed ${key} to "${v}" (${time})`);
+  answers[key] = v || null;
+  updateProgress();
+}
+
+/* ── Submit ── */
+function submitTest() {
+  const answered = Object.keys(answers).filter(k => answers[k]).length;
+  if (answered < TOTAL_QUESTIONS && !confirm(`${TOTAL_QUESTIONS - answered} question(s) still unanswered. Submit anyway?`)) return;
+  clearInterval(timerInterval);
+  const duration = document.getElementById('timer').textContent;
+  const data = {
+    action: 'submit', testName: TEST_NAME,
+    studentCode: student.code, studentName: student.name,
+    answers, timeUsed: duration,
+    realSubmitTime: new Date().toLocaleString(),
+    timeline: timeline.join(' | '),
+    tabSwitchLog: tabSwitches > 0 ? `Tab switched ${tabSwitches} time(s)` : 'No tab switches',
+    totalQuestions: TOTAL_QUESTIONS
+  };
+  fetch(`${URL_GAS}?data=${encodeURIComponent(JSON.stringify(data))}`)
+    .then(r => r.json())
+    .then(res => showResult(duration, res))
+    .catch(() => showResult(duration, null));
+}
+
+function showResult(duration, res) {
+  document.getElementById('testScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+  document.getElementById('finalTime').textContent = duration;
+  if (res) {
+    document.getElementById('finalScore').textContent = res.score || 'N/A';
+    document.getElementById('correctCount').textContent = res.correct ?? '--';
+    document.getElementById('totalKeyed').textContent   = res.total  ?? '--';
+    if (res.wrongQuestions && res.wrongQuestions.length)
+      document.getElementById('wrongList').textContent = res.wrongQuestions.join(', ');
+  } else {
+    ['finalScore','correctCount','totalKeyed'].forEach(id => document.getElementById(id).textContent = 'N/A');
+  }
+  const labelMap = {
+    p1_1:'P1-Q1 (cow?)',   p1_2:'P1-Q2 (doll?)',  p1_3:'P1-Q3 (socks?)',
+    p1_4:'P1-Q4 (fish?)',  p1_5:'P1-Q5 (watermelons?)',
+    p2_1:'P2-Q1 (mouse?)',    p2_2:'P2-Q2 (boy+train?)',
+    p2_3:'P2-Q3 (blue flowers?)', p2_4:'P2-Q4 (baby+ball?)',
+    p2_5:'P2-Q5 (watching TV?)',
+    p3_1:'P3-Q1 (desk)',   p3_2:'P3-Q2 (board)', p3_3:'P3-Q3 (chair)',
+    p3_4:'P3-Q4 (pencil)', p3_5:'P3-Q5 (eraser)',
+    p4_1:'P4-Q1 (arms)',   p4_2:'P4-Q2 (bananas)', p4_3:'P4-Q3 (tails)',
+    p4_4:'P4-Q4 (eyes)',   p4_5:'P4-Q5 (toes)',
+    p5_1:'P5-Q1 (bag)',    p5_2:'P5-Q2 (chair)',   p5_3:'P5-Q3 (dress)',
+    p5_4:'P5-Q4 (house)',  p5_5:'P5-Q5 (bags)'
+  };
+  const detail = document.getElementById('answerDetail');
+  for (const key of Object.keys(labelMap)) {
+    const p = document.createElement('p');
+    p.textContent = `${labelMap[key]}: ${answers[key] || '(not answered)'}`;
+    if (!answers[key]) p.style.color = '#e53935';
+    detail.appendChild(p);
+  }
+  const tl = document.getElementById('timelineDisplay');
+  timeline.forEach(l => { const p = document.createElement('p'); p.textContent = l; tl.appendChild(p); });
+  if (tabSwitches > 0) {
+    const w = document.createElement('p');
+    w.style.cssText = 'color:#e53935;font-weight:bold';
+    w.textContent = `⚠️ Tab switched ${tabSwitches} time(s)!`;
+    tl.appendChild(w);
+  }
+}
+</script>
+</body>
+</html>
