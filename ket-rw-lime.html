@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KET Reading & Writing – LIME</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; font-family: 'Quicksand', sans-serif; overflow: hidden; }
+
+  /* ===== HEADER ===== */
+  #mainHeader {
+    height: 68px; background: white; border-bottom: 2px solid #e5e7eb;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; z-index: 100; flex-shrink: 0;
+  }
+
+  /* ===== PART TABS ===== */
+  #partTabs {
+    height: 54px; background: #f3f4f6; border-bottom: 2px solid #e5e7eb;
+    display: flex; align-items: center; padding: 0 16px; gap: 6px; flex-shrink: 0; overflow-x: auto;
+  }
+  .part-tab {
+    padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 16px;
+    cursor: pointer; border: 2px solid #d1d5db; background: white; color: #6b7280;
+    transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+  }
+  .part-tab.active { background: #16a34a; color: white; border-color: #16a34a; }
+
+  /* ===== SCREENS ===== */
+  #appWrapper { height: 100vh; display: flex; flex-direction: column; }
+  #mainContent { flex: 1; display: flex; overflow: hidden; }
+
+  #codeScreen {
+    height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+  }
+  #resultScreen {
+    height: 100vh; overflow-y: auto;
+    background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+    display: none;
+  }
+
+  /* ===== SPLIT PANE ===== */
+  .split-pane { display: flex; width: 100%; height: 100%; overflow: hidden; }
+  .pane-left {
+    width: 48%; border-right: 3px solid #e5e7eb; background: #fafafa;
+    display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0;
+  }
+  .pane-right {
+    flex: 1; background: white; display: flex; flex-direction: column; overflow: hidden;
+  }
+  .pane-divider {
+    width: 6px; background: #d1d5db; cursor: col-resize; flex-shrink: 0;
+    transition: background 0.2s; position: relative; z-index: 10;
+  }
+  .pane-divider:hover, .pane-divider.dragging { background: #16a34a; }
+  .pane-divider::after {
+    content: '⋮'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%); color: #9ca3af; font-size: 16px;
+  }
+  .pane-header {
+    padding: 12px 18px; background: #16a34a; color: white;
+    font-weight: 700; font-size: 20px; flex-shrink: 0;
+  }
+  .pane-body { flex: 1; overflow-y: auto; padding: 18px; }
+
+  /* ===== FULL WIDTH (Parts 1, 5, 6, 7) ===== */
+  .full-pane { width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+  .full-pane .pane-body { max-width: 900px; margin: 0 auto; width: 100%; }
+
+  /* ===== PART VIEW ===== */
+  .part-view { display: none; width: 100%; height: 100%; }
+  .part-view.active { display: flex; }
+
+  /* ===== QUESTION STYLES ===== */
+  .q-box {
+    background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 14px;
+    padding: 16px 20px; margin-bottom: 14px;
+  }
+  .q-label { font-size: 22px; font-weight: 700; color: #374151; margin-bottom: 12px; }
+  .q-context { font-size: 19px; color: #6b7280; font-weight: 600; margin-bottom: 6px; }
+
+  .opt-btn {
+    display: block; width: 100%; text-align: left;
+    padding: 12px 20px; margin-bottom: 8px;
+    border: 2px solid #d1d5db; border-radius: 10px;
+    font-size: 21px; font-weight: 600; font-family: 'Quicksand', sans-serif;
+    background: white; cursor: pointer; transition: all 0.2s;
+  }
+  .opt-btn:hover { border-color: #16a34a; background: #f0fdf4; }
+  .opt-btn.selected { background: #16a34a; color: white; border-color: #16a34a; }
+
+  .opt-inline {
+    display: inline-block; padding: 10px 22px; margin: 4px;
+    border: 2px solid #d1d5db; border-radius: 20px;
+    font-size: 20px; font-weight: 700; font-family: 'Quicksand', sans-serif;
+    background: white; cursor: pointer; transition: all 0.2s;
+  }
+  .opt-inline:hover { border-color: #16a34a; background: #f0fdf4; }
+  .opt-inline.selected { background: #16a34a; color: white; border-color: #16a34a; }
+
+  /* ===== READING PANELS ===== */
+  .reading-card {
+    background: #f0fdf4; border: 2px solid #86efac; border-radius: 14px;
+    padding: 20px 22px; line-height: 2.2; font-size: 22px; font-weight: 700; color: #1f2937;
+  }
+  .reading-card p { margin-bottom: 12px; }
+  .person-name {
+    font-weight: 800; color: #16a34a; font-size: 24px;
+    margin-top: 18px; margin-bottom: 6px;
+    border-bottom: 2px solid #bbf7d0; padding-bottom: 2px;
+  }
+  .gap-tag {
+    display: inline-block; background: #fef9c3; border: 2px solid #facc15;
+    border-radius: 8px; padding: 0 8px; font-weight: 800; color: #854d0e; margin: 0 2px;
+  }
+  .reading-title {
+    text-align: center; font-size: 26px; font-weight: 800;
+    color: #14532d; margin-bottom: 4px;
+  }
+  .reading-subtitle {
+    text-align: center; font-size: 20px; color: #6b7280; font-style: italic; margin-bottom: 16px; font-weight: 600;
+  }
+
+  /* ===== INSTRUCTIONS ===== */
+  .instruction {
+    background: #f0fdf4; border-left: 4px solid #16a34a;
+    padding: 12px 16px; border-radius: 0 8px 8px 0;
+    font-size: 20px; color: #374151; margin-bottom: 16px; line-height: 1.6;
+  }
+  .section-label {
+    color: #dc2626; font-size: 22px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;
+  }
+  .person-key {
+    background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px;
+    padding: 10px 16px; margin-bottom: 14px; font-size: 19px; font-weight: 700; color: #14532d;
+  }
+
+  /* ===== PART 5 GAP FILL ===== */
+  .email-card {
+    background: #f0fdf4; border: 2px solid #86efac; border-radius: 14px;
+    padding: 22px 26px; line-height: 3.0; font-size: 22px; font-weight: 700; color: #1f2937; margin-bottom: 16px;
+  }
+  .email-header {
+    background: #dcfce7; border-radius: 8px; padding: 10px 16px;
+    margin-bottom: 16px; font-size: 20px; font-weight: 800; color: #14532d;
+  }
+  .inline-blank {
+    display: inline-block; border: none; border-bottom: 3px solid #16a34a;
+    min-width: 110px; padding: 2px 8px; margin: 0 4px;
+    font-family: 'Quicksand', sans-serif; font-size: 22px; font-weight: 800;
+    background: transparent; outline: none; color: #14532d; text-align: center;
+  }
+  .inline-blank:focus { border-bottom-color: #dc2626; }
+
+  /* ===== WRITING ===== */
+  .textarea-answer {
+    width: 100%; border-radius: 12px; border: 2px solid #d1d5db;
+    padding: 16px 18px; font-size: 22px; font-weight: 700; font-family: 'Quicksand', sans-serif;
+    resize: vertical; outline: none; line-height: 2.0; transition: border-color 0.2s;
+  }
+  .textarea-answer:focus { border-color: #16a34a; background: #f0fdf4; }
+
+  /* ===== FOOTER ===== */
+  #footerBar {
+    height: 64px; background: #f9fafb; border-top: 2px solid #e5e7eb;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; flex-shrink: 0;
+  }
+
+  /* ===== SCROLLBARS ===== */
+  .pane-body::-webkit-scrollbar { width: 6px; }
+  .pane-body::-webkit-scrollbar-track { background: #f1f5f9; }
+  .pane-body::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ===== EXAMPLE BOX ===== */
+  .example-box {
+    background: #fef9c3; border-left: 5px solid #facc15; border-radius: 0 10px 10px 0;
+    padding: 12px 16px; margin-bottom: 14px; font-size: 19px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="codeScreen">
+  <div style="max-width:560px; width:100%; background:white; border-radius:28px; box-shadow:0 24px 72px rgba(0,0,0,0.18); padding:52px 48px; text-align:center;">
+    <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:64px; margin:0 auto 16px; display:block;" alt="logo">
+    <div style="font-size:28px; font-weight:800; color:#16a34a; margin-bottom:4px;">Trung tâm tiếng Anh LIME</div>
+    <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:6px;">📞 Hotline: <a href="tel:0976222792" style="color:#f97316; text-decoration:none; font-weight:800;">0976 222 792</a></div>
+    <div style="border-top:2px solid #e5e7eb; margin:24px 0;"></div>
+    <h1 style="font-size:30px; font-weight:800; color:#16a34a; margin-bottom:4px;">KET Reading &amp; Writing</h1>
+    <p style="color:#f97316; font-size:21px; font-weight:700; margin-bottom:32px;">Cambridge A2 Key for Schools</p>
+    <input type="text" id="studentCode"
+      style="width:100%; padding:18px 24px; font-size:26px; border:3px solid #86efac; border-radius:18px; text-align:center; outline:none; font-family:'Quicksand',sans-serif; text-transform:uppercase;"
+      placeholder="Nhập mã học sinh"
+      onkeydown="if(event.key==='Enter') verifyStudent()">
+    <button onclick="verifyStudent()"
+      style="width:100%; margin-top:16px; background:#16a34a; color:white; font-weight:800; padding:20px; border-radius:18px; font-size:24px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif; letter-spacing:0.05em;">
+      BẮT ĐẦU 🚀
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ MAIN APP ══════════════ -->
+<div id="appWrapper" style="display:none;">
+
+  <!-- HEADER -->
+  <div id="mainHeader">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:40px;" alt="logo">
+      <div>
+        <div style="font-weight:800; color:#16a34a; font-size:20px;">KET Reading &amp; Writing</div>
+        <div style="font-size:15px; color:#f97316; font-weight:700; margin-top:-2px;">Cambridge A2 Key for Schools</div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:20px;">
+      <div style="font-size:18px; color:#6b7280;">Học sinh: <strong id="headerName" style="color:#1f2937;"></strong></div>
+      <div style="font-size:22px; font-weight:800; color:#dc2626;">⏱ <span id="timer">00:00</span></div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:120px; background:#e5e7eb; height:8px; border-radius:4px; overflow:hidden;">
+          <div id="progress" style="height:100%; background:#16a34a; width:0; transition:width 0.5s;"></div>
+        </div>
+        <span style="font-size:17px; color:#6b7280;" id="progressLabel">0/31</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART TABS -->
+  <div id="partTabs">
+    <span style="font-size:16px; font-weight:700; color:#6b7280; margin-right:4px; flex-shrink:0;">Phần:</span>
+    <div class="part-tab active" onclick="showPart(1)" id="tab1">Part 1 (Q1–6)</div>
+    <div class="part-tab" onclick="showPart(2)" id="tab2">Part 2 (Q7–13)</div>
+    <div class="part-tab" onclick="showPart(3)" id="tab3">Part 3 (Q14–18)</div>
+    <div class="part-tab" onclick="showPart(4)" id="tab4">Part 4 (Q19–24)</div>
+    <div class="part-tab" onclick="showPart(5)" id="tab5">Part 5 (Q25–30)</div>
+    <div class="part-tab" onclick="showPart(6)" id="tab6">Part 6 (Q31)</div>
+    <div class="part-tab" onclick="showPart(7)" id="tab7">Part 7 (Q32)</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="mainContent">
+
+    <!-- ══ PART 1: Full width – image + options ══ -->
+    <div class="part-view active" id="part1">
+      <div class="full-pane">
+        <div class="pane-header">Part 1 – Questions 1–6 &nbsp;|&nbsp; <span style="font-weight:400; font-size:15px;">For each question, choose the correct answer.</span></div>
+        <div class="pane-body">
+          <div class="section-label">Part 1 – Questions 1–6</div>
+          <div class="instruction">📱 For each question, choose the correct answer.</div>
+
+          <!-- Q1 -->
+          <div class="q-box">
+            <div class="q-label">1. Sebastian is asking Lisa if</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+              <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775142765/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_221048_saq70d.png" style="width:100%;border-radius:10px;border:2px solid #e5e7eb;">
+              <div>
+                <button class="opt-btn" onclick="selectAnswer('p1_1','A',event)">A &nbsp; she knows where the match is taking place.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_1','B',event)">B &nbsp; she can lend him some equipment.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_1','C',event)">C &nbsp; she is free to play badminton today.</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="q-box">
+            <div class="q-label">2. Dave would like Mike to</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+              <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775142765/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_221055_hz6n1i.png" style="width:100%;border-radius:10px;border:2px solid #e5e7eb;">
+              <div>
+                <button class="opt-btn" onclick="selectAnswer('p1_2','A',event)">A &nbsp; check the bus timetable for Saturday.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_2','B',event)">B &nbsp; ask his father to give them a lift on Saturday.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_2','C',event)">C &nbsp; find out the quickest way to drive to the beach.</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="q-box">
+            <div class="q-label">3.</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+              <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775142765/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_221102_ayvbvd.png" style="width:100%;border-radius:10px;border:2px solid #e5e7eb;">
+              <div>
+                <button class="opt-btn" onclick="selectAnswer('p1_3','A',event)">A &nbsp; Nancy has lost her homework diary.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_3','B',event)">B &nbsp; Nancy needs help with some difficult homework.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_3','C',event)">C &nbsp; Nancy forgot to make a note of what she needs to do.</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="q-box">
+            <div class="q-label">4.</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+              <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775142765/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_221109_j6sgj4.png" style="width:100%;border-radius:10px;border:2px solid #e5e7eb;">
+              <div>
+                <button class="opt-btn" onclick="selectAnswer('p1_4','A',event)">A &nbsp; Library staff won't have much time to help you next week.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_4','B',event)">B &nbsp; Arrive early at the library if you would like to book a school laptop.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_4','C',event)">C &nbsp; The times when you can visit the library will change soon.</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="q-box">
+            <div class="q-label">5.</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+              <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775142765/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_221118_rglwv1.png" style="width:100%;border-radius:10px;border:2px solid #e5e7eb;">
+              <div>
+                <button class="opt-btn" onclick="selectAnswer('p1_5','A',event)">A &nbsp; If the weather is bad, we will cancel sports day.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_5','B',event)">B &nbsp; All students should come to the hall at 9.00 a.m. on Friday.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_5','C',event)">C &nbsp; Students can invite visitors to come and enjoy the day.</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="q-box">
+            <div class="q-label">6. Mum is asking if Joe's teacher</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+              <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775142765/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_221125_tz0khd.png" style="width:100%;border-radius:10px;border:2px solid #e5e7eb;">
+              <div>
+                <button class="opt-btn" onclick="selectAnswer('p1_6','A',event)">A &nbsp; has changed his homework.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_6','B',event)">B &nbsp; helped him to understand his homework.</button>
+                <button class="opt-btn" onclick="selectAnswer('p1_6','C',event)">C &nbsp; needs to speak to her about his homework.</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PART 2: Split – Reading LEFT / Questions RIGHT ══ -->
+    <div class="part-view" id="part2">
+      <div class="split-pane">
+        <div class="pane-left">
+          <div class="pane-header">🗺️ Part 2 – Bài đọc</div>
+          <div class="pane-body">
+            <div class="reading-card">
+              <div class="reading-title">My trip to Rome</div>
+              <div class="person-name">Rhodri</div>
+              <p>I had a great time in Rome with my family. It was my first holiday outside my own country and I couldn't wait to go. I found out all I could about Rome from the library and on the internet. Knowing about the history made seeing all the old buildings, like the Colosseum, much more interesting. We were able to do lots of sightseeing because the taxis and buses and the metro were cheap and fast.</p>
+              <div class="person-name">Patrick</div>
+              <p>It was really hot when I arrived at Rome airport with my parents last summer. I loved walking around famous places like the Trevi Fountain, but all the cars and buses in the city sometimes made walking difficult. I really loved the food. The Italians have a special kind of ice cream called 'gelato' which is wonderful, but the best thing I had was a pizza at a local market. I also got some great things to take back for my friends.</p>
+              <div class="person-name">Josh</div>
+              <p>It was so hot when my dad and I went to Rome last year that we usually waited until after the sun went down to explore the city on foot. During the day we went to museums, shops and restaurants. The pasta there is amazing, and I had some Italian ice cream, called 'gelato', for the first time. That was the thing I liked most. After a few days in Rome, we decided to take a train into the countryside for a day. It was nice to see all the small villages and farms.</p>
+            </div>
+          </div>
+        </div>
+        <div class="pane-divider" id="div2"></div>
+        <div class="pane-right">
+          <div class="pane-header">Part 2 – Questions 7–13</div>
+          <div class="pane-body">
+            <div class="person-key">A = Rhodri &nbsp;·&nbsp; B = Patrick &nbsp;·&nbsp; C = Josh</div>
+            <div class="q-box">
+              <div class="q-label">7. Who says it was easy to travel around in Rome?</div>
+              <button class="opt-inline" onclick="selectAnswer('p2_7','A',event)">A Rhodri</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_7','B',event)">B Patrick</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_7','C',event)">C Josh</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">8. Who says he felt very excited before his holiday?</div>
+              <button class="opt-inline" onclick="selectAnswer('p2_8','A',event)">A Rhodri</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_8','B',event)">B Patrick</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_8','C',event)">C Josh</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">9. Who says there was a lot of traffic in Rome?</div>
+              <button class="opt-inline" onclick="selectAnswer('p2_9','A',event)">A Rhodri</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_9','B',event)">B Patrick</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_9','C',event)">C Josh</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">10. Who says he prepared carefully for his trip?</div>
+              <button class="opt-inline" onclick="selectAnswer('p2_10','A',event)">A Rhodri</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_10','B',event)">B Patrick</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_10','C',event)">C Josh</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">11. Who said his favourite food on the trip was Italian ice cream?</div>
+              <button class="opt-inline" onclick="selectAnswer('p2_11','A',event)">A Rhodri</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_11','B',event)">B Patrick</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_11','C',event)">C Josh</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">12. Who bought some things to give as gifts?</div>
+              <button class="opt-inline" onclick="selectAnswer('p2_12','A',event)">A Rhodri</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_12','B',event)">B Patrick</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_12','C',event)">C Josh</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">13. Who took a short trip outside Rome?</div>
+              <button class="opt-inline" onclick="selectAnswer('p2_13','A',event)">A Rhodri</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_13','B',event)">B Patrick</button>
+              <button class="opt-inline" onclick="selectAnswer('p2_13','C',event)">C Josh</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PART 3: Split – Reading LEFT / Questions RIGHT ══ -->
+    <div class="part-view" id="part3">
+      <div class="split-pane">
+        <div class="pane-left">
+          <div class="pane-header">📖 Part 3 – Bài đọc</div>
+          <div class="pane-body">
+            <div class="reading-card">
+              <div class="reading-title">A wonderful year</div>
+              <div class="reading-subtitle">Ben Jones talks about his year of travel before studying at university.</div>
+              <p>I always knew I wanted to spend a year travelling before university. I wanted to see the world, improve my skiing, make new friends from other countries and, more than anything, try lots of things I've never done before.</p>
+              <p>The first place I visited was France. I've always loved the French language and I wanted to study it. Then, while I was there, I became interested in French food. I took some cooking lessons at a farmhouse in the French countryside, and learned to make lots of lovely dishes.</p>
+              <p>Next, I visited Australia. My cousins live near the river in Sydney, so I had somewhere to stay. To begin with, we spent a lot of time sailing in their boat. But then I got a job in a hotel. It was great – the customers and staff were so friendly.</p>
+              <p>My last country was Japan, where I learned to become a skiing teacher. I planned to do a three-week course. But when I got there, I saw that I wasn't actually that good, so I changed to a seven-week one. The course was amazing and afterwards I got a job with a skiing company.</p>
+              <p>The other teachers were very friendly and on our days off, we did activities like snowboarding. One weekend we even did winter camping. That was quite interesting, but it was cold, so I can't say I slept well! Anyway, we're all planning to meet up soon and I can't wait.</p>
+            </div>
+          </div>
+        </div>
+        <div class="pane-divider" id="div3"></div>
+        <div class="pane-right">
+          <div class="pane-header">Part 3 – Questions 14–18</div>
+          <div class="pane-body">
+            <div class="q-box">
+              <div class="q-label">14. What did Ben want to do during the year after he left school?</div>
+              <button class="opt-btn" onclick="selectAnswer('p3_14','A',event)">A &nbsp; try some different sports</button>
+              <button class="opt-btn" onclick="selectAnswer('p3_14','B',event)">B &nbsp; have some new experiences</button>
+              <button class="opt-btn" onclick="selectAnswer('p3_14','C',event)">C &nbsp; meet up with old friends</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">15. Why did Ben go to France?</div>
+              <button class="opt-btn" onclick="selectAnswer('p3_15','A',event)">A &nbsp; to do a French cooking course</button>
+              <button class="opt-btn" onclick="selectAnswer('p3_15','B',event)">B &nbsp; to see the French countryside</button>
+              <button class="opt-btn" onclick="selectAnswer('p3_15','C',event)">C &nbsp; to learn to speak French</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">16. Where did Ben live when he was in Australia?</div>
+              <button class="opt-btn" onclick="selectAnswer('p3_16','A',event)">A &nbsp; in the hotel where he worked</button>
+              <button class="opt-btn" onclick="selectAnswer('p3_16','B',event)">B &nbsp; with members of his family</button>
+              <button class="opt-btn" onclick="selectAnswer('p3_16','C',event)">C &nbsp; on a boat on the river</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">17. Why did Ben change his course in Japan?</div>
+              <button class="opt-btn" onclick="selectAnswer('p3_17','A',event)">A &nbsp; He heard about a better one.</button>
+              <button class="opt-btn" onclick="selectAnswer('p3_17','B',event)">B &nbsp; He knew he needed more practice.</button>
+              <button class="opt-btn" onclick="selectAnswer('p3_17','C',event)">C &nbsp; He wasn't enjoying the first one.</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">18. What does Ben say about winter camping?</div>
+              <button class="opt-btn" onclick="selectAnswer('p3_18','A',event)">A &nbsp; It wasn't pleasant at night.</button>
+              <button class="opt-btn" onclick="selectAnswer('p3_18','B',event)">B &nbsp; He would love to do it again soon.</button>
+              <button class="opt-btn" onclick="selectAnswer('p3_18','C',event)">C &nbsp; It was the most interesting thing he's ever done.</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PART 4: Split – Gap text LEFT / Options RIGHT ══ -->
+    <div class="part-view" id="part4">
+      <div class="split-pane">
+        <div class="pane-left">
+          <div class="pane-header">✏️ Part 4 – Đoạn văn</div>
+          <div class="pane-body">
+            <div class="reading-card">
+              <div class="reading-title">Eric Koston</div>
+              <p style="line-height:2.4; font-size:22px; font-weight:700;">Eric Koston is one of the world's best-known skateboarders. He was born in Thailand, but his family <span class="gap-tag">(19)</span> to the US when he was a baby.</p>
+              <p style="line-height:2.4; font-size:22px; font-weight:700;">His love of skateboarding began at the <span class="gap-tag">(20)</span> of 11, when his older brother gave him a skateboard.</p>
+              <p style="line-height:2.4; font-size:22px; font-weight:700;">It was an old, broken board, but he learned how to skateboard by watching other kids and then he <span class="gap-tag">(21)</span> by himself every day.</p>
+              <p style="line-height:2.4; font-size:22px; font-weight:700;">Three years later, he was so good that a company that made skateboards offered him a summer <span class="gap-tag">(22)</span>.</p>
+              <p style="line-height:2.4; font-size:22px; font-weight:700;">That's when he <span class="gap-tag">(23)</span> to make skateboarding his life.</p>
+              <p style="line-height:2.4; font-size:22px; font-weight:700;">Since then, Eric has <span class="gap-tag">(24)</span> many international competitions, made boarding videos and starred in a skateboarding video game. Now he owns a successful company making sports shoes and clothes.</p>
+            </div>
+          </div>
+        </div>
+        <div class="pane-divider" id="div4"></div>
+        <div class="pane-right">
+          <div class="pane-header">Part 4 – Questions 19–24</div>
+          <div class="pane-body">
+            <div class="q-box">
+              <div class="q-label">19. His family _____ to the US.</div>
+              <button class="opt-btn" onclick="selectAnswer('p4_19','A',event)">A &nbsp; changed</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_19','B',event)">B &nbsp; moved</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_19','C',event)">C &nbsp; left</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">20. At the _____ of 11.</div>
+              <button class="opt-btn" onclick="selectAnswer('p4_20','A',event)">A &nbsp; year</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_20','B',event)">B &nbsp; time</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_20','C',event)">C &nbsp; age</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">21. He _____ by himself every day.</div>
+              <button class="opt-btn" onclick="selectAnswer('p4_21','A',event)">A &nbsp; practised</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_21','B',event)">B &nbsp; taught</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_21','C',event)">C &nbsp; followed</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">22. They offered him a summer _____.</div>
+              <button class="opt-btn" onclick="selectAnswer('p4_22','A',event)">A &nbsp; career</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_22','B',event)">B &nbsp; job</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_22','C',event)">C &nbsp; work</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">23. That's when he _____ to make skateboarding his life.</div>
+              <button class="opt-btn" onclick="selectAnswer('p4_23','A',event)">A &nbsp; thought</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_23','B',event)">B &nbsp; felt</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_23','C',event)">C &nbsp; decided</button>
+            </div>
+            <div class="q-box">
+              <div class="q-label">24. Eric has _____ many international competitions.</div>
+              <button class="opt-btn" onclick="selectAnswer('p4_24','A',event)">A &nbsp; won</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_24','B',event)">B &nbsp; taken</button>
+              <button class="opt-btn" onclick="selectAnswer('p4_24','C',event)">C &nbsp; tried</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PART 5: Full width – Email gap fill ══ -->
+    <div class="part-view" id="part5">
+      <div class="full-pane">
+        <div class="pane-header">📝 Part 5 – Questions 25–30 &nbsp;|&nbsp; <span style="font-weight:400; font-size:15px;">Write ONE word for each gap.</span></div>
+        <div class="pane-body">
+          <div class="section-label">Part 5 – Questions 25–30</div>
+          <div class="instruction">For each question, write the correct answer. Write <strong>ONE word</strong> for each gap.</div>
+          <div class="example-box"><strong>Example (0):</strong> We <u>are</u> all having a great time…</div>
+          <div class="email-card">
+            <div class="email-header">📧 From: Jason &nbsp;&nbsp;|&nbsp;&nbsp; To: Mum</div>
+            <p>We <strong>(0)</strong> <u>are</u> all having a great time camping in the forest. My class has got <strong>(25)</strong> <input type="text" class="inline-blank" id="q_p5_25" placeholder="…" onblur="saveText('p5_25',this.value)"> best place on the campsite, with a great view of the mountains.</p>
+            <p>Last night, <strong>(26)</strong> <input type="text" class="inline-blank" id="q_p5_26" placeholder="…" onblur="saveText('p5_26',this.value)"> rained really hard. Lots of people got wet, <strong>(27)</strong> <input type="text" class="inline-blank" id="q_p5_27" placeholder="…" onblur="saveText('p5_27',this.value)"> I was lucky my new tent stayed dry all night! I'm really glad we decided to buy it. It's much better <strong>(28)</strong> <input type="text" class="inline-blank" id="q_p5_28" placeholder="…" onblur="saveText('p5_28',this.value)"> my old one.</p>
+            <p>By the way, I forgot <strong>(29)</strong> <input type="text" class="inline-blank" id="q_p5_29" placeholder="…" onblur="saveText('p5_29',this.value)"> tell the football coach that I'm away <strong>(30)</strong> <input type="text" class="inline-blank" id="q_p5_30" placeholder="…" onblur="saveText('p5_30',this.value)"> the moment. Can you let him know that I can't come to practice this week?</p>
+            <p>Thanks!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PART 6: Full width – Write email ══ -->
+    <div class="part-view" id="part6">
+      <div class="full-pane">
+        <div class="pane-header">✍️ Part 6 – Question 31 &nbsp;|&nbsp; <span style="font-weight:400; font-size:15px;">Write an email in English.</span></div>
+        <div class="pane-body">
+          <div class="section-label">Part 6 – Question 31</div>
+          <div class="q-box">
+            <div class="instruction" style="margin-bottom:14px;">You are going camping next weekend with your family. Write an email to your English friend, Lee.</div>
+            <div style="background:#f0fdf4; border-radius:10px; padding:14px 18px; margin-bottom:14px; line-height:2.4; font-size:22px; font-weight:700; border:1.5px solid #86efac;">
+              <div style="font-weight:800; color:#14532d; margin-bottom:8px;">In your email:</div>
+              <div>• ask Lee to come camping with you and your family</div>
+              <div>• say why you are going camping</div>
+              <div>• tell Lee what to bring</div>
+            </div>
+            <div style="font-size:21px; font-weight:700; color:#6b7280; margin-bottom:10px;">Write <strong>25 words or more</strong>.</div>
+            <textarea class="textarea-answer" id="q_p6_31" rows="10" placeholder="Write your email here…"
+              oninput="countWords('q_p6_31','wc31',25)" onblur="saveText('p6_31',this.value)"></textarea>
+            <div style="text-align:right; margin-top:6px;"><span id="wc31" style="font-size:18px; color:#9ca3af; font-weight:600;">0 words</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PART 7: Full width – Story from pictures ══ -->
+    <div class="part-view" id="part7">
+      <div class="full-pane">
+        <div class="pane-header">🎨 Part 7 – Question 32 &nbsp;|&nbsp; <span style="font-weight:400; font-size:15px;">Write the story shown in the pictures. 35 words or more.</span></div>
+        <div class="pane-body">
+          <div class="section-label">Part 7 – Question 32</div>
+          <div class="instruction">Look at the three pictures. Write the story shown in the pictures. Write <strong>35 words or more</strong>.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:18px;">
+            <div>
+              <div style="font-size:18px; font-weight:800; color:#6b7280; margin-bottom:6px; text-align:center;">Picture 1</div>
+              <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775143710/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_222803_izvzgt.png" style="width:100%;border-radius:10px;border:2px solid #e5e7eb;">
+            </div>
+            <div>
+              <div style="font-size:18px; font-weight:800; color:#6b7280; margin-bottom:6px; text-align:center;">Picture 2</div>
+              <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775143710/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_222808_ugdrzm.png" style="width:100%;border-radius:10px;border:2px solid #e5e7eb;">
+            </div>
+            <div>
+              <div style="font-size:18px; font-weight:800; color:#6b7280; margin-bottom:6px; text-align:center;">Picture 3</div>
+              <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775143710/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-02_222813_prhndy.png" style="width:100%;border-radius:10px;border:2px solid #e5e7eb;">
+            </div>
+          </div>
+          <div class="q-box">
+            <textarea class="textarea-answer" id="q_p7_32" rows="10" placeholder="Write your story here…"
+              oninput="countWords('q_p7_32','wc32',35)" onblur="saveText('p7_32',this.value)"></textarea>
+            <div style="text-align:right; margin-top:6px;"><span id="wc32" style="font-size:18px; color:#9ca3af; font-weight:600;">0 words</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end mainContent -->
+
+  <!-- FOOTER -->
+  <div id="footerBar">
+    <div style="display:flex; gap:8px;">
+      <button onclick="prevPart()" style="padding:10px 22px; border:2px solid #d1d5db; border-radius:20px; font-size:18px; font-weight:700; cursor:pointer; background:white; font-family:'Quicksand',sans-serif;">← Phần trước</button>
+      <button onclick="nextPart()" style="padding:10px 22px; border:2px solid #d1d5db; border-radius:20px; font-size:18px; font-weight:700; cursor:pointer; background:white; font-family:'Quicksand',sans-serif;">Phần tiếp →</button>
+    </div>
+    <div style="font-size:16px; color:#9ca3af;">Kéo thanh giữa để điều chỉnh cỡ panel</div>
+    <button onclick="submitTest()" style="padding:12px 32px; background:#dc2626; color:white; font-weight:800; font-size:20px; border-radius:20px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif;">NỘP BÀI 🎉</button>
+  </div>
+
+</div><!-- end appWrapper -->
+
+<!-- ══════════════ RESULT ══════════════ -->
+<div id="resultScreen">
+  <div style="max-width:680px; margin:40px auto; background:white; border-radius:24px; box-shadow:0 20px 60px rgba(0,0,0,0.12); padding:48px 40px; text-align:center;">
+    <div style="font-size:64px; margin-bottom:8px;">🎉</div>
+    <h1 style="font-size:34px; font-weight:800; color:#16a34a; margin-bottom:8px;">HOÀN THÀNH!</h1>
+    <div style="font-size:80px; font-weight:800; color:#16a34a; line-height:1;" id="finalScore">--</div>
+    <p style="font-size:22px; margin:16px 0; color:#374151;">Đúng: <strong id="correctCount">--</strong> / <span id="totalKeyed">--</span> câu</p>
+    <p style="font-size:18px; color:#6b7280; margin-bottom:24px;">Thời gian: <strong id="finalTime">00:00</strong></p>
+    <div style="background:#fef2f2; border:2px solid #fca5a5; border-radius:14px; padding:16px 20px; margin-bottom:14px; text-align:left;">
+      <p style="font-weight:700; color:#991b1b; font-size:18px; margin-bottom:4px;">❌ Câu sai / chưa làm:</p>
+      <p id="wrongList" style="font-family:monospace; font-size:15px;">Không có</p>
+    </div>
+    <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:14px; padding:16px 20px; text-align:left; margin-bottom:14px; max-height:220px; overflow-y:auto;">
+      <p style="font-weight:700; color:#15803d; font-size:17px; margin-bottom:8px;">📋 Chi tiết đáp án:</p>
+      <div id="answerDetail" style="font-size:14px; font-family:monospace; color:#374151;"></div>
+    </div>
+    <div style="background:#fff7ed; border:2px solid #fed7aa; border-radius:14px; padding:16px 20px; text-align:left; margin-bottom:24px; max-height:180px; overflow-y:auto;">
+      <p style="font-weight:700; color:#9a3412; font-size:17px; margin-bottom:8px;">📊 Lịch sử làm bài:</p>
+      <div id="timelineDisplay" style="font-size:13px; font-family:monospace; color:#374151;"></div>
+    </div>
+    <button onclick="location.reload()" style="background:#16a34a; color:white; font-weight:800; padding:16px 40px; border-radius:16px; font-size:20px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif;">LÀM LẠI 🔄</button>
+  </div>
+</div>
+
+<script>
+const URL_GAS = 'https://script.google.com/macros/s/AKfycbzXKfYr35pRssLAYvJUPIa6472V3TW4OM-4DPLkAiZTuC4DiufReCFKZikGSZtPlYGp/exec';
+const TEST_NAME = 'KET Reading Writing - Sample Test';
+const TOTAL_QUESTIONS = 31;
+
+let student = null, startTime = null, timerInterval = null;
+let answers = {}, timeline = [], tabSwitches = 0;
+let currentPart = 1;
+
+// ===== PART NAVIGATION =====
+function showPart(n) {
+  currentPart = n;
+  for (let i = 1; i <= 7; i++) {
+    document.getElementById(`part${i}`).classList.toggle('active', i === n);
+    document.getElementById(`tab${i}`).classList.toggle('active', i === n);
+  }
+}
+function prevPart() { if (currentPart > 1) showPart(currentPart - 1); }
+function nextPart() { if (currentPart < 7) showPart(currentPart + 1); }
+
+// ===== DRAGGABLE DIVIDERS =====
+function makeDraggable(divId, paneSelector) {
+  const divider = document.getElementById(divId);
+  if (!divider) return;
+  let dragging = false;
+  divider.addEventListener('mousedown', e => { dragging = true; divider.classList.add('dragging'); e.preventDefault(); });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const pane = divider.closest('.split-pane');
+    const rect = pane.getBoundingClientRect();
+    let pct = ((e.clientX - rect.left) / rect.width) * 100;
+    pct = Math.max(25, Math.min(75, pct));
+    divider.previousElementSibling.style.width = pct + '%';
+  });
+  document.addEventListener('mouseup', () => { dragging = false; divider.classList.remove('dragging'); });
+}
+['div2','div3','div4'].forEach(id => makeDraggable(id));
+
+// ===== WORD COUNTER =====
+function countWords(taId, counterId, min) {
+  const t = document.getElementById(taId).value.trim();
+  const wc = t === '' ? 0 : t.split(/\s+/).filter(w => w).length;
+  const el = document.getElementById(counterId);
+  el.textContent = wc + ' words';
+  el.style.color = wc >= min ? '#16a34a' : '#dc2626';
+  el.style.fontWeight = wc >= min ? '800' : 'normal';
+}
+
+// ===== VERIFY =====
+function verifyStudent() {
+  const code = document.getElementById('studentCode').value.trim().toUpperCase();
+  if (!code) return alert('Vui lòng nhập mã học sinh!');
+  fetch(`${URL_GAS}?action=verify&code=${code}`)
+    .then(r => r.json())
+    .then(d => {
+      if (!d.exists) return alert('Không tìm thấy mã học sinh. Vui lòng kiểm tra lại.');
+      student = { code, name: d.studentName || code };
+      document.getElementById('headerName').textContent = student.name;
+      document.getElementById('codeScreen').style.display = 'none';
+      document.getElementById('appWrapper').style.display = 'flex';
+      showPart(1);
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        const s = Math.floor((Date.now() - startTime) / 1000);
+        const m = String(Math.floor(s / 60)).padStart(2,'0');
+        const sc = String(s % 60).padStart(2,'0');
+        document.getElementById('timer').textContent = `${m}:${sc}`;
+        updateProgress();
+      }, 500);
+    })
+    .catch(err => alert('Lỗi kết nối: ' + err.message));
+}
+
+function updateProgress() {
+  const n = Object.keys(answers).filter(k => answers[k]).length;
+  document.getElementById('progress').style.width = `${(n / TOTAL_QUESTIONS) * 100}%`;
+  document.getElementById('progressLabel').textContent = `${n}/${TOTAL_QUESTIONS}`;
+}
+
+// ===== SELECT ANSWER =====
+function selectAnswer(key, option, event) {
+  const time = new Date().toLocaleTimeString();
+  document.querySelectorAll(`button[onclick*="selectAnswer('${key}'"]`).forEach(b => b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  const old = answers[key];
+  if (!old) timeline.push(`${key}: ${option} (${time})`);
+  else if (old !== option) timeline.push(`→ Changed ${key} to ${option} (${time})`);
+  answers[key] = option;
+  updateProgress();
+}
+
+// ===== SAVE TEXT =====
+function saveText(key, value) {
+  const v = value.trim();
+  if (v === (answers[key] || '')) return;
+  const time = new Date().toLocaleTimeString();
+  if (!answers[key] && v) timeline.push(`${key}: "${v}" (${time})`);
+  else if (answers[key] && v) timeline.push(`→ Changed ${key} to "${v}" (${time})`);
+  answers[key] = v || null;
+  updateProgress();
+}
+
+// ===== SUBMIT =====
+function submitTest() {
+  const answered = Object.keys(answers).filter(k => answers[k]).length;
+  if (answered < TOTAL_QUESTIONS && !confirm(`Còn ${TOTAL_QUESTIONS - answered} câu chưa làm. Nộp luôn?`)) return;
+  clearInterval(timerInterval);
+  const duration = document.getElementById('timer').textContent;
+  const data = {
+    action: 'submit', testName: TEST_NAME,
+    studentCode: student.code, studentName: student.name,
+    answers, timeUsed: duration,
+    realSubmitTime: new Date().toLocaleString(),
+    timeline: timeline.join(' | '),
+    tabSwitchLog: tabSwitches > 0 ? `Tab switched ${tabSwitches} time(s)` : 'No tab switches',
+    totalQuestions: TOTAL_QUESTIONS
+  };
+  fetch(`${URL_GAS}?data=${encodeURIComponent(JSON.stringify(data))}`)
+    .then(r => r.json())
+    .then(res => showResult(duration, res))
+    .catch(() => showResult(duration, null));
+}
+
+function showResult(duration, res) {
+  document.getElementById('appWrapper').style.display = 'none';
+  const rs = document.getElementById('resultScreen');
+  rs.style.display = 'block';
+  document.getElementById('finalTime').textContent = duration;
+  if (res) {
+    document.getElementById('finalScore').textContent = res.score || 'N/A';
+    document.getElementById('correctCount').textContent = res.correct ?? '--';
+    document.getElementById('totalKeyed').textContent = res.total ?? '--';
+    if (res.wrongQuestions?.length) document.getElementById('wrongList').textContent = res.wrongQuestions.join(', ');
+  } else {
+    ['finalScore','correctCount','totalKeyed'].forEach(id => document.getElementById(id).textContent = 'N/A');
+  }
+  const labelMap = {
+    p1_1:'P1-Q1',p1_2:'P1-Q2',p1_3:'P1-Q3',p1_4:'P1-Q4',p1_5:'P1-Q5',p1_6:'P1-Q6',
+    p2_7:'P2-Q7',p2_8:'P2-Q8',p2_9:'P2-Q9',p2_10:'P2-Q10',p2_11:'P2-Q11',p2_12:'P2-Q12',p2_13:'P2-Q13',
+    p3_14:'P3-Q14',p3_15:'P3-Q15',p3_16:'P3-Q16',p3_17:'P3-Q17',p3_18:'P3-Q18',
+    p4_19:'P4-Q19',p4_20:'P4-Q20',p4_21:'P4-Q21',p4_22:'P4-Q22',p4_23:'P4-Q23',p4_24:'P4-Q24',
+    p5_25:'P5-Q25',p5_26:'P5-Q26',p5_27:'P5-Q27',p5_28:'P5-Q28',p5_29:'P5-Q29',p5_30:'P5-Q30',
+    p6_31:'P6-Q31 (Email)',p7_32:'P7-Q32 (Story)'
+  };
+  const detail = document.getElementById('answerDetail');
+  for (const key of Object.keys(labelMap)) {
+    const p = document.createElement('p');
+    const val = answers[key] || '(chưa làm)';
+    p.textContent = `${labelMap[key]}: ${val.length > 80 ? val.substring(0,80)+'…' : val}`;
+    if (!answers[key]) p.style.color = '#dc2626';
+    detail.appendChild(p);
+  }
+  const tl = document.getElementById('timelineDisplay');
+  timeline.forEach(l => { const p = document.createElement('p'); p.textContent = l; tl.appendChild(p); });
+}
+
+// ===== TAB SWITCH =====
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && document.getElementById('appWrapper').style.display !== 'none') {
+    tabSwitches++;
+    timeline.push(`Tab switched at ${new Date().toLocaleTimeString()}`);
+  }
+});
+</script>
+</body>
+</html>
