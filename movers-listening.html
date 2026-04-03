@@ -12,7 +12,7 @@
 
   /* ===== HEADER ===== */
   #mainHeader {
-    height: 56px;
+    height: 68px;
     background: white;
     border-bottom: 2px solid #e5e7eb;
     display: flex;
@@ -25,20 +25,20 @@
 
   /* ===== PART TABS ===== */
   #partTabs {
-    height: 44px;
+    height: 56px;
     background: #f3f4f6;
     border-bottom: 2px solid #e5e7eb;
     display: flex;
     align-items: center;
     padding: 0 16px;
-    gap: 6px;
+    gap: 8px;
     flex-shrink: 0;
   }
   .part-tab {
-    padding: 5px 16px;
+    padding: 7px 20px;
     border-radius: 20px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 18px;
     cursor: pointer;
     border: 2px solid #d1d5db;
     background: white;
@@ -95,11 +95,11 @@
   }
 
   .panel-header {
-    padding: 10px 16px;
+    padding: 12px 18px;
     background: #16a34a;
     color: white;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 20px;
     flex-shrink: 0;
   }
   .panel-body {
@@ -144,7 +144,7 @@
   /* ===== QUESTION STYLES ===== */
   .section-label {
     color: #dc2626;
-    font-size: 13px;
+    font-size: 20px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -153,19 +153,20 @@
   .instruction {
     background: #f0fdf4;
     border-left: 4px solid #16a34a;
-    padding: 10px 14px;
+    padding: 12px 16px;
     border-radius: 0 8px 8px 0;
-    font-size: 13px;
+    font-size: 20px;
     color: #374151;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
+    line-height: 1.6;
   }
 
   /* Name matching */
   .name-btn {
-    padding: 8px 18px;
+    padding: 10px 22px;
     border: 2px solid #d1d5db;
     border-radius: 9999px;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 700;
     cursor: pointer;
     background: white;
@@ -187,8 +188,8 @@
   .match-tag {
     display: inline-flex; align-items: center; gap: 8px;
     background: #f0fdf4; border: 1.5px solid #86efac;
-    padding: 6px 14px; border-radius: 9999px;
-    font-size: 14px; cursor: pointer;
+    padding: 8px 16px; border-radius: 9999px;
+    font-size: 18px; cursor: pointer;
   }
   .match-tag:hover { background: #fee2e2; border-color: #fca5a5; }
 
@@ -196,8 +197,8 @@
   .ans-input {
     border: 2px solid #d1d5db;
     border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 15px;
+    padding: 10px 14px;
+    font-size: 20px;
     font-family: 'Quicksand', sans-serif;
     width: 180px;
     outline: none;
@@ -257,7 +258,7 @@
 
   /* ===== FOOTER BUTTONS ===== */
   #footerBar {
-    height: 52px;
+    height: 64px;
     background: #f9fafb;
     border-top: 2px solid #e5e7eb;
     display: flex;
@@ -310,32 +311,32 @@
   #audioBar {
     background: #1e3a5f;
     color: white;
-    padding: 8px 20px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
     gap: 14px;
     flex-shrink: 0;
-    font-size: 13px;
+    font-size: 18px;
   }
   #playBtn {
     background: #16a34a;
     color: white;
     border: none;
-    padding: 6px 18px;
+    padding: 8px 22px;
     border-radius: 20px;
     font-weight: 700;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 18px;
     transition: background 0.2s;
   }
   #playBtn:disabled { background: #6b7280; cursor: not-allowed; opacity: 0.7; }
 
-  .q-label { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px; }
+  .q-label { font-size: 22px; font-weight: 700; color: #374151; margin-bottom: 8px; }
 
   /* Left panel text doubled */
-  .left-panel .panel-header { font-size: 22px; padding: 12px 20px; }
-  .left-panel .q-label { font-size: 24px; }
-  .left-panel .instruction { font-size: 22px; }
+  .left-panel .panel-header { font-size: 24px; padding: 14px 22px; }
+  .left-panel .q-label { font-size: 26px; }
+  .left-panel .instruction { font-size: 24px; }
 
   /* Full-width parts (2 & 4) */
   #mainContent.full-width #splitPane { display: block; }
@@ -359,16 +360,27 @@
 
 <!-- CODE ENTRY SCREEN -->
 <div id="codeScreen">
-  <div style="max-width:480px; width:100%; background:white; border-radius:24px; box-shadow:0 20px 60px rgba(0,0,0,0.15); padding:48px 40px; text-align:center;">
-    <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:48px; margin:0 auto 20px;" alt="logo">
-    <h1 style="font-size:28px; font-weight:800; color:#16a34a; margin-bottom:4px;">Movers Listening</h1>
-    <p style="color:#f97316; font-size:17px; font-weight:700; margin-bottom:32px;">Cambridge A1 Movers</p>
+  <div style="max-width:560px; width:100%; background:white; border-radius:28px; box-shadow:0 24px 72px rgba(0,0,0,0.18); padding:52px 48px; text-align:center;">
+
+    <!-- Logo + Tên trung tâm -->
+    <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:64px; margin:0 auto 16px;" alt="logo">
+    <div style="font-size:28px; font-weight:800; color:#16a34a; margin-bottom:4px; letter-spacing:0.01em;">Trung tâm tiếng Anh LIME</div>
+    <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:6px;">📞 Hotline: <a href="tel:0976222792" style="color:#f97316; text-decoration:none; font-weight:800;">0976 222 792</a></div>
+
+    <!-- Divider -->
+    <div style="border-top:2px solid #e5e7eb; margin:24px 0;"></div>
+
+    <!-- Tên bài thi -->
+    <h1 style="font-size:34px; font-weight:800; color:#16a34a; margin-bottom:6px;">Movers Listening</h1>
+    <p style="color:#f97316; font-size:22px; font-weight:700; margin-bottom:36px;">Cambridge A1 Movers</p>
+
+    <!-- Input mã học sinh -->
     <input type="text" id="studentCode"
-      style="width:100%; padding:16px 20px; font-size:22px; border:3px solid #86efac; border-radius:16px; text-align:center; outline:none; font-family:'Quicksand',sans-serif;"
+      style="width:100%; padding:20px 24px; font-size:26px; border:3px solid #86efac; border-radius:18px; text-align:center; outline:none; font-family:'Quicksand',sans-serif;"
       placeholder="Nhập mã học sinh">
     <button onclick="verifyStudent()"
-      style="width:100%; margin-top:16px; background:#16a34a; color:white; font-weight:800; padding:18px; border-radius:16px; font-size:20px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif;">
-      BẮT ĐẦU
+      style="width:100%; margin-top:18px; background:#16a34a; color:white; font-weight:800; padding:22px; border-radius:18px; font-size:24px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif; letter-spacing:0.05em;">
+      BẮT ĐẦU 🚀
     </button>
   </div>
 </div>
@@ -381,17 +393,17 @@
     <div style="display:flex; align-items:center; gap:12px;">
       <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:34px;" alt="logo">
       <div>
-        <div style="font-weight:800; color:#16a34a; font-size:15px;">Movers Listening</div>
-        <div style="font-size:11px; color:#f97316; font-weight:700; margin-top:-2px;">Cambridge A1 Movers</div>
+        <div style="font-weight:800; color:#16a34a; font-size:20px;">Movers Listening</div>
+        <div style="font-size:15px; color:#f97316; font-weight:700; margin-top:-2px;">Cambridge A1 Movers</div>
       </div>
     </div>
     <div style="display:flex; align-items:center; gap:24px;">
-      <div style="font-size:13px; color:#6b7280;">Học sinh: <strong id="headerName" style="color:#1f2937;"></strong></div>
-      <div style="font-size:18px; font-weight:800; color:#dc2626;">⏱ <span id="timer">00:00</span></div>
+      <div style="font-size:18px; color:#6b7280;">Học sinh: <strong id="headerName" style="color:#1f2937;"></strong></div>
+      <div style="font-size:22px; font-weight:800; color:#dc2626;">⏱ <span id="timer">00:00</span></div>
       <div style="width:120px; background:#e5e7eb; height:8px; border-radius:4px; overflow:hidden;">
         <div id="progress" style="height:100%; background:#16a34a; width:0; transition:width 0.5s;"></div>
       </div>
-      <div style="font-size:12px; color:#6b7280;" id="progressLabel">0/25</div>
+      <div style="font-size:17px; color:#6b7280;" id="progressLabel">0/25</div>
     </div>
   </div>
 
@@ -407,7 +419,7 @@
 
   <!-- PART TABS -->
   <div id="partTabs">
-    <span style="font-size:12px; font-weight:700; color:#6b7280; margin-right:4px;">Phần:</span>
+    <span style="font-size:17px; font-weight:700; color:#6b7280; margin-right:4px;">Phần:</span>
     <div class="part-tab active" onclick="showPart(1)" id="tab1">Part 1</div>
     <div class="part-tab" onclick="showPart(2)" id="tab2">Part 2</div>
     <div class="part-tab" onclick="showPart(3)" id="tab3">Part 3</div>
@@ -426,7 +438,7 @@
         <div class="part-view active" id="left1" style="flex-direction:column;">
           <div class="panel-header">Part 1 – Hình ảnh đề bài</div>
           <div class="panel-body panel-fixed" style="overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fafafa;">
-            <img src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443408/part1_eajgmo.png" class="img-fit" alt="Part 1 image">
+            <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775192154/image_2_voxk8i.jpg" class="img-fit" alt="Part 1 image">
           </div>
         </div>
 
@@ -448,7 +460,7 @@
         <div class="part-view" id="left5" style="flex-direction:column;">
           <div class="panel-header">Part 5 – Hình ảnh đề bài</div>
           <div class="panel-body panel-fixed" style="overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fafafa;">
-            <img src="https://res.cloudinary.com/dzby0c2up/image/upload/v1774443403/part5_syjao7.png" class="img-fit" alt="Part 5 image">
+            <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774495508/YpFGM_w5agzw.jpg" class="img-fit" alt="Part 5 image">
           </div>
         </div>
 
@@ -643,7 +655,7 @@
               <div onclick="setColor(this,'black')"  class="color-btn" style="background:#111827; width:54px; height:54px;" title="Black – Đen"></div>
               <div onclick="setColor(this,'white')"  class="color-btn" style="background:#f9fafb; width:54px; height:54px; border:2px solid #d1d5db;" title="White – Trắng"></div>
             </div>
-            <div id="selectedColorLabel" style="font-size:16px; color:#6b7280; margin-bottom:16px;">Chưa chọn màu</div>
+            <div id="selectedColorLabel" style="font-size:20px; color:#6b7280; margin-bottom:16px;">Chưa chọn màu</div>
 
             <!-- COLOUR NUMBERS -->
             <div style="font-size:20px; font-weight:700; color:#374151; margin-bottom:10px;">Tô màu vào số:</div>
@@ -659,22 +671,22 @@
 
             <!-- WRITE FIELDS — 3 ô, học sinh tự chọn ô đúng khi nghe -->
             <div style="font-size:20px; font-weight:700; color:#374151; margin-bottom:6px;">Viết chữ vào ô (nghe để biết ô nào):</div>
-            <div style="font-size:15px; color:#6b7280; margin-bottom:14px;">⚠️ Chỉ 1 ô cần điền — các ô còn lại để trống nếu không nghe thấy yêu cầu viết vào đó.</div>
+            <div style="font-size:19px; color:#6b7280; margin-bottom:14px;">⚠️ Chỉ 1 ô cần điền — các ô còn lại để trống nếu không nghe thấy yêu cầu viết vào đó.</div>
             <div style="display:flex; flex-direction:column; gap:14px;">
               <div style="display:flex; align-items:center; gap:14px; background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 18px;">
-                <div style="background:#3b82f6; color:white; font-weight:800; font-size:16px; padding:6px 14px; border-radius:20px; flex-shrink:0;">Ô A</div>
+                <div style="background:#3b82f6; color:white; font-weight:800; font-size:20px; padding:8px 18px; border-radius:20px; flex-shrink:0;">Ô A</div>
                 <input id="p5_writeA" class="ans-input" style="font-size:20px; padding:10px 16px; flex:1; width:auto;"
                   placeholder="Viết chữ vào đây nếu nghe thấy..."
                   onblur="saveTextAnswer('part5_writeA', this.value)">
               </div>
               <div style="display:flex; align-items:center; gap:14px; background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 18px;">
-                <div style="background:#10b981; color:white; font-weight:800; font-size:16px; padding:6px 14px; border-radius:20px; flex-shrink:0;">Ô B</div>
+                <div style="background:#10b981; color:white; font-weight:800; font-size:20px; padding:8px 18px; border-radius:20px; flex-shrink:0;">Ô B</div>
                 <input id="p5_writeB" class="ans-input" style="font-size:20px; padding:10px 16px; flex:1; width:auto;"
                   placeholder="Viết chữ vào đây nếu nghe thấy..."
                   onblur="saveTextAnswer('part5_writeB', this.value)">
               </div>
               <div style="display:flex; align-items:center; gap:14px; background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 18px;">
-                <div style="background:#f59e0b; color:white; font-weight:800; font-size:16px; padding:6px 14px; border-radius:20px; flex-shrink:0;">Ô C</div>
+                <div style="background:#f59e0b; color:white; font-weight:800; font-size:20px; padding:8px 18px; border-radius:20px; flex-shrink:0;">Ô C</div>
                 <input id="p5_writeC" class="ans-input" style="font-size:20px; padding:10px 16px; flex:1; width:auto;"
                   placeholder="Viết chữ vào đây nếu nghe thấy..."
                   onblur="saveTextAnswer('part5_writeC', this.value)">
@@ -693,11 +705,11 @@
   <!-- FOOTER -->
   <div id="footerBar">
     <div style="display:flex; gap:8px; align-items:center;">
-      <button onclick="prevPart()" style="padding:7px 18px; border:2px solid #d1d5db; border-radius:20px; font-size:13px; font-weight:700; cursor:pointer; background:white;">← Phần trước</button>
-      <button onclick="nextPart()" style="padding:7px 18px; border:2px solid #d1d5db; border-radius:20px; font-size:13px; font-weight:700; cursor:pointer; background:white;">Phần tiếp →</button>
+      <button onclick="prevPart()" style="padding:10px 22px; border:2px solid #d1d5db; border-radius:20px; font-size:18px; font-weight:700; cursor:pointer; background:white;">← Phần trước</button>
+      <button onclick="nextPart()" style="padding:10px 22px; border:2px solid #d1d5db; border-radius:20px; font-size:18px; font-weight:700; cursor:pointer; background:white;">Phần tiếp →</button>
     </div>
-    <div style="font-size:12px; color:#9ca3af;" id="dividerHint">Kéo thanh giữa để điều chỉnh cỡ</div>
-    <button onclick="submitTest()" style="padding:10px 28px; background:#dc2626; color:white; font-weight:800; font-size:15px; border-radius:20px; border:none; cursor:pointer;">NỘP BÀI</button>
+    <div style="font-size:16px; color:#9ca3af;" id="dividerHint">Kéo thanh giữa để điều chỉnh cỡ</div>
+    <button onclick="submitTest()" style="padding:12px 32px; background:#dc2626; color:white; font-weight:800; font-size:20px; border-radius:20px; border:none; cursor:pointer;">NỘP BÀI</button>
   </div>
 
 </div><!-- end appWrapper -->
@@ -711,11 +723,11 @@
     <p style="font-size:22px; margin:16px 0; color:#374151;">Đúng <strong id="correctCount">0</strong>/25 câu</p>
     <p style="font-size:18px; color:#6b7280; margin-bottom:24px;">Thời gian: <strong id="finalTime">00:00</strong></p>
     <div style="background:#fef2f2; border:2px solid #fca5a5; border-radius:16px; padding:16px 20px; margin-bottom:16px; text-align:left;">
-      <p style="font-weight:700; color:#991b1b; font-size:15px;">Câu sai: <span id="wrongList" style="font-family:monospace;">Không có</span></p>
+      <p style="font-weight:700; color:#991b1b; font-size:19px;">Câu sai: <span id="wrongList" style="font-family:monospace;">Không có</span></p>
     </div>
     <div style="background:#eff6ff; border:2px solid #93c5fd; border-radius:16px; padding:16px 20px; text-align:left; margin-bottom:24px; max-height:200px; overflow-y:auto;">
-      <p style="font-weight:700; color:#1e40af; font-size:14px; margin-bottom:8px;">Lịch sử làm bài:</p>
-      <div id="timelineDisplay" style="font-size:12px; font-family:monospace; color:#374151;"></div>
+      <p style="font-weight:700; color:#1e40af; font-size:18px; margin-bottom:8px;">Lịch sử làm bài:</p>
+      <div id="timelineDisplay" style="font-size:16px; font-family:monospace; color:#374151;"></div>
     </div>
     <button onclick="location.reload()" style="background:#16a34a; color:white; font-weight:800; padding:16px 40px; border-radius:16px; font-size:18px; border:none; cursor:pointer;">LÀM LẠI BÀI</button>
   </div>
@@ -844,9 +856,9 @@ function renderMatches() {
   Object.keys(answers).filter(k => k.startsWith('part1_')).forEach(key => {
     const name = key.replace('part1_','');
     const num = answers[key];
-    html += `<div onclick="removeMatch('${key}')" class="match-tag"><strong>${name}</strong> → <span style="color:#16a34a;font-weight:800;">${num}</span> <span style="color:#dc2626;font-size:11px;">✕</span></div>`;
+    html += `<div onclick="removeMatch('${key}')" class="match-tag"><strong>${name}</strong> → <span style="color:#16a34a;font-weight:800;">${num}</span> <span style="color:#dc2626;font-size:16px;">✕</span></div>`;
   });
-  document.getElementById('matchResult').innerHTML = html || '<span style="color:#9ca3af;font-size:13px;">Chưa có đáp án</span>';
+  document.getElementById('matchResult').innerHTML = html || '<span style="color:#9ca3af;font-size:18px;">Chưa có đáp án</span>';
   // Highlight matched circles
   document.querySelectorAll('#numberList .circle-num').forEach(c => {
     const num = c.dataset.num;
@@ -925,9 +937,9 @@ function renderColorResult() {
     const colorName = answers[key];
     const hex = COLOR_HEX[colorName] || colorName;
     const label = COLOR_LABELS[colorName] || colorName;
-    html += `<div onclick="removeColor('${key}')" class="match-tag"><strong>Số ${num}</strong> <span style="display:inline-block;width:22px;height:22px;border-radius:50%;background:${hex};border:1.5px solid #ccc;vertical-align:middle;"></span> <span style="font-size:13px;">${label}</span> <span style="color:#dc2626;font-size:11px;">✕</span></div>`;
+    html += `<div onclick="removeColor('${key}')" class="match-tag"><strong>Số ${num}</strong> <span style="display:inline-block;width:26px;height:26px;border-radius:50%;background:${hex};border:1.5px solid #ccc;vertical-align:middle;"></span> <span style="font-size:18px;">${label}</span> <span style="color:#dc2626;font-size:16px;">✕</span></div>`;
   });
-  document.getElementById('colorResult').innerHTML = html || '<span style="color:#9ca3af;font-size:13px;">Chưa tô màu</span>';
+  document.getElementById('colorResult').innerHTML = html || '<span style="color:#9ca3af;font-size:18px;">Chưa tô màu</span>';
 }
 function removeColor(key) {
   const num = key.replace('part5_','');
