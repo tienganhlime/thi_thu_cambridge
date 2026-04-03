@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starters Listening – Cambridge Pre A1 #17</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; overflow: hidden; font-family: 'Quicksand', sans-serif; }
+
+  /* ===== HEADER ===== */
+  #mainHeader {
+    height: 68px;
+    background: white;
+    border-bottom: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 100;
+    flex-shrink: 0;
+  }
+
+  /* ===== PART TABS ===== */
+  #partTabs {
+    height: 56px;
+    background: #f3f4f6;
+    border-bottom: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .part-tab {
+    padding: 7px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    border: 2px solid #d1d5db;
+    background: white;
+    color: #6b7280;
+    transition: all 0.2s;
+  }
+  .part-tab.active { background: #16a34a; color: white; border-color: #16a34a; }
+  .part-tab.answered { border-color: #16a34a; color: #16a34a; }
+
+  /* ===== SPLIT PANE ===== */
+  #splitPane {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  .left-panel {
+    width: 55%;
+    border-right: 3px solid #e5e7eb;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .right-panel {
+    width: 45%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #divider {
+    width: 6px;
+    background: #d1d5db;
+    cursor: col-resize;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    position: relative;
+    z-index: 10;
+  }
+  #divider:hover, #divider.dragging { background: #16a34a; }
+  #divider::after {
+    content: '⋮';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 16px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .panel-header {
+    padding: 12px 18px;
+    background: #16a34a;
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .left-panel .panel-header { font-size: 24px; padding: 14px 22px; }
+  .panel-body { flex: 1; padding: 16px; }
+
+  /* ===== PART VIEWS ===== */
+  .part-view { display: none; height: 100%; }
+  .part-view.active { display: flex; height: 100%; }
+  .img-fit { width: 100%; height: 100%; object-fit: contain; padding: 12px; }
+
+  /* ===== QUESTION STYLES ===== */
+  .section-label {
+    color: #dc2626;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+  .instruction {
+    background: #f0fdf4;
+    border-left: 4px solid #16a34a;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 20px;
+    color: #374151;
+    margin-bottom: 14px;
+  }
+
+  /* Name matching */
+  .name-btn {
+    padding: 10px 22px;
+    border: 2px solid #d1d5db;
+    border-radius: 9999px;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    background: white;
+    transition: all 0.2s;
+    color: #374151;
+  }
+  .name-btn.selected { border-color: #16a34a; background: #f0fdf4; color: #16a34a; }
+  .circle-num {
+    width: 52px; height: 52px;
+    border: 3px solid #16a34a;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 700;
+    cursor: pointer; background: white;
+    transition: all 0.2s;
+  }
+  .circle-num:hover { background: #f0fdf4; }
+  .circle-num.matched { background: #16a34a; color: white; }
+  .match-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #f0fdf4; border: 1.5px solid #86efac;
+    padding: 8px 16px; border-radius: 9999px;
+    font-size: 18px; cursor: pointer;
+  }
+  .match-tag:hover { background: #fee2e2; border-color: #fca5a5; }
+
+  /* Text inputs */
+  .ans-input {
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 20px;
+    font-family: 'Quicksand', sans-serif;
+    width: 180px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .ans-input:focus { border-color: #16a34a; }
+  .ans-input.short { width: 70px; text-align: center; }
+
+  /* Tick boxes */
+  .opt-btn {
+    padding: 10px 28px;
+    border: 2px solid #d1d5db;
+    border-radius: 9999px;
+    font-size: 18px; font-weight: 700;
+    cursor: pointer; background: white;
+    transition: all 0.2s;
+  }
+  .opt-btn:hover { border-color: #16a34a; }
+  .opt-btn.selected { background: #16a34a; color: white; border-color: #16a34a; }
+
+  /* Color buttons */
+  .color-btn {
+    width: 44px; height: 44px;
+    border-radius: 50%; border: 3px solid transparent;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .color-btn.selected { border-color: #1f2937; box-shadow: 0 0 0 4px #d1fae5; }
+
+  /* Color circles */
+  .color-circle {
+    width: 52px; height: 52px;
+    border: 3px solid #16a34a;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700;
+    cursor: pointer; background: white;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .color-circle:hover { background: #f0fdf4; }
+
+  /* Full-width parts */
+  #mainContent.full-width #splitPane { display: block; }
+  #mainContent.full-width .left-panel,
+  #mainContent.full-width #divider { display: none; }
+  #mainContent.full-width .right-panel { width: 100%; overflow-y: auto; }
+  #mainContent.full-width .right-panel .panel-body { overflow-y: visible; }
+  #mainContent.full-width .part-view { height: auto; min-height: 100%; }
+  #mainContent.full-width #splitPane { overflow-y: auto; height: 100%; }
+
+  /* ===== FOOTER ===== */
+  #footerBar {
+    height: 64px;
+    background: #f9fafb;
+    border-top: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    flex-shrink: 0;
+  }
+
+  /* ===== SCREENS ===== */
+  #appWrapper { height: 100vh; display: flex; flex-direction: column; }
+  #mainContent { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  #codeScreen {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+  }
+  #resultScreen {
+    height: 100vh;
+    overflow-y: auto;
+    background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  /* Audio bar */
+  #audioBar {
+    background: #1e3a5f;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+  #playBtn {
+    background: #16a34a;
+    color: white;
+    border: none;
+    padding: 8px 22px;
+    border-radius: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.2s;
+  }
+  #playBtn:disabled { background: #6b7280; cursor: not-allowed; opacity: 0.7; }
+
+  /* Scrollbar */
+  .panel-body::-webkit-scrollbar { width: 6px; }
+  .panel-body::-webkit-scrollbar-track { background: #f1f5f9; }
+  .panel-body::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  .panel-body::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+  @media (max-width: 768px) {
+    #splitPane { flex-direction: column; }
+    .left-panel, .right-panel { width: 100% !important; }
+    .left-panel { height: 50vh; border-right: none; border-bottom: 3px solid #e5e7eb; }
+    .right-panel { height: 50vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CODE ENTRY SCREEN -->
+<div id="codeScreen">
+  <div style="max-width:560px; width:100%; background:white; border-radius:28px; box-shadow:0 24px 72px rgba(0,0,0,0.18); padding:52px 48px; text-align:center;">
+
+    <!-- Logo + Tên trung tâm -->
+    <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:64px; margin:0 auto 16px;" alt="logo">
+    <div style="font-size:28px; font-weight:800; color:#16a34a; margin-bottom:4px; letter-spacing:0.01em;">Trung tâm tiếng Anh LIME</div>
+    <div style="font-size:20px; color:#6b7280; font-weight:600; margin-bottom:6px;">📞 Hotline: <a href="tel:0976222792" style="color:#f97316; text-decoration:none; font-weight:800;">0976 222 792</a></div>
+
+    <!-- Divider -->
+    <div style="border-top:2px solid #e5e7eb; margin:24px 0;"></div>
+
+    <!-- Tên bài thi -->
+    <h1 style="font-size:34px; font-weight:800; color:#16a34a; margin-bottom:6px;">Starters Listening</h1>
+    <p style="color:#f97316; font-size:22px; font-weight:700; margin-bottom:36px;">Cambridge Pre A1 Starters – Số 17</p>
+
+    <!-- Input mã học sinh -->
+    <input type="text" id="studentCode"
+      style="width:100%; padding:20px 24px; font-size:26px; border:3px solid #86efac; border-radius:18px; text-align:center; outline:none; font-family:'Quicksand',sans-serif;"
+      placeholder="Nhập mã học sinh"
+      onkeydown="if(event.key==='Enter') verifyStudent()">
+    <button onclick="verifyStudent()"
+      style="width:100%; margin-top:18px; background:#16a34a; color:white; font-weight:800; padding:22px; border-radius:18px; font-size:24px; border:none; cursor:pointer; font-family:'Quicksand',sans-serif; letter-spacing:0.05em;">
+      BẮT ĐẦU 🚀
+    </button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="appWrapper" style="display:none;">
+
+  <!-- HEADER -->
+  <div id="mainHeader">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:34px;" alt="logo">
+      <div>
+        <div style="font-weight:800; color:#16a34a; font-size:20px;">Starters Listening – Số 17</div>
+        <div style="font-size:15px; color:#f97316; font-weight:700; margin-top:-2px;">Cambridge Pre A1 Starters</div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:24px;">
+      <div style="font-size:16px; color:#6b7280;">Học sinh: <strong id="headerName" style="color:#1f2937;"></strong></div>
+      <div style="font-size:20px; font-weight:800; color:#dc2626;">⏱ <span id="timer">00:00</span></div>
+      <div style="width:120px; background:#e5e7eb; height:8px; border-radius:4px; overflow:hidden;">
+        <div id="progress" style="height:100%; background:#16a34a; width:0; transition:width 0.5s;"></div>
+      </div>
+      <div style="font-size:15px; color:#6b7280;" id="progressLabel">0/20</div>
+    </div>
+  </div>
+
+  <!-- AUDIO BAR -->
+  <div id="audioBar">
+    <audio id="fullAudio" src="https://res.cloudinary.com/demamww3r/video/upload/q_auto/f_auto/v1775102331/mix_20m28s_audio-joiner.com_ygzhn3.mp3"></audio>
+    <button id="playBtn" onclick="playFullAudio()">▶ Nghe bài</button>
+    <span id="audioStatus">Bài nghe chỉ được nghe 1 lần – không tua, không dừng</span>
+    <div id="audioProgress" style="flex:1; background:rgba(255,255,255,0.2); height:4px; border-radius:2px; overflow:hidden;">
+      <div id="audioBar2" style="height:100%; background:#fb923c; width:0; transition:width 0.5s;"></div>
+    </div>
+  </div>
+
+  <!-- PART TABS -->
+  <div id="partTabs">
+    <span style="font-size:16px; font-weight:700; color:#6b7280; margin-right:4px;">Phần:</span>
+    <div class="part-tab active" onclick="showPart(1)" id="tab1">Part 1</div>
+    <div class="part-tab" onclick="showPart(2)" id="tab2">Part 2</div>
+    <div class="part-tab" onclick="showPart(3)" id="tab3">Part 3</div>
+    <div class="part-tab" onclick="showPart(4)" id="tab4">Part 4</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="mainContent">
+    <div id="splitPane">
+
+      <!-- LEFT PANEL -->
+      <div class="left-panel" id="leftPanel">
+
+        <!-- PART 1 LEFT: scene image -->
+        <div class="part-view active" id="left1" style="flex-direction:column;">
+          <div class="panel-header">Part 1 – Scene image</div>
+          <div class="panel-body" style="overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fafafa; padding:0;">
+            <!-- Part 1 scene: living room with characters Alex/Eva/Hugo/Lucy/Tom/Sue/Sam -->
+            <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774446770/VKnzf_xctkgj.jpg"
+              onerror="this.style.display='none'; document.getElementById('p1imgFallback').style.display='flex';"
+              class="img-fit" alt="Part 1 – Living room scene">
+            <div id="p1imgFallback" style="display:none; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%; padding:24px;">
+              <div style="font-size:60px; margin-bottom:12px;">🏠</div>
+              <div style="font-size:18px; font-weight:700; color:#f97316; text-align:center;">Hình ảnh Part 1<br>Living Room Scene</div>
+              <div style="margin-top:16px; font-size:14px; color:#6b7280; text-align:center; line-height:1.8;">
+                <strong>Tên cần nối:</strong><br>
+                Alex · Eva · Hugo · Lucy<br>Tom · Sue · Sam
+              </div>
+              <div style="margin-top:12px; font-size:13px; color:#9ca3af; text-align:center;">
+                (Xem hình trong đề giấy để làm bài)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PART 2 LEFT (hidden in full-width) -->
+        <div class="part-view" id="left2" style="flex-direction:column;"></div>
+
+        <!-- PART 3 LEFT (hidden in full-width) -->
+        <div class="part-view" id="left3" style="flex-direction:column;"></div>
+
+        <!-- PART 4 LEFT: colouring scene image -->
+        <div class="part-view" id="left4" style="flex-direction:column;">
+          <div class="panel-header">Part 4 – Scene image</div>
+          <div class="panel-body" style="overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fafafa; padding:0;">
+            <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774446771/zglUV_ysjlzf.jpg"
+              onerror="this.style.display='none'; document.getElementById('p4imgFallback').style.display='flex';"
+              class="img-fit" alt="Part 4 – Scene to colour">
+            <div id="p4imgFallback" style="display:none; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%; padding:24px;">
+              <div style="font-size:60px; margin-bottom:12px;">🎨</div>
+              <div style="font-size:18px; font-weight:700; color:#16a34a; text-align:center;">Part 4 – Colouring scene</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end left panel -->
+
+      <!-- DIVIDER -->
+      <div id="divider"></div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel" id="rightPanel">
+
+        <!-- ===== PART 1 RIGHT: Draw lines ===== -->
+        <div class="part-view active" id="right1" style="flex-direction:column;">
+          <div class="panel-header">Part 1 – Draw lines (5 questions)</div>
+          <div class="panel-body" style="overflow-y:auto;">
+            <div class="section-label" style="font-size:20px;">Part 1 – 5 questions</div>
+            <div class="instruction" style="font-size:20px;">🖊️ Select a name → click a number to match. Click a matched pair to remove.</div>
+
+            <div style="font-size:20px; font-weight:700; color:#374151; margin-bottom:10px;">Select a name:</div>
+            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:24px;" id="nameList">
+              <div onclick="selectName(this)" data-name="Eva"    class="name-btn" style="font-size:20px; padding:10px 22px;">Eva</div>
+              <div onclick="selectName(this)" data-name="Hugo"   class="name-btn" style="font-size:20px; padding:10px 22px;">Hugo</div>
+              <div onclick="selectName(this)" data-name="Lucy"   class="name-btn" style="font-size:20px; padding:10px 22px;">Lucy</div>
+              <div onclick="selectName(this)" data-name="Tom"    class="name-btn" style="font-size:20px; padding:10px 22px;">Tom</div>
+              <div onclick="selectName(this)" data-name="Sue"    class="name-btn" style="font-size:20px; padding:10px 22px;">Sue</div>
+              <div onclick="selectName(this)" data-name="Sam"    class="name-btn" style="font-size:20px; padding:10px 22px;">Sam</div>
+            </div>
+
+            <div style="font-size:20px; font-weight:700; color:#374151; margin-bottom:10px;">Select a number:</div>
+            <div style="display:flex; gap:14px; justify-content:center; margin-bottom:24px;" id="numberList">
+              <div onclick="matchNumber(this)" data-num="1" class="circle-num" style="width:64px;height:64px;font-size:26px;">1</div>
+              <div onclick="matchNumber(this)" data-num="2" class="circle-num" style="width:64px;height:64px;font-size:26px;">2</div>
+              <div onclick="matchNumber(this)" data-num="3" class="circle-num" style="width:64px;height:64px;font-size:26px;">3</div>
+              <div onclick="matchNumber(this)" data-num="4" class="circle-num" style="width:64px;height:64px;font-size:26px;">4</div>
+              <div onclick="matchNumber(this)" data-num="5" class="circle-num" style="width:64px;height:64px;font-size:26px;">5</div>
+            </div>
+
+            <div style="font-size:20px; font-weight:700; color:#374151; margin-bottom:10px;">Selected answers:</div>
+            <div id="matchResult" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
+          </div>
+        </div>
+
+        <!-- ===== PART 2 RIGHT: Listen and write name/number (full-width) ===== -->
+        <div class="part-view" id="right2" style="flex-direction:column;">
+          <div class="panel-header" style="background:#16a34a; color:white; font-weight:700; font-size:20px; padding:12px 20px;">Part 2 – Listen and write (5 questions)</div>
+          <div class="panel-body" style="overflow-y:auto; max-width:900px; margin:0 auto; width:100%;">
+            <div style="color:#dc2626; font-size:20px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">Part 2 – 5 questions</div>
+            <div style="background:#f0fdf4; border-left:4px solid #16a34a; padding:12px 16px; border-radius:0 8px 8px 0; font-size:20px; color:#374151; margin-bottom:20px;">
+              📝 Listen and write a name or a number.
+            </div>
+
+            <!-- Part 2 scene image -->
+            <img src="https://res.cloudinary.com/demamww3r/image/upload/v1774945847/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-03-31_152843_ku26im.png"
+              onerror="this.style.display='none';"
+              style="width:100%; border-radius:12px; margin-bottom:24px; object-fit:contain;" alt="Part 2">
+
+            <div style="display:flex; flex-direction:column; gap:20px;">
+              <!-- Q1 -->
+              <div>
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:8px;">1. How many dolls has Lucy got?</div>
+                <input id="q1" class="ans-input" style="font-size:20px; padding:10px 16px; width:160px;" placeholder="..." onblur="saveTextAnswer(1,this.value)">
+              </div>
+              <!-- Q2 -->
+              <div>
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:8px;">2. What's the dog's name?</div>
+                <input id="q2" class="ans-input" style="font-size:20px; padding:10px 16px; width:220px;" placeholder="..." onblur="saveTextAnswer(2,this.value)">
+              </div>
+              <!-- Q3 -->
+              <div>
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:8px;">3. Which class is Lucy in?</div>
+                <input id="q3" class="ans-input" style="font-size:20px; padding:10px 16px; width:160px;" placeholder="..." onblur="saveTextAnswer(3,this.value)">
+              </div>
+              <!-- Q4 -->
+              <div>
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:8px;">4. What's the name of Lucy's school?</div>
+                <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                  <input id="q4" class="ans-input" style="font-size:20px; padding:10px 16px; width:220px;" placeholder="..." onblur="saveTextAnswer(4,this.value)">
+                  <span style="font-size:20px; font-weight:700; color:#6b7280;">School</span>
+                </div>
+              </div>
+              <!-- Q5 -->
+              <div>
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:8px;">5. How many children are in Lucy's class?</div>
+                <input id="q5" class="ans-input" style="font-size:20px; padding:10px 16px; width:160px;" placeholder="..." onblur="saveTextAnswer(5,this.value)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PART 3 RIGHT: Listen and tick (full-width) ===== -->
+        <div class="part-view" id="right3" style="flex-direction:column;">
+          <div class="panel-header" style="background:#16a34a; color:white; font-weight:700; font-size:20px; padding:12px 20px;">Part 3 – Tick the box (5 questions)</div>
+          <div class="panel-body" style="overflow-y:auto; max-width:900px; margin:0 auto; width:100%;">
+            <div style="color:#dc2626; font-size:20px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">Part 3 – 5 questions</div>
+            <div style="background:#f0fdf4; border-left:4px solid #16a34a; padding:12px 16px; border-radius:0 8px 8px 0; font-size:20px; color:#374151; margin-bottom:20px;">Look at the pictures and listen. Tick (✓) the box. A, B or C.</div>
+            <div style="display:flex; flex-direction:column; gap:28px;">
+
+              <!-- Q6 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:16px; padding:20px;">
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:12px;">1. Which boy is Tom?</div>
+                <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775193183/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-03_121131_ogmh4g.png" style="width:100%; border-radius:10px; margin-bottom:14px; object-fit:contain;" alt="Q1 – A B C">
+                <div style="display:flex; gap:14px;">
+                  <button onclick="selectOption(6,'A',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">A</button>
+                  <button onclick="selectOption(6,'B',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">B</button>
+                  <button onclick="selectOption(6,'C',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">C</button>
+                </div>
+              </div>
+
+              <!-- Q7 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:16px; padding:20px;">
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:12px;">2. Which is Jill's favourite drink?</div>
+                <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775193183/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-03_121141_qv2tqb.png" style="width:100%; border-radius:10px; margin-bottom:14px; object-fit:contain;" alt="Q2 – A B C">
+                <div style="display:flex; gap:14px;">
+                  <button onclick="selectOption(7,'A',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">A</button>
+                  <button onclick="selectOption(7,'B',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">B</button>
+                  <button onclick="selectOption(7,'C',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">C</button>
+                </div>
+              </div>
+
+              <!-- Q8 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:16px; padding:20px;">
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:12px;">3. What's Mark doing?</div>
+                <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775193183/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-03_121147_vriv3y.png" style="width:100%; border-radius:10px; margin-bottom:14px; object-fit:contain;" alt="Q3 – A B C">
+                <div style="display:flex; gap:14px;">
+                  <button onclick="selectOption(8,'A',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">A</button>
+                  <button onclick="selectOption(8,'B',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">B</button>
+                  <button onclick="selectOption(8,'C',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">C</button>
+                </div>
+              </div>
+
+              <!-- Q9 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:16px; padding:20px;">
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:12px;">4. Where's the spider?</div>
+                <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775193183/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-03_121155_wm3uhj.png" style="width:100%; border-radius:10px; margin-bottom:14px; object-fit:contain;" alt="Q4 – A B C">
+                <div style="display:flex; gap:14px;">
+                  <button onclick="selectOption(9,'A',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">A</button>
+                  <button onclick="selectOption(9,'B',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">B</button>
+                  <button onclick="selectOption(9,'C',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">C</button>
+                </div>
+              </div>
+
+              <!-- Q10 -->
+              <div style="background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:16px; padding:20px;">
+                <div style="font-size:22px; font-weight:700; color:#374151; margin-bottom:12px;">5. Where's the baby's duck?</div>
+                <img src="https://res.cloudinary.com/demamww3r/image/upload/q_auto/f_auto/v1775193183/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-04-03_121201_lam41k.png" style="width:100%; border-radius:10px; margin-bottom:14px; object-fit:contain;" alt="Q5 – A B C">
+                <div style="display:flex; gap:14px;">
+                  <button onclick="selectOption(10,'A',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">A</button>
+                  <button onclick="selectOption(10,'B',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">B</button>
+                  <button onclick="selectOption(10,'C',this)" class="opt-btn" style="font-size:22px; padding:12px 32px;">C</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PART 4 RIGHT: Listen and colour (split-screen) ===== -->
+        <div class="part-view" id="right4" style="flex-direction:column;">
+          <div class="panel-header">Part 4 – Listen and colour (5 questions)</div>
+          <div class="panel-body" style="overflow-y:auto;">
+            <div class="section-label" style="font-size:20px;">Part 4 – 5 questions</div>
+            <div class="instruction" style="font-size:20px;">🎨 Listen and colour. Choose a colour → click a number. Click again to remove.</div>
+
+            <!-- COLOUR PALETTE -->
+            <div style="font-size:20px; font-weight:700; color:#374151; margin-bottom:10px; margin-top:4px;">Choose a colour:</div>
+            <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:20px;" id="colorPalette">
+              <div onclick="setColor(this,'blue')"   class="color-btn" style="background:#1a56db; width:54px; height:54px;" title="Blue"></div>
+              <div onclick="setColor(this,'green')"  class="color-btn" style="background:#057a55; width:54px; height:54px;" title="Green"></div>
+              <div onclick="setColor(this,'yellow')" class="color-btn" style="background:#e3a008; width:54px; height:54px;" title="Yellow"></div>
+              <div onclick="setColor(this,'red')"    class="color-btn" style="background:#e02424; width:54px; height:54px;" title="Red"></div>
+              <div onclick="setColor(this,'orange')" class="color-btn" style="background:#ff5a1f; width:54px; height:54px;" title="Orange"></div>
+              <div onclick="setColor(this,'pink')"   class="color-btn" style="background:#e74694; width:54px; height:54px;" title="Pink"></div>
+              <div onclick="setColor(this,'purple')" class="color-btn" style="background:#7e3af2; width:54px; height:54px;" title="Purple"></div>
+              <div onclick="setColor(this,'brown')"  class="color-btn" style="background:#7e5145; width:54px; height:54px;" title="Brown"></div>
+              <div onclick="setColor(this,'black')"  class="color-btn" style="background:#111827; width:54px; height:54px;" title="Black"></div>
+              <div onclick="setColor(this,'white')"  class="color-btn" style="background:#f9fafb; width:54px; height:54px; border:2px solid #d1d5db;" title="White"></div>
+            </div>
+            <div id="selectedColorLabel" style="font-size:20px; color:#6b7280; margin-bottom:16px;">No colour selected</div>
+
+            <!-- COLOUR NUMBERS -->
+            <div style="font-size:20px; font-weight:700; color:#374151; margin-bottom:10px;">Click a number to colour:</div>
+            <div style="display:flex; flex-direction:column; gap:14px;" id="colorItems">
+              <div style="display:flex; align-items:center; gap:16px; background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 18px;">
+                <div onclick="colorItem(this)" data-num="1" class="color-circle" style="width:64px;height:64px;font-size:22px; flex-shrink:0;">1</div>
+                <span style="font-size:18px; color:#6b7280;">Item 1</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px; background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 18px;">
+                <div onclick="colorItem(this)" data-num="2" class="color-circle" style="width:64px;height:64px;font-size:22px; flex-shrink:0;">2</div>
+                <span style="font-size:18px; color:#6b7280;">Item 2</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px; background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 18px;">
+                <div onclick="colorItem(this)" data-num="3" class="color-circle" style="width:64px;height:64px;font-size:22px; flex-shrink:0;">3</div>
+                <span style="font-size:18px; color:#6b7280;">Item 3</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px; background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 18px;">
+                <div onclick="colorItem(this)" data-num="4" class="color-circle" style="width:64px;height:64px;font-size:22px; flex-shrink:0;">4</div>
+                <span style="font-size:18px; color:#6b7280;">Item 4</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px; background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 18px;">
+                <div onclick="colorItem(this)" data-num="5" class="color-circle" style="width:64px;height:64px;font-size:22px; flex-shrink:0;">5</div>
+                <span style="font-size:18px; color:#6b7280;">Item 5</span>
+              </div>
+            </div>
+
+            <div style="font-size:20px; font-weight:700; color:#374151; margin-top:20px; margin-bottom:10px;">Selected colours:</div>
+            <div id="colorResult" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
+          </div>
+        </div>
+
+      </div><!-- end right panel -->
+    </div><!-- end splitPane -->
+  </div><!-- end mainContent -->
+
+  <!-- FOOTER -->
+  <div id="footerBar">
+    <div style="display:flex; gap:8px; align-items:center;">
+      <button onclick="prevPart()" style="padding:10px 22px; border:2px solid #d1d5db; border-radius:20px; font-size:18px; font-weight:700; cursor:pointer; background:white;">← Phần trước</button>
+      <button onclick="nextPart()" style="padding:10px 22px; border:2px solid #d1d5db; border-radius:20px; font-size:18px; font-weight:700; cursor:pointer; background:white;">Phần tiếp →</button>
+    </div>
+    <div style="font-size:16px; color:#9ca3af;" id="dividerHint">Kéo thanh giữa để điều chỉnh cỡ</div>
+    <button onclick="submitTest()" style="padding:12px 32px; background:#dc2626; color:white; font-weight:800; font-size:20px; border-radius:20px; border:none; cursor:pointer;">NỘP BÀI</button>
+  </div>
+
+</div><!-- end appWrapper -->
+
+<!-- RESULT SCREEN -->
+<div id="resultScreen">
+  <div style="max-width:640px; width:100%; background:white; border-radius:24px; box-shadow:0 20px 60px rgba(0,0,0,0.12); padding:48px 40px; text-align:center;">
+    <div style="font-size:64px; margin-bottom:8px;">🎉</div>
+    <h1 style="font-size:32px; font-weight:800; color:#16a34a; margin-bottom:8px;">HOÀN THÀNH!</h1>
+    <div style="font-size:80px; font-weight:800; color:#16a34a; line-height:1;" id="finalScore">0%</div>
+    <p style="font-size:22px; margin:16px 0; color:#374151;">Đúng <strong id="correctCount">0</strong>/20 câu</p>
+    <p style="font-size:18px; color:#6b7280; margin-bottom:24px;">Thời gian: <strong id="finalTime">00:00</strong></p>
+    <div style="background:#fef2f2; border:2px solid #fca5a5; border-radius:16px; padding:16px 20px; margin-bottom:16px; text-align:left;">
+      <p style="font-weight:700; color:#991b1b; font-size:19px;">Câu sai: <span id="wrongList" style="font-family:monospace;">Không có</span></p>
+    </div>
+    <div style="background:#eff6ff; border:2px solid #93c5fd; border-radius:16px; padding:16px 20px; text-align:left; margin-bottom:24px; max-height:200px; overflow-y:auto;">
+      <p style="font-weight:700; color:#1e40af; font-size:18px; margin-bottom:8px;">Lịch sử làm bài:</p>
+      <div id="timelineDisplay" style="font-size:16px; font-family:monospace; color:#374151;"></div>
+    </div>
+    <button onclick="location.reload()" style="background:#16a34a; color:white; font-weight:800; padding:16px 40px; border-radius:16px; font-size:18px; border:none; cursor:pointer;">LÀM LẠI BÀI</button>
+  </div>
+</div>
+
+<script>
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzf5rfx8jIiNaIzC3a1WcaKxaH-EylWITueMSbLBTgZNFsHH17QJXXGNealxIGbXSM9/exec';
+const TEST_NAME = 'Starters Listening #17';
+const TOTAL_QUESTIONS = 20;
+
+let student = null, startTime = null, timerInterval = null;
+let answers = {}, timeline = [], tabSwitches = 0;
+let playedFull = false;
+let selectedName = null;
+let currentColor = null;
+let currentColorBtn = null;
+let currentPart = 1;
+
+// Part 2 & 3 are full-width
+const FULL_WIDTH_PARTS = [2, 3];
+
+// ===== PART NAVIGATION =====
+function showPart(n) {
+  currentPart = n;
+  const mainContent = document.getElementById('mainContent');
+  const hint = document.getElementById('dividerHint');
+  if (FULL_WIDTH_PARTS.includes(n)) {
+    mainContent.classList.add('full-width');
+    hint.textContent = 'Cuộn để xem toàn bộ câu hỏi';
+  } else {
+    mainContent.classList.remove('full-width');
+    hint.textContent = 'Kéo thanh giữa để điều chỉnh cỡ';
+  }
+  for (let i = 1; i <= 4; i++) {
+    const l = document.getElementById(`left${i}`);
+    const r = document.getElementById(`right${i}`);
+    if (l) l.classList.toggle('active', i === n);
+    if (r) r.classList.toggle('active', i === n);
+    document.getElementById(`tab${i}`).classList.toggle('active', i === n);
+  }
+}
+function prevPart() { if (currentPart > 1) showPart(currentPart - 1); }
+function nextPart() { if (currentPart < 4) showPart(currentPart + 1); }
+
+// ===== DIVIDER DRAG =====
+(function() {
+  const divider = document.getElementById('divider');
+  const left = document.getElementById('leftPanel');
+  const right = document.getElementById('rightPanel');
+  let dragging = false;
+  divider.addEventListener('mousedown', (e) => { dragging = true; divider.classList.add('dragging'); e.preventDefault(); });
+  document.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    const pane = document.getElementById('splitPane');
+    const rect = pane.getBoundingClientRect();
+    let pct = ((e.clientX - rect.left) / rect.width) * 100;
+    pct = Math.max(25, Math.min(75, pct));
+    left.style.width = pct + '%';
+    right.style.width = (100 - pct) + '%';
+  });
+  document.addEventListener('mouseup', () => { dragging = false; divider.classList.remove('dragging'); });
+  divider.addEventListener('touchstart', (e) => { dragging = true; e.preventDefault(); }, {passive:false});
+  document.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    const pane = document.getElementById('splitPane');
+    const rect = pane.getBoundingClientRect();
+    let pct = ((e.touches[0].clientX - rect.left) / rect.width) * 100;
+    pct = Math.max(25, Math.min(75, pct));
+    left.style.width = pct + '%';
+    right.style.width = (100 - pct) + '%';
+  }, {passive:false});
+  document.addEventListener('touchend', () => { dragging = false; });
+})();
+
+// ===== AUDIO =====
+function playFullAudio() {
+  if (playedFull) return alert("Bạn chỉ được nghe 1 lần duy nhất!");
+  const audio = document.getElementById('fullAudio');
+  const btn = document.getElementById('playBtn');
+  if (!audio.src || audio.src === window.location.href) {
+    alert('Chưa có file audio. Vui lòng liên hệ giáo viên để cập nhật link audio.');
+    return;
+  }
+  audio.play();
+  playedFull = true;
+  btn.textContent = '▶ Đang nghe...';
+  btn.disabled = true;
+  document.getElementById('audioStatus').textContent = '🔴 Đang phát – không tua lại được';
+  audio.onseeked = () => { if (audio.currentTime > 2) audio.currentTime = 0; };
+  audio.ontimeupdate = () => {
+    const pct = (audio.currentTime / audio.duration) * 100;
+    document.getElementById('audioBar2').style.width = pct + '%';
+  };
+  audio.onended = () => {
+    btn.textContent = '✅ Đã nghe xong';
+    document.getElementById('audioStatus').textContent = 'Bài nghe đã kết thúc';
+  };
+}
+
+// ===== PART 1: NAME MATCHING =====
+function selectName(el) {
+  document.querySelectorAll('.name-btn').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedName = el.dataset.name;
+}
+function matchNumber(el) {
+  if (!selectedName) return alert("Hãy chọn tên trước!");
+  const num = el.dataset.num;
+  Object.keys(answers).forEach(k => {
+    if (k === `part1_${selectedName}`) delete answers[k];
+    if (k.startsWith('part1_') && answers[k] == num) delete answers[k];
+  });
+  answers[`part1_${selectedName}`] = num;
+  selectedName = null;
+  document.querySelectorAll('.name-btn').forEach(e => e.classList.remove('selected'));
+  renderMatches();
+  updateProgress();
+  timeline.push(`Part 1: ${selectedName || '?'} → ${num}`);
+}
+function renderMatches() {
+  let html = '';
+  Object.keys(answers).filter(k => k.startsWith('part1_')).forEach(key => {
+    const name = key.replace('part1_','');
+    const num = answers[key];
+    html += `<div onclick="removeMatch('${key}')" class="match-tag"><strong>${name}</strong> → <span style="color:#16a34a;font-weight:800;">${num}</span> <span style="color:#dc2626;font-size:11px;">✕</span></div>`;
+  });
+  document.getElementById('matchResult').innerHTML = html || '<span style="color:#9ca3af;font-size:13px;">No answers yet</span>';
+  document.querySelectorAll('#numberList .circle-num').forEach(c => {
+    const num = c.dataset.num;
+    c.classList.toggle('matched', !!Object.keys(answers).find(k => answers[k] == num && k.startsWith('part1_')));
+  });
+}
+function removeMatch(key) {
+  delete answers[key];
+  renderMatches();
+  updateProgress();
+  timeline.push(`Part 1: Bỏ ghép ${key}`);
+}
+
+// ===== TEXT ANSWERS =====
+function saveTextAnswer(q, val) {
+  if (val.trim()) {
+    answers[q] = val.trim();
+    timeline.push(`Câu ${q}: ${val.trim()}`);
+  } else {
+    delete answers[q];
+  }
+  updateProgress();
+}
+
+// ===== PART 3: TICK OPTIONS =====
+function selectOption(q, opt, btn) {
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[q] = opt;
+  timeline.push(`Câu ${q}: ${opt}`);
+  updateProgress();
+}
+
+// ===== PART 4: COLOUR =====
+const COLOR_LABELS = {
+  blue:'Xanh dương', green:'Xanh lá', yellow:'Vàng', red:'Đỏ',
+  orange:'Cam', pink:'Hồng', purple:'Tím', brown:'Nâu', black:'Đen', white:'Trắng'
+};
+const COLOR_HEX = {
+  blue:'#1a56db', green:'#057a55', yellow:'#e3a008', red:'#e02424',
+  orange:'#ff5a1f', pink:'#e74694', purple:'#7e3af2', brown:'#7e5145',
+  black:'#111827', white:'#f9fafb'
+};
+function setColor(btn, colorName) {
+  currentColor = colorName;
+  document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  currentColorBtn = btn;
+  const label = document.getElementById('selectedColorLabel');
+  if (label) label.textContent = `Selected colour: ${COLOR_LABELS[colorName] || colorName}`;
+}
+function colorItem(el) {
+  if (!currentColor) return alert("Hãy chọn màu trước!");
+  const num = el.dataset.num;
+  const hex = COLOR_HEX[currentColor] || currentColor;
+  if (answers[`part4_${num}`] === currentColor) {
+    delete answers[`part4_${num}`];
+    el.style.background = 'white';
+    el.style.color = '#1f2937';
+    el.style.borderColor = '#16a34a';
+  } else {
+    answers[`part4_${num}`] = currentColor;
+    el.style.background = hex;
+    el.style.color = (currentColor === 'yellow' || currentColor === 'white') ? '#1f2937' : 'white';
+    el.style.borderColor = hex;
+  }
+  renderColorResult();
+  updateProgress();
+}
+function renderColorResult() {
+  let html = '';
+  Object.keys(answers).filter(k => k.startsWith('part4_')).forEach(key => {
+    const num = key.replace('part4_','');
+    const colorName = answers[key];
+    const hex = COLOR_HEX[colorName] || colorName;
+    const label = COLOR_LABELS[colorName] || colorName;
+    html += `<div onclick="removeColor('${key}')" class="match-tag"><strong>Số ${num}</strong> <span style="display:inline-block;width:22px;height:22px;border-radius:50%;background:${hex};border:1.5px solid #ccc;vertical-align:middle;"></span> <span style="font-size:13px;">${label}</span> <span style="color:#dc2626;font-size:11px;">✕</span></div>`;
+  });
+  document.getElementById('colorResult').innerHTML = html || '<span style="color:#9ca3af;font-size:13px;">No colour selected yet</span>';
+}
+function removeColor(key) {
+  const num = key.replace('part4_','');
+  delete answers[key];
+  const circle = document.querySelector(`#colorItems [data-num="${num}"]`);
+  if (circle) { circle.style.background='white'; circle.style.color='#1f2937'; circle.style.borderColor='#16a34a'; }
+  renderColorResult();
+  updateProgress();
+}
+
+// ===== PROGRESS =====
+function updateProgress() {
+  // Count: part1 counts each name matched (up to 5), q1-q5 text, q6-q10 tick, part4_1..5 colour
+  const p1 = Object.keys(answers).filter(k => k.startsWith('part1_')).length;
+  const p2 = [1,2,3,4,5].filter(i => answers[i]).length;
+  const p3 = [6,7,8,9,10].filter(i => answers[i]).length;
+  const p4 = Object.keys(answers).filter(k => k.startsWith('part4_')).length;
+  const answered = p1 + p2 + p3 + p4;
+  const pct = (answered / TOTAL_QUESTIONS) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${answered}/${TOTAL_QUESTIONS}`;
+}
+
+// ===== VERIFY =====
+function verifyStudent() {
+  const code = document.getElementById('studentCode').value.trim().toUpperCase();
+  if (!code) return alert('Nhập mã học sinh!');
+  fetch(`${SHEET_URL}?action=verify&code=${code}`)
+    .then(r => r.json())
+    .then(d => {
+      if (!d.exists) return alert('Mã không tồn tại!');
+      student = {code, name: d.studentName || code};
+      document.getElementById('headerName').textContent = student.name;
+      document.getElementById('codeScreen').style.display = 'none';
+      document.getElementById('appWrapper').style.display = 'flex';
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        const s = Math.floor((Date.now() - startTime)/1000);
+        const m = String(Math.floor(s/60)).padStart(2,'0');
+        const sec = String(s%60).padStart(2,'0');
+        document.getElementById('timer').textContent = `${m}:${sec}`;
+      }, 500);
+    })
+    .catch(() => alert('Lỗi kết nối!'));
+}
+
+// ===== SUBMIT =====
+function submitTest() {
+  const p1 = Object.keys(answers).filter(k => k.startsWith('part1_')).length;
+  const p2 = [1,2,3,4,5].filter(i => answers[i]).length;
+  const p3 = [6,7,8,9,10].filter(i => answers[i]).length;
+  const p4 = Object.keys(answers).filter(k => k.startsWith('part4_')).length;
+  const answered = p1 + p2 + p3 + p4;
+  if (answered < TOTAL_QUESTIONS && !confirm(`Còn ${TOTAL_QUESTIONS - answered} câu chưa làm. Nộp luôn?`)) return;
+  clearInterval(timerInterval);
+  const duration = document.getElementById('timer').textContent;
+  const data = {
+    action: 'submit',
+    testName: TEST_NAME,
+    studentCode: student.code,
+    studentName: student.name,
+    answers,
+    timeUsed: duration,
+    realSubmitTime: new Date().toLocaleString('vi-VN'),
+    timeline: timeline.join(' | '),
+    tabSwitchLog: tabSwitches > 0 ? `Chuyển tab ${tabSwitches} lần` : 'Không chuyển tab',
+    totalQuestions: TOTAL_QUESTIONS
+  };
+  fetch(`${SHEET_URL}?data=${encodeURIComponent(JSON.stringify(data))}`)
+    .then(r => r.json())
+    .then(res => {
+      document.getElementById('appWrapper').style.display = 'none';
+      const rs = document.getElementById('resultScreen');
+      rs.style.display = 'flex';
+      document.getElementById('finalScore').textContent = (res.score || 0) + '%';
+      document.getElementById('correctCount').textContent = res.correctCount || 0;
+      document.getElementById('finalTime').textContent = duration;
+      document.getElementById('wrongList').textContent = res.wrongQuestions?.length ? res.wrongQuestions.join(', ') : 'Không có';
+      const tl = document.getElementById('timelineDisplay');
+      timeline.forEach(l => { const p = document.createElement('p'); p.textContent = l; tl.appendChild(p); });
+    })
+    .catch(() => {
+      // If server error, still show result screen
+      document.getElementById('appWrapper').style.display = 'none';
+      const rs = document.getElementById('resultScreen');
+      rs.style.display = 'flex';
+      document.getElementById('finalScore').textContent = '—';
+      document.getElementById('correctCount').textContent = '—';
+      document.getElementById('finalTime').textContent = duration;
+      document.getElementById('wrongList').textContent = 'Lỗi kết nối, liên hệ giáo viên';
+    });
+}
+
+// ===== TAB SWITCH =====
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && document.getElementById('appWrapper').style.display !== 'none') {
+    tabSwitches++;
+    timeline.push(`Chuyển tab lúc ${new Date().toLocaleTimeString('vi-VN')}`);
+  }
+});
+</script>
+</body>
+</html>
