@@ -633,7 +633,7 @@
 </div>
 
 <script>
-const URL_GAS = 'https://script.google.com/macros/s/AKfycby_zpiiXq7kqdhvYB_MtpH7TlLwMBllc7kNv9R_708pLHtJY1KlfstrBPvoLA_RB13T/exec';
+const URL_GAS = 'https://script.google.com/macros/s/AKfycbw9427suNvBO4WCkA27RuEH4sZW-mnJxOaly1KCwjbN68v7ZWPXvqruTCKfswfBz5Et/exec';
 const TEST_NAME = 'KET Reading Writing';
 const TOTAL_QUESTIONS = 31;
 
@@ -749,7 +749,7 @@ function submitTest() {
     tabSwitchLog: tabSwitches > 0 ? `Tab switched ${tabSwitches} time(s)` : 'No tab switches',
     totalQuestions: TOTAL_QUESTIONS
   };
-  fetch(`${URL_GAS}?data=${encodeURIComponent(JSON.stringify(data))}`)
+ fetch(`${URL_GAS}?action=submit&data=${encodeURIComponent(JSON.stringify(data))}`)
     .then(r => r.json())
     .then(res => showResult(duration, res))
     .catch(() => showResult(duration, null));
