@@ -646,7 +646,7 @@
 </div>
 
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycby_zpiiXq7kqdhvYB_MtpH7TlLwMBllc7kNv9R_708pLHtJY1KlfstrBPvoLA_RB13T/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw9427suNvBO4WCkA27RuEH4sZW-mnJxOaly1KCwjbN68v7ZWPXvqruTCKfswfBz5Et/exec';
 const TEST_NAME = 'Starters Listening';
 const TOTAL_QUESTIONS = 20;
 
@@ -914,7 +914,7 @@ function submitTest() {
     tabSwitchLog: tabSwitches > 0 ? `Chuyển tab ${tabSwitches} lần` : 'Không chuyển tab',
     totalQuestions: TOTAL_QUESTIONS
   };
-  fetch(`${SHEET_URL}?data=${encodeURIComponent(JSON.stringify(data))}`)
+  fetch(`${SHEET_URL}?action=submit&data=${encodeURIComponent(JSON.stringify(data))}`)
     .then(r => r.json())
     .then(res => {
       document.getElementById('appWrapper').style.display = 'none';
