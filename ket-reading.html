@@ -9,15 +9,11 @@
 <style>
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; font-family: 'Quicksand', sans-serif; overflow: hidden; }
-
-  /* ===== HEADER ===== */
   #mainHeader {
     height: 68px; background: white; border-bottom: 2px solid #e5e7eb;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 20px; z-index: 100; flex-shrink: 0;
   }
-
-  /* ===== PART TABS ===== */
   #partTabs {
     height: 54px; background: #f3f4f6; border-bottom: 2px solid #e5e7eb;
     display: flex; align-items: center; padding: 0 16px; gap: 6px; flex-shrink: 0; overflow-x: auto;
@@ -28,11 +24,8 @@
     transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
   }
   .part-tab.active { background: #16a34a; color: white; border-color: #16a34a; }
-
-  /* ===== SCREENS ===== */
   #appWrapper { height: 100vh; display: flex; flex-direction: column; }
   #mainContent { flex: 1; display: flex; overflow: hidden; }
-
   #codeScreen {
     height: 100vh; display: flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
@@ -42,16 +35,12 @@
     background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
     display: none;
   }
-
-  /* ===== SPLIT PANE ===== */
   .split-pane { display: flex; width: 100%; height: 100%; overflow: hidden; }
   .pane-left {
     width: 48%; border-right: 3px solid #e5e7eb; background: #fafafa;
     display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0;
   }
-  .pane-right {
-    flex: 1; background: white; display: flex; flex-direction: column; overflow: hidden;
-  }
+  .pane-right { flex: 1; background: white; display: flex; flex-direction: column; overflow: hidden; }
   .pane-divider {
     width: 6px; background: #d1d5db; cursor: col-resize; flex-shrink: 0;
     transition: background 0.2s; position: relative; z-index: 10;
@@ -61,28 +50,14 @@
     content: '⋮'; position: absolute; top: 50%; left: 50%;
     transform: translate(-50%,-50%); color: #9ca3af; font-size: 16px;
   }
-  .pane-header {
-    padding: 12px 18px; background: #16a34a; color: white;
-    font-weight: 700; font-size: 20px; flex-shrink: 0;
-  }
+  .pane-header { padding: 12px 18px; background: #16a34a; color: white; font-weight: 700; font-size: 20px; flex-shrink: 0; }
   .pane-body { flex: 1; overflow-y: auto; padding: 18px; }
-
-  /* ===== FULL WIDTH (Parts 1, 5, 6, 7) ===== */
   .full-pane { width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
   .full-pane .pane-body { max-width: 900px; margin: 0 auto; width: 100%; }
-
-  /* ===== PART VIEW ===== */
   .part-view { display: none; width: 100%; height: 100%; }
   .part-view.active { display: flex; }
-
-  /* ===== QUESTION STYLES ===== */
-  .q-box {
-    background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 14px;
-    padding: 16px 20px; margin-bottom: 14px;
-  }
+  .q-box { background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 14px; padding: 16px 20px; margin-bottom: 14px; }
   .q-label { font-size: 22px; font-weight: 700; color: #374151; margin-bottom: 12px; }
-  .q-context { font-size: 19px; color: #6b7280; font-weight: 600; margin-bottom: 6px; }
-
   .opt-btn {
     display: block; width: 100%; text-align: left;
     padding: 12px 20px; margin-bottom: 8px;
@@ -92,7 +67,6 @@
   }
   .opt-btn:hover { border-color: #16a34a; background: #f0fdf4; }
   .opt-btn.selected { background: #16a34a; color: white; border-color: #16a34a; }
-
   .opt-inline {
     display: inline-block; padding: 10px 22px; margin: 4px;
     border: 2px solid #d1d5db; border-radius: 20px;
@@ -101,8 +75,6 @@
   }
   .opt-inline:hover { border-color: #16a34a; background: #f0fdf4; }
   .opt-inline.selected { background: #16a34a; color: white; border-color: #16a34a; }
-
-  /* ===== READING PANELS ===== */
   .reading-card {
     background: #f0fdf4; border: 2px solid #86efac; border-radius: 14px;
     padding: 20px 22px; line-height: 2.2; font-size: 22px; font-weight: 700; color: #1f2937;
@@ -117,38 +89,20 @@
     display: inline-block; background: #fef9c3; border: 2px solid #facc15;
     border-radius: 8px; padding: 0 8px; font-weight: 800; color: #854d0e; margin: 0 2px;
   }
-  .reading-title {
-    text-align: center; font-size: 26px; font-weight: 800;
-    color: #14532d; margin-bottom: 4px;
-  }
-  .reading-subtitle {
-    text-align: center; font-size: 20px; color: #6b7280; font-style: italic; margin-bottom: 16px; font-weight: 600;
-  }
-
-  /* ===== INSTRUCTIONS ===== */
+  .reading-title { text-align: center; font-size: 26px; font-weight: 800; color: #14532d; margin-bottom: 4px; }
+  .reading-subtitle { text-align: center; font-size: 20px; color: #6b7280; font-style: italic; margin-bottom: 16px; font-weight: 600; }
   .instruction {
     background: #f0fdf4; border-left: 4px solid #16a34a;
     padding: 12px 16px; border-radius: 0 8px 8px 0;
     font-size: 20px; color: #374151; margin-bottom: 16px; line-height: 1.6;
   }
-  .section-label {
-    color: #dc2626; font-size: 22px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;
-  }
-  .person-key {
-    background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px;
-    padding: 10px 16px; margin-bottom: 14px; font-size: 19px; font-weight: 700; color: #14532d;
-  }
-
-  /* ===== PART 5 GAP FILL ===== */
+  .section-label { color: #dc2626; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .person-key { background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px; padding: 10px 16px; margin-bottom: 14px; font-size: 19px; font-weight: 700; color: #14532d; }
   .email-card {
     background: #f0fdf4; border: 2px solid #86efac; border-radius: 14px;
     padding: 22px 26px; line-height: 3.0; font-size: 22px; font-weight: 700; color: #1f2937; margin-bottom: 16px;
   }
-  .email-header {
-    background: #dcfce7; border-radius: 8px; padding: 10px 16px;
-    margin-bottom: 16px; font-size: 20px; font-weight: 800; color: #14532d;
-  }
+  .email-header { background: #dcfce7; border-radius: 8px; padding: 10px 16px; margin-bottom: 16px; font-size: 20px; font-weight: 800; color: #14532d; }
   .inline-blank {
     display: inline-block; border: none; border-bottom: 3px solid #16a34a;
     min-width: 110px; padding: 2px 8px; margin: 0 4px;
@@ -156,37 +110,26 @@
     background: transparent; outline: none; color: #14532d; text-align: center;
   }
   .inline-blank:focus { border-bottom-color: #dc2626; }
-
-  /* ===== WRITING ===== */
   .textarea-answer {
     width: 100%; border-radius: 12px; border: 2px solid #d1d5db;
     padding: 16px 18px; font-size: 22px; font-weight: 700; font-family: 'Quicksand', sans-serif;
     resize: vertical; outline: none; line-height: 2.0; transition: border-color 0.2s;
   }
   .textarea-answer:focus { border-color: #16a34a; background: #f0fdf4; }
-
-  /* ===== FOOTER ===== */
   #footerBar {
     height: 64px; background: #f9fafb; border-top: 2px solid #e5e7eb;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 20px; flex-shrink: 0;
   }
-
-  /* ===== SCROLLBARS ===== */
   .pane-body::-webkit-scrollbar { width: 6px; }
   .pane-body::-webkit-scrollbar-track { background: #f1f5f9; }
   .pane-body::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-
-  /* ===== EXAMPLE BOX ===== */
-  .example-box {
-    background: #fef9c3; border-left: 5px solid #facc15; border-radius: 0 10px 10px 0;
-    padding: 12px 16px; margin-bottom: 14px; font-size: 19px;
-  }
+  .example-box { background: #fef9c3; border-left: 5px solid #facc15; border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px; font-size: 19px; }
 </style>
 </head>
 <body>
 
-<!-- ══════════════ LOGIN ══════════════ -->
+<!-- LOGIN -->
 <div id="codeScreen">
   <div style="max-width:560px; width:100%; background:white; border-radius:28px; box-shadow:0 24px 72px rgba(0,0,0,0.18); padding:52px 48px; text-align:center;">
     <img src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" style="height:64px; margin:0 auto 16px; display:block;" alt="logo">
@@ -206,7 +149,7 @@
   </div>
 </div>
 
-<!-- ══════════════ MAIN APP ══════════════ -->
+<!-- MAIN APP -->
 <div id="appWrapper" style="display:none;">
 
   <!-- HEADER -->
@@ -245,15 +188,13 @@
   <!-- MAIN CONTENT -->
   <div id="mainContent">
 
-    <!-- ══ PART 1: Full width – image + options ══ -->
+    <!-- PART 1 -->
     <div class="part-view active" id="part1">
       <div class="full-pane">
         <div class="pane-header">Part 1 – Questions 1–6 &nbsp;|&nbsp; <span style="font-weight:400; font-size:15px;">For each question, choose the correct answer.</span></div>
         <div class="pane-body">
           <div class="section-label">Part 1 – Questions 1–6</div>
           <div class="instruction">📱 For each question, choose the correct answer.</div>
-
-          <!-- Q1 -->
           <div class="q-box">
             <div class="q-label">1. Sebastian is asking Lisa if</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
@@ -265,8 +206,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Q2 -->
           <div class="q-box">
             <div class="q-label">2. Dave would like Mike to</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
@@ -278,8 +217,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Q3 -->
           <div class="q-box">
             <div class="q-label">3.</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
@@ -291,8 +228,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Q4 -->
           <div class="q-box">
             <div class="q-label">4.</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
@@ -304,8 +239,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Q5 -->
           <div class="q-box">
             <div class="q-label">5.</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
@@ -317,8 +250,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Q6 -->
           <div class="q-box">
             <div class="q-label">6. Mum is asking if Joe's teacher</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
@@ -330,12 +261,11 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
 
-    <!-- ══ PART 2: Split – Reading LEFT / Questions RIGHT ══ -->
+    <!-- PART 2 -->
     <div class="part-view" id="part2">
       <div class="split-pane">
         <div class="pane-left">
@@ -404,7 +334,7 @@
       </div>
     </div>
 
-    <!-- ══ PART 3: Split – Reading LEFT / Questions RIGHT ══ -->
+    <!-- PART 3 -->
     <div class="part-view" id="part3">
       <div class="split-pane">
         <div class="pane-left">
@@ -460,7 +390,7 @@
       </div>
     </div>
 
-    <!-- ══ PART 4: Split – Gap text LEFT / Options RIGHT ══ -->
+    <!-- PART 4 -->
     <div class="part-view" id="part4">
       <div class="split-pane">
         <div class="pane-left">
@@ -522,7 +452,7 @@
       </div>
     </div>
 
-    <!-- ══ PART 5: Full width – Email gap fill ══ -->
+    <!-- PART 5 -->
     <div class="part-view" id="part5">
       <div class="full-pane">
         <div class="pane-header">📝 Part 5 – Questions 25–30 &nbsp;|&nbsp; <span style="font-weight:400; font-size:15px;">Write ONE word for each gap.</span></div>
@@ -541,7 +471,7 @@
       </div>
     </div>
 
-    <!-- ══ PART 6: Full width – Write email ══ -->
+    <!-- PART 6 -->
     <div class="part-view" id="part6">
       <div class="full-pane">
         <div class="pane-header">✍️ Part 6 – Question 31 &nbsp;|&nbsp; <span style="font-weight:400; font-size:15px;">Write an email in English.</span></div>
@@ -564,7 +494,7 @@
       </div>
     </div>
 
-    <!-- ══ PART 7: Full width – Story from pictures ══ -->
+    <!-- PART 7 -->
     <div class="part-view" id="part7">
       <div class="full-pane">
         <div class="pane-header">🎨 Part 7 – Question 32 &nbsp;|&nbsp; <span style="font-weight:400; font-size:15px;">Write the story shown in the pictures. 35 words or more.</span></div>
@@ -608,7 +538,7 @@
 
 </div><!-- end appWrapper -->
 
-<!-- ══════════════ RESULT ══════════════ -->
+<!-- RESULT SCREEN -->
 <div id="resultScreen">
   <div style="max-width:680px; margin:40px auto; background:white; border-radius:24px; box-shadow:0 20px 60px rgba(0,0,0,0.12); padding:48px 40px; text-align:center;">
     <div style="font-size:64px; margin-bottom:8px;">🎉</div>
@@ -641,7 +571,6 @@ let student = null, startTime = null, timerInterval = null;
 let answers = {}, timeline = [], tabSwitches = 0;
 let currentPart = 1;
 
-// ===== PART NAVIGATION =====
 function showPart(n) {
   currentPart = n;
   for (let i = 1; i <= 7; i++) {
@@ -652,8 +581,7 @@ function showPart(n) {
 function prevPart() { if (currentPart > 1) showPart(currentPart - 1); }
 function nextPart() { if (currentPart < 7) showPart(currentPart + 1); }
 
-// ===== DRAGGABLE DIVIDERS =====
-function makeDraggable(divId, paneSelector) {
+function makeDraggable(divId) {
   const divider = document.getElementById(divId);
   if (!divider) return;
   let dragging = false;
@@ -670,7 +598,6 @@ function makeDraggable(divId, paneSelector) {
 }
 ['div2','div3','div4'].forEach(id => makeDraggable(id));
 
-// ===== WORD COUNTER =====
 function countWords(taId, counterId, min) {
   const t = document.getElementById(taId).value.trim();
   const wc = t === '' ? 0 : t.split(/\s+/).filter(w => w).length;
@@ -680,7 +607,6 @@ function countWords(taId, counterId, min) {
   el.style.fontWeight = wc >= min ? '800' : 'normal';
 }
 
-// ===== VERIFY =====
 function verifyStudent() {
   const code = document.getElementById('studentCode').value.trim().toUpperCase();
   if (!code) return alert('Vui lòng nhập mã học sinh!');
@@ -711,7 +637,6 @@ function updateProgress() {
   document.getElementById('progressLabel').textContent = `${n}/${TOTAL_QUESTIONS}`;
 }
 
-// ===== SELECT ANSWER =====
 function selectAnswer(key, option, event) {
   const time = new Date().toLocaleTimeString();
   document.querySelectorAll(`button[onclick*="selectAnswer('${key}'"]`).forEach(b => b.classList.remove('selected'));
@@ -723,7 +648,6 @@ function selectAnswer(key, option, event) {
   updateProgress();
 }
 
-// ===== SAVE TEXT =====
 function saveText(key, value) {
   const v = value.trim();
   if (v === (answers[key] || '')) return;
@@ -734,25 +658,60 @@ function saveText(key, value) {
   updateProgress();
 }
 
-// ===== SUBMIT =====
+// ═══════════════════════════════════════════════════════════
+// SUBMIT — tách writing (p6_31, p7_32) thành request riêng
+// để tránh URL GET quá dài khi học sinh viết nhiều chữ
+// ═══════════════════════════════════════════════════════════
 function submitTest() {
   const answered = Object.keys(answers).filter(k => answers[k]).length;
   if (answered < TOTAL_QUESTIONS && !confirm(`Còn ${TOTAL_QUESTIONS - answered} câu chưa làm. Nộp luôn?`)) return;
   clearInterval(timerInterval);
   const duration = document.getElementById('timer').textContent;
-  const data = {
-    action: 'submit', testName: TEST_NAME,
-    studentCode: student.code, studentName: student.name,
-    answers, timeUsed: duration,
+
+  // Tách writing ra khỏi phần trắc nghiệm + điền từ
+  const writingAnswers = {};
+  const mcAnswers = {};
+  Object.keys(answers).forEach(k => {
+    if (k === 'p6_31' || k === 'p7_32') writingAnswers[k] = answers[k];
+    else mcAnswers[k] = answers[k];
+  });
+
+  // Request 1: Part 1–5 (trắc nghiệm + điền từ) — URL ngắn, có điểm tự động
+  const data1 = {
+    action: 'submit',
+    testName: TEST_NAME,
+    studentCode: student.code,
+    studentName: student.name,
+    answers: mcAnswers,
+    timeUsed: duration,
     realSubmitTime: new Date().toLocaleString(),
-    timeline: timeline.join(' | '),
+    timeline: timeline.join(' | ').substring(0, 800),
     tabSwitchLog: tabSwitches > 0 ? `Tab switched ${tabSwitches} time(s)` : 'No tab switches',
     totalQuestions: TOTAL_QUESTIONS
   };
- fetch(`${URL_GAS}?action=submit&data=${encodeURIComponent(JSON.stringify(data))}`)
-    .then(r => r.json())
-    .then(res => showResult(duration, res))
-    .catch(() => showResult(duration, null));
+
+  // Request 2: Part 6+7 (writing) — gửi riêng, vào cùng sheet KET_Reading
+  // studentName gắn thêm "[Writing P6+P7]" để GV dễ đối chiếu 2 dòng
+  const data2 = {
+    action: 'submit',
+    testName: TEST_NAME,
+    studentCode: student.code,
+    studentName: student.name + ' [Writing P6+P7]',
+    answers: writingAnswers,
+    timeUsed: duration,
+    realSubmitTime: new Date().toLocaleString(),
+    timeline: '',
+    tabSwitchLog: '',
+    totalQuestions: 2
+  };
+
+  // Gửi song song, chờ cả 2 xong mới hiện kết quả
+  Promise.all([
+    fetch(`${URL_GAS}?action=submit&data=${encodeURIComponent(JSON.stringify(data1))}`).then(r => r.json()),
+    fetch(`${URL_GAS}?action=submit&data=${encodeURIComponent(JSON.stringify(data2))}`).then(r => r.json())
+  ])
+  .then(([res1]) => showResult(duration, res1))
+  .catch(() => showResult(duration, null));
 }
 
 function showResult(duration, res) {
@@ -788,7 +747,6 @@ function showResult(duration, res) {
   timeline.forEach(l => { const p = document.createElement('p'); p.textContent = l; tl.appendChild(p); });
 }
 
-// ===== TAB SWITCH =====
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden' && document.getElementById('appWrapper').style.display !== 'none') {
     tabSwitches++;
